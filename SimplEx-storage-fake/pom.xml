@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.ubourgogne.simplex</groupId>
+		<artifactId>SimplEx</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>SimplEx-storage-fake</artifactId>
+	<name>Java Simplex - Definition d'une fausse impl�mentation (tournant en m�moire) de l'API de stockage.</name>
+	<url>http://code.google.com/p/java-simplex</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.ubourgogne.simplex</groupId>
+			<artifactId>SimplEx-storage-api</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>
