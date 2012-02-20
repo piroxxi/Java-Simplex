@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.4.0//EN" 
+"http://google-web-toolkit.googlecode.com/svn/tags/2.4.0/distro-source/core/src/gwt-module.dtd">
+<!-- "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd"> -->
+
+<!-- la balise "set-property-fallback" ne sera dispo que dans la prochaine 
+	release. Donc bidouille en attendant. -->
+
+<module rename-to='SimplEx'>
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+
+
+	<!-- Récupération du module Dispatch. -->
+	<!-- Ce module est utilisé pour les appels RPC (appels entre le client et 
+		le serveur) l'idée est que le client appel les services comme avant, cependant 
+		coté serveur, tous les appels sont captés par un "Dispatcher" (d'où le nom 
+		de la bibliothèque), c'est ce dispatcher qui s'occupera de transmettre les 
+		appels là ou ca va bien, et c'est également ainsi que sera initialisée l'injection 
+		de dépandances. -->
+	<inherits name="net.customware.gwt.dispatch.Dispatch" />
+
+
+	<!-- Configuration de GIN -->
+	<!-- Gin est la bibliothèque chargée de l'injection de dépendances coté 
+		client (Gin pour GWT Injection). Cette bibliothèque s'utilise comme Guice 
+		(qui elle est utilisées coté serveur). -->
+	<!-- 1) Récupération de la bibl GIN -->
+	<inherits name="com.google.gwt.inject.Inject" />
+	<!-- 2) On a qu'un seul Ginjector -->
+	<define-configuration-property name="gin.ginjector"
+		is-multi-valued="false" />
+	<!-- 3) Et lorsque quelqu'un demande un Ginjector, il recoit forcement la 
+		classe MyWidgetInjector -->
+	<set-configuration-property name="gin.ginjector"
+		value="fr.ubourgogne.simplex.webapp.client.injector.MyWidgetGinjector" />
+
+
+	<!-- this app is in French and made in France -->
+	<extend-property name="locale" values="fr_FR" />
+	<!-- <set-property-fallback name="locale" value="fr_FR" /> -->
+	<set-property name="locale" value="fr_FR" />
+
+	<!-- Gestion des activitées. -->
+	<!-- Il n'est pas certain qu'on aura des activitées, mais bon, on prévoit 
+		le coup quoi. -->
+	<inherits name='com.google.gwt.activity.Activity' />
+
+
+	<!-- Utilisation du PlaceControler -->
+	<!-- Permet d'utiliser les URLs. -->
+	<inherits name="com.google.gwt.place.Place" />
+
+
+	<!-- Specify the app entry point class. -->
+	<entry-point class='fr.ubourgogne.simplex.webapp.client.Simplex' />
+
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+	<source path='model' />
+
+</module>
