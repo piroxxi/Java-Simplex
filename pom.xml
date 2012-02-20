@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.ubourgogne.simplex</groupId>
-	<artifactId>SimplEx</artifactId>
+	<artifactId>simplex</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 
@@ -15,15 +15,14 @@
 
 
 	<modules>
-		<module>SimplEx-application</module>
-		<module>SimplEx-core</module>
-		<module>SimplEx-model</module>
-		<module>SimplEx-storage-api</module>
-		<module>SimplEx-storage-fake</module>
+		<module>simplex-model</module>
+		<module>simplex-parser</module>
+		<module>simplex-storage-api</module>
+		<module>simplex-storage-inmemory</module>
+		<module>simplex-webapp</module>
 	</modules>
 
 	<properties>
-
 		<!-- Here, we use java 1.6 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
@@ -31,7 +30,6 @@
 		<!-- Don't let your Mac nor your Windows use a crazy non-standard encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 	</properties>
 
 	<dependencies>
