@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
+import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.storage.exceptions.StorageException;
 import fr.ubourgogne.simplex.storage.exceptions.VersionObsoletException;
 
@@ -71,5 +72,31 @@ public class StorageImpl implements Storage {
 			collection.remove(id);
 		}
 	}
+
+	@Override
+	 public <E extends BasicEntity> E getByName(Class<E> clazz, String name)
+	   throws StorageException {
+	  System.out.println("[STORAGE] Recupération de l'entité par le nom"
+	    + name + "(" + clazz.getSimpleName() + ")");
+	  if (name == null) {
+	   return null;
+	  }
+
+	  @SuppressWarnings("unchecked")
+	  Map<String, E> collection = (Map<String, E>) storage.get(clazz);
+
+	  if (collection == null) {
+	   return null;
+	  }
+
+	  for (E e : collection.values()) {
+	   if (e instanceof JavaEntity) {
+	    if (name.equals(((JavaEntity) e).getName())) {
+	     return e;
+	    }
+	   }
+	  }
+	  return null;
+	 }
 
 }

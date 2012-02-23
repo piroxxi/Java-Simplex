@@ -7,37 +7,47 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class JavaCodeParser {
-	public static void main(String args[]) {
-		JavaCodeParser jcp = new JavaCodeParser("sample/SampleClass.java");
-		jcp.premierePasse();
-		jcp.deuxiemePasse();
-		jcp.troisiemePasse();
+public class FileFormater {
+	public static final String firstPasseFileName = "formated/commentsErased.code";
+	public static final String secondPasseFileName = "formated/formated.code";
+
+	private File baseFile;
+
+	public FileFormater(File f) {
+		baseFile = f;
 	}
 
-	private File fichierBase;
-
-	public JavaCodeParser(File f) {
-		fichierBase = f;
-	}
-
-	public JavaCodeParser(String s) {
-		fichierBase = new File(s);
+	public String format() {
+		File formated = formatSpaces(removeComments(baseFile));
+		BufferedReader read;
+		String ret = null;
+		try {
+			read = new BufferedReader(new FileReader(formated));
+			ret = read.readLine();
+			read.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	/**
 	 * Enlève tous les commentaires et les annotations d'un code source
 	 * 
-	 * @return le fichier dans lequel le résultat est stocké
+	 * @param fichier
+	 *            le fichier a parser
+	 * 
 	 */
-	public File premierePasse() {
+	private File removeComments(File fichier) {
 		File f = null;
 		boolean inString = false;
 		try {
-			f = new File("premierePasse.code");
+			f = new File(firstPasseFileName);
 			if (!f.exists())
 				f.createNewFile();
-			FileReader reader = new FileReader(fichierBase);
+			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);
 
 			int lu;
@@ -130,18 +140,19 @@ public class JavaCodeParser {
 	/**
 	 * Réduit tous les espaces entre chaque entité d'un code source à un seul
 	 * 
-	 * @return le fichier dans lequel est stocké le résultat
+	 * @param fichier
+	 *            le fichier a parser
 	 */
-	public File deuxiemePasse() {
+	private File formatSpaces(File fichier) {
 		File f = null;
 		boolean inString = false;
 		boolean lastCharWasSpace = false;
-		boolean lastCharWasKeyChar = false;
+
 		try {
-			f = new File("deuxiemePasse.code");
+			f = new File(secondPasseFileName);
 			if (!f.exists())
 				f.createNewFile();
-			FileReader reader = new FileReader("premierePasse.code");
+			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);
 
 			int lu;
@@ -151,22 +162,24 @@ public class JavaCodeParser {
 					if (c == '\"')
 						inString = false;
 					writer.write(c);
+					lastCharWasSpace = false;
 				} else {
-					if (isSpace(c)) {
-						lastCharWasSpace = true;
-					} else if (c == '\"') {
+					if (c == '\"') {
 						inString = true;
 						writer.write(c);
+						lastCharWasSpace = false;
+					} else if (isSpace(c)) {
+						if (!lastCharWasSpace)
+							writer.write(" ");
+						lastCharWasSpace = true;
 					} else if (isKeyChar(c)) {
-						writer.write(c);
-						lastCharWasSpace = false;
-						lastCharWasKeyChar = true;
+						if (!lastCharWasSpace)
+							writer.write(" ");
+						writer.write(c + " ");
+						lastCharWasSpace = true;
 					} else {
-						if (lastCharWasSpace && !lastCharWasKeyChar)
-							writer.write(' ');
 						writer.write(c);
 						lastCharWasSpace = false;
-						lastCharWasKeyChar = false;
 					}
 				}
 			}
@@ -182,52 +195,6 @@ public class JavaCodeParser {
 		return f;
 	}
 
-	public void troisiemePasse() {
-		String code = "";
-
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(
-					"deuxiemePasse.code"));
-			code = reader.readLine();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println(code);
-
-		// et c'est parti pour le decoupage \o/
-		String token = "";
-		// au debut,, on a le package et les import, mais pas forcement
-		if (code.startsWith("package")) {
-			token = code.substring(0, code.indexOf(";"));
-			code = code.substring(code.indexOf(";") + 1);
-			System.out.println("le package est : "
-					+ token.substring(token.indexOf(" ") + 1));
-		}
-
-		int i = 1;
-		while (code.startsWith("import")) {
-			token = code.substring(0, code.indexOf(";"));
-			code = code.substring(code.indexOf(";") + 1);
-			System.out.println("import " + i + " : "
-					+ token.substring(token.indexOf(" ") + 1));
-			i++;
-		}
-
-		// ensuite on a en theorie la definition de la classe, vu qu'on a enleve
-		// ces *** d'annotations
-
-		token = code.substring(0, code.indexOf("{"));
-		code = code.substring(code.indexOf("{") + 1);
-//
-//		for (String tok : token.split(" ")) {
-//			
-//		}
-
-	}
-
 	private static boolean isSpace(char c) {
 		return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 	}
@@ -236,5 +203,4 @@ public class JavaCodeParser {
 		return c == '(' || c == ')' || c == '{' || c == '}' || c == '['
 				|| c == ']' || c == ',' || c == ';' || c == '<' || c == '>';
 	}
-
 }

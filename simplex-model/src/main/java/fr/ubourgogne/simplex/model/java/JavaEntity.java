@@ -2,7 +2,7 @@ package fr.ubourgogne.simplex.model.java;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
 
-public class JavaEntity extends BasicEntity {
+public abstract class JavaEntity extends BasicEntity {
 	private String name;
 
 	/**
@@ -52,4 +52,6 @@ public class JavaEntity extends BasicEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public abstract String print(String prefix);
 }

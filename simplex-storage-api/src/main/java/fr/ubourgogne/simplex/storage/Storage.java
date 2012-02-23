@@ -23,4 +23,10 @@ public interface Storage {
 	 * Supprime l'entité dont l'identifiant est passé en parametre.
 	 */
 	public <E extends BasicEntity> void remove(Class<E> clazz, String id) throws StorageException;
+	
+	 /**
+	  * Renvoie l'entité dont le nom est passé en parametre.
+	  */
+	 public <E extends BasicEntity> E getByName(Class<E> clazz, String name)
+	   throws StorageException;
 }

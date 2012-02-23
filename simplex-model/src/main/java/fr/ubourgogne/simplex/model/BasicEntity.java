@@ -1,14 +1,19 @@
 package fr.ubourgogne.simplex.model;
 
+import java.util.UUID;
+
 public class BasicEntity {
 	private String id;
 	private long version;
 
 	public BasicEntity() {
-
+		if (this.id == null) {
+			this.id = UUID.randomUUID().toString();
+		}
 	}
 
 	public BasicEntity(String id, long version) {
+		this();
 		this.id = id;
 		this.version = version;
 	}

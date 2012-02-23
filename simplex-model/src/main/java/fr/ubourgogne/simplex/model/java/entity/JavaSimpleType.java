@@ -1,6 +1,6 @@
 package fr.ubourgogne.simplex.model.java.entity;
 
-import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.model.java.object.JavaClass;
 
 /**
  * Représente un type simple
@@ -10,7 +10,12 @@ import fr.ubourgogne.simplex.model.java.JavaEntity;
  * TODO, lors d'un stockage, on risque de ne pas pouvoir reconstruire les
  * entitées correctement.
  */
-public class JavaSimpleType extends JavaEntity {
+public class JavaSimpleType extends JavaReferenceObject<JavaClass> { // TODO
+																		// ugly
+																		// but
+																		// so
+																		// what?
+																		// :p
 	public static final JavaSimpleType INT = new JavaSimpleType("int");
 	public static final JavaSimpleType DOUBLE = new JavaSimpleType("double");
 	public static final JavaSimpleType BOOLEAN = new JavaSimpleType("boolean");
@@ -19,8 +24,18 @@ public class JavaSimpleType extends JavaEntity {
 	public static final JavaSimpleType SHORT = new JavaSimpleType("short");
 	public static final JavaSimpleType LONG = new JavaSimpleType("long");
 
+	private String name;
+
 	private JavaSimpleType(String name) {
-		super(name, 0, name);
+		this.setName(name);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -28,6 +43,11 @@ public class JavaSimpleType extends JavaEntity {
 		// TODO a tester
 		if (!(obj instanceof JavaSimpleType))
 			return false;
-		return this.getId().equals(((JavaSimpleType) obj).getId());
+		return this.getName().equals(((JavaSimpleType) obj).getName());
+	}
+
+	@Override
+	public String print() {
+		return getName();
 	}
 }
