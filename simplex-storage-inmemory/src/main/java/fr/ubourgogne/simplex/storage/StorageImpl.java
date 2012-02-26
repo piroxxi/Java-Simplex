@@ -1,6 +1,8 @@
 package fr.ubourgogne.simplex.storage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,12 +22,17 @@ public class StorageImpl implements Storage {
 
 	@Override
 	public <E extends BasicEntity> void store(E entity) throws StorageException {
-		System.out.println("[STORAGE] Sauvegarde de l'entité "+entity.getId()+"("+entity.getClass().getSimpleName()+")");
+		System.out.println("[STORAGE] Sauvegarde de l'entité " + entity.getId()
+				+ "(" + entity.getClass().getSimpleName() + ": v"
+				+ entity.getVersion() + ")");
 		@SuppressWarnings("unchecked")
 		Map<String, E> collection = (Map<String, E>) storage.get(entity
 				.getClass());
 		if (collection == null) {
 			collection = new HashMap<String, E>();
+			@SuppressWarnings("unchecked")
+			Map<String, BasicEntity> m = (Map<String, BasicEntity>) collection;
+			storage.put(entity.getClass(), m);
 		}
 
 		if (entity.getId() == null || entity.getId().isEmpty()) {
@@ -53,7 +60,8 @@ public class StorageImpl implements Storage {
 	@Override
 	public <E extends BasicEntity> E get(Class<E> clazz, String id)
 			throws StorageException {
-		System.out.println("[STORAGE] Recupération de l'entité "+id+"("+clazz.getSimpleName()+")");
+		System.out.println("[STORAGE] Recupération de l'entité " + id + "("
+				+ clazz.getSimpleName() + ")");
 		@SuppressWarnings("unchecked")
 		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
 		if (collection == null) {
@@ -63,9 +71,36 @@ public class StorageImpl implements Storage {
 	}
 
 	@Override
+	public <E extends BasicEntity> E getByName(Class<E> clazz, String name)
+			throws StorageException {
+		System.out.println("[STORAGE] Recupération de l'entité par le nom"
+				+ name + "(" + clazz.getSimpleName() + ")");
+		if (name == null) {
+			return null;
+		}
+
+		@SuppressWarnings("unchecked")
+		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
+
+		if (collection == null) {
+			return null;
+		}
+
+		for (E e : collection.values()) {
+			if (e instanceof JavaEntity) {
+				if (name.equals(((JavaEntity) e).getName())) {
+					return e;
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public <E extends BasicEntity> void remove(Class<E> clazz, String id)
 			throws StorageException {
-		System.out.println("[STORAGE] Suppression de l'entité "+id+"("+clazz.getSimpleName()+")");
+		System.out.println("[STORAGE] Suppression de l'entité " + id + "("
+				+ clazz.getSimpleName() + ")");
 		@SuppressWarnings("unchecked")
 		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
 		if (collection != null) {
@@ -74,29 +109,15 @@ public class StorageImpl implements Storage {
 	}
 
 	@Override
-	 public <E extends BasicEntity> E getByName(Class<E> clazz, String name)
-	   throws StorageException {
-	  System.out.println("[STORAGE] Recupération de l'entité par le nom"
-	    + name + "(" + clazz.getSimpleName() + ")");
-	  if (name == null) {
-	   return null;
-	  }
-
-	  @SuppressWarnings("unchecked")
-	  Map<String, E> collection = (Map<String, E>) storage.get(clazz);
-
-	  if (collection == null) {
-	   return null;
-	  }
-
-	  for (E e : collection.values()) {
-	   if (e instanceof JavaEntity) {
-	    if (name.equals(((JavaEntity) e).getName())) {
-	     return e;
-	    }
-	   }
-	  }
-	  return null;
-	 }
+	public <E extends BasicEntity> List<E> getEntities(Class<E> clazz) {
+		System.out.println("[STORAGE] Get all " + clazz.getSimpleName()
+				+ " entities.");
+		@SuppressWarnings("unchecked")
+		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
+		if (collection == null) {
+			return null;
+		}
+		return new ArrayList<E>(collection.values());
+	}
 
 }

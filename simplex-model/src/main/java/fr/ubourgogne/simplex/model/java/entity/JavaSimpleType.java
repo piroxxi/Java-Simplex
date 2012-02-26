@@ -1,6 +1,5 @@
 package fr.ubourgogne.simplex.model.java.entity;
 
-import fr.ubourgogne.simplex.model.java.object.JavaClass;
 
 /**
  * Représente un type simple
@@ -10,12 +9,14 @@ import fr.ubourgogne.simplex.model.java.object.JavaClass;
  * TODO, lors d'un stockage, on risque de ne pas pouvoir reconstruire les
  * entitées correctement.
  */
-public class JavaSimpleType extends JavaReferenceObject<JavaClass> { // TODO
+public class JavaSimpleType extends JavaReferenceClass { // TODO
 																		// ugly
 																		// but
 																		// so
 																		// what?
 																		// :p
+	private static final long serialVersionUID = 501276216194846244L;
+
 	public static final JavaSimpleType INT = new JavaSimpleType("int");
 	public static final JavaSimpleType DOUBLE = new JavaSimpleType("double");
 	public static final JavaSimpleType BOOLEAN = new JavaSimpleType("boolean");
@@ -26,7 +27,12 @@ public class JavaSimpleType extends JavaReferenceObject<JavaClass> { // TODO
 
 	private String name;
 
+	public JavaSimpleType(){
+		super();
+	}
+	
 	private JavaSimpleType(String name) {
+		super(name);
 		this.setName(name);
 	}
 

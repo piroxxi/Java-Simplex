@@ -5,8 +5,10 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.google.inject.Inject;
 
+import fr.ubourgogne.simplex.webapp.client.activities.java.ObjectExplorateurActivity;
 import fr.ubourgogne.simplex.webapp.client.activities.main.MainActivity;
 import fr.ubourgogne.simplex.webapp.client.places.MainPlace;
+import fr.ubourgogne.simplex.webapp.client.places.ObjectPlace;
 
 /**
  * Classe chargée de renvoyer l'activité qui correspond à la place. Ce grace à
@@ -45,6 +47,8 @@ public class AppActivityMapper implements ActivityMapper {
 	 */
 	public interface AssistedActivitiesFactory {
 		MainActivity getMainActivity(MainPlace place);
+
+		ObjectExplorateurActivity getObjectExplorateurActivity(ObjectPlace place);
 	}
 
 	@Inject
@@ -54,6 +58,10 @@ public class AppActivityMapper implements ActivityMapper {
 	public Activity getActivity(Place place) {
 		if (place instanceof MainPlace) {
 			return assistedActivitiesFactory.getMainActivity((MainPlace) place);
+		}
+		if (place instanceof ObjectPlace) {
+			return assistedActivitiesFactory
+					.getObjectExplorateurActivity((ObjectPlace) place);
 		}
 
 		return null;

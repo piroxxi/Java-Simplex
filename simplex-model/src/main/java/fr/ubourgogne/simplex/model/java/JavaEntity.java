@@ -3,6 +3,8 @@ package fr.ubourgogne.simplex.model.java;
 import fr.ubourgogne.simplex.model.BasicEntity;
 
 public abstract class JavaEntity extends BasicEntity {
+	private static final long serialVersionUID = -2009410419340835398L;
+	
 	private String name;
 
 	/**

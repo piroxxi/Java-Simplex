@@ -7,15 +7,16 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import fr.ubourgogne.simplex.webapp.client.places.MainPlace;
+import fr.ubourgogne.simplex.webapp.client.rpc.ServiceProvider;
 
 public class MainActivity extends AbstractActivity implements MainView.Delegate {
 	private final MainView view;
 
 	@Inject
-	public MainActivity(MainView view, @Assisted MainPlace place) {
+	public MainActivity(MainView view, @Assisted MainPlace place,
+			ServiceProvider serviceProvider) {
 		this.view = view;
-		System.out.println("Creation de l'activité principale avec la place "
-				+ place);
+		this.view.setDelegate(this);
 	}
 
 	@Override

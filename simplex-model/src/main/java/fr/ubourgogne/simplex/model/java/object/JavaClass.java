@@ -6,12 +6,15 @@ import java.util.List;
 import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
-import fr.ubourgogne.simplex.model.java.entity.JavaReferenceObject;
+import fr.ubourgogne.simplex.model.java.entity.JavaReferenceClass;
+import fr.ubourgogne.simplex.model.java.entity.JavaReferenceInterface;
 
 public class JavaClass extends JavaObject {
+	private static final long serialVersionUID = 3569382617831254352L;
+
 	private String modifiers = "";
-	private List<JavaReferenceObject<JavaInterface>> implementedInterfaces = new ArrayList<JavaReferenceObject<JavaInterface>>();
-	private JavaReferenceObject<JavaClass> superClass;
+	private List<JavaReferenceInterface> implementedInterfaces = new ArrayList<JavaReferenceInterface>();
+	private JavaReferenceClass superClass;
 	private List<JavaEntity> content = new ArrayList<JavaEntity>();
 	private List<JavaParam> params = new ArrayList<JavaParam>();
 
@@ -19,11 +22,12 @@ public class JavaClass extends JavaObject {
 		super();
 	}
 
-	public JavaClass(String name) {
+	public JavaClass(String modifiers, String name) {
 		super(name);
+		this.modifiers = modifiers;
 	}
 
-	public List<JavaReferenceObject<JavaInterface>> getImplementedInterfaces() {
+	public List<JavaReferenceInterface> getImplementedInterfaces() {
 		return implementedInterfaces;
 	}
 
@@ -32,7 +36,7 @@ public class JavaClass extends JavaObject {
 	 *            the implementedInterfacesIds to set
 	 */
 	public void setImplementedInterfaces(
-			List<JavaReferenceObject<JavaInterface>> implementedInterfaces) {
+			List<JavaReferenceInterface> implementedInterfaces) {
 		this.implementedInterfaces = implementedInterfaces;
 	}
 
@@ -44,11 +48,11 @@ public class JavaClass extends JavaObject {
 		this.content = content;
 	}
 
-	public JavaReferenceObject<JavaClass> getSuperClass() {
+	public JavaReferenceClass getSuperClass() {
 		return superClass;
 	}
 
-	public void setSuperClass(JavaReferenceObject<JavaClass> javaReferenceObject) {
+	public void setSuperClass(JavaReferenceClass javaReferenceObject) {
 		this.superClass = javaReferenceObject;
 	}
 
@@ -70,7 +74,8 @@ public class JavaClass extends JavaObject {
 
 	@Override
 	public String print(String prefix) {
-		String ret = prefix + modifiers + " " + getName();
+		String ret = prefix + ((modifiers.isEmpty()) ? "" : modifiers + " ")
+				+ "class " + getName();
 		if (!params.isEmpty()) {
 			ret += "<";
 			for (int i = 0; i < params.size(); i++) {

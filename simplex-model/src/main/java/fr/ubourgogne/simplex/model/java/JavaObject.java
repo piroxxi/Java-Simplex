@@ -3,9 +3,10 @@ package fr.ubourgogne.simplex.model.java;
 import java.util.ArrayList;
 
 public abstract class JavaObject extends JavaEntity {
+	private static final long serialVersionUID = 2236523118747299153L;
 	private String _package;
 	private ArrayList<String> imports;
-	
+
 	public JavaObject() {
 		super();
 	}
@@ -15,7 +16,7 @@ public abstract class JavaObject extends JavaEntity {
 	}
 
 	public JavaObject(String id, int version, String name) {
-		super(id,version,name);
+		super(id, version, name);
 	}
 
 	public String getPackage() {

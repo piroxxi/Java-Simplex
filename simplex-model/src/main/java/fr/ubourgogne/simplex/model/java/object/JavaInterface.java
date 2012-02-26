@@ -3,6 +3,8 @@ package fr.ubourgogne.simplex.model.java.object;
 import fr.ubourgogne.simplex.model.java.JavaObject;
 
 public class JavaInterface extends JavaObject {
+	private static final long serialVersionUID = -2334792672957040468L;
+
 	public JavaInterface() {
 		super();
 	}
@@ -13,7 +15,7 @@ public class JavaInterface extends JavaObject {
 
 	@Override
 	public String print(String prefix) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

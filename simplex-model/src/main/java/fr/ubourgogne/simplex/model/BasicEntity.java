@@ -1,14 +1,16 @@
 package fr.ubourgogne.simplex.model;
 
-import java.util.UUID;
+import java.io.Serializable;
 
-public class BasicEntity {
+public class BasicEntity implements Serializable{
+	private static final long serialVersionUID = 2267847744972734318L;
+	
 	private String id;
 	private long version;
 
 	public BasicEntity() {
 		if (this.id == null) {
-			this.id = UUID.randomUUID().toString();
+			// this.id = UUID.randomUUID().toString();
 		}
 	}
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.ubourgogne.simplex</groupId>
+		<artifactId>simplex</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<packaging>jar</packaging>
+	<artifactId>simplex-loader-git</artifactId>
+	<name>Java Simplex - Module de chargement d'un code issue d'un dépot GIT.</name>
+	<url>http://code.google.com/p/java-simplex</url>
+
+
+	<!-- L'importation d'un code issue d'un dépot GIT se fait principalement 
+		à l'aide de l'API JGIT. Plus d'information sur l'installation à l'adresse 
+		suivante : -->
+	<!-- http://eclipse.org/jgit/download/ -->
+	<!-- Plus d'informations sur l'utilisation à l'adresse suivante : -->
+	<!-- http://eclipse.org/jgit/documentation/ -->
+	<!-- http://wiki.eclipse.org/JGit/User_Guide#API -->
+
+	<repositories>
+		<repository>
+			<id>jgit-repository</id>
+			<url>http://download.eclipse.org/jgit/maven</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- Core Library -->
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>1.3.0.201202151440-r</version>
+		</dependency>
+
+		<!-- Smart HTTP Servlet -->
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit.http.server</artifactId>
+			<version>1.3.0.201202151440-r</version>
+		</dependency>
+	</dependencies>
+</project>

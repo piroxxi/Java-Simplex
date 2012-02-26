@@ -9,23 +9,25 @@ import fr.ubourgogne.simplex.model.java.JavaEntity;
  * Représente une méthode java.
  */
 public class JavaMethod extends JavaEntity {
+	private static final long serialVersionUID = 1L;
+
 	private String modifiers = "";
 	private boolean hasCode = true;
 
-	private JavaReferenceObject<?> returnType;
+	private JavaReferenceObject returnType;
 	private List<JavaVariable> params = new ArrayList<JavaVariable>();
 	private List<JavaParam> autreParams = new ArrayList<JavaParam>();
 	private List<String> lines = new ArrayList<String>();
 
-	public JavaMethod(String modifiers, JavaReferenceObject<?> returnType,
+	public JavaMethod() {
+		super();
+	}
+
+	public JavaMethod(String modifiers, JavaReferenceObject returnType,
 			String name) {
 		super(name);
 		this.returnType = returnType;
 		this.setModifiers(modifiers);
-	}
-
-	public JavaMethod() {
-		super();
 	}
 
 	/**
@@ -59,7 +61,8 @@ public class JavaMethod extends JavaEntity {
 
 	@Override
 	public String print(String prefix) {
-		String ret = prefix + getModifiers() + " " + returnType.print() + " "
+		String ret = prefix + getModifiers()
+				+ ((returnType != null) ? " " + returnType.print() : "") + " "
 				+ getName() + "(";
 		for (int i = 0; i < params.size(); i++) {
 			ret += params.get(i).printAsParamFonction();
@@ -79,11 +82,11 @@ public class JavaMethod extends JavaEntity {
 		return ret;
 	}
 
-	public JavaReferenceObject<?> getReturnType() {
+	public JavaReferenceObject getReturnType() {
 		return returnType;
 	}
 
-	public void setReturnType(JavaReferenceObject<?> returnType) {
+	public void setReturnType(JavaReferenceObject returnType) {
 		this.returnType = returnType;
 	}
 

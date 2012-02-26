@@ -15,6 +15,7 @@
 
 
 	<modules>
+		<module>simplex-loader-git</module>
 		<module>simplex-model</module>
 		<module>simplex-parser</module>
 		<module>simplex-storage-api</module>

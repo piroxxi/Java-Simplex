@@ -1,0 +1,46 @@
+Récupération des fichiers sur un dépot.
+
+Partont du principe que nous souhaitons récupérer un fichier sur un dépot GIT distant. Il existe plusieures solutions.
+
+
+--------------------------------------------------------------------------------------------------------
+--- 1)  POur les dépots GHP (google Hosting Project), il est possible d'acceder en http :
+--------------------------------------------------------------------------------------------------------
+HTTP :
+https://java-simplex.googlecode.com/git/
+Et en bidouillant bien, on peut peut etre récupérer en ftp.
+=> Auquel cas, on utilise http://www.jibble.org/simpleftp/.
+
+Mais quoi qu'il en soit, on peut chopper ce qui nous interesse sur ce dépot, mais il faut parser rapidement le fichier html.
+Ce n'est pas bien méchant vu qu'il fait peu de lignes, mais en soit c'est rapidement long, et de plus, ca ne marche que pour les dépots Google.
+Enfin, dernier désavantage, il n'est pas évident de trouver l'adresse à "tapper", car de base on aurait tendance à aller sur 
+https://code.google.com/p/java-simplex/
+Comme recommandé par la doc google, et comme normalement utilisé lorsque l'on utilise git.
+
+D'ou la solution 2 :
+
+
+--------------------------------------------------------------------------------------------------------
+--- 2) Utilisation d'une vrai Libraire d'accès à GIT
+--------------------------------------------------------------------------------------------------------
+Utiliser une librairie qui se charge d'accéder à un dépot git à notre place. La plus simple à trouver est donc celle ci :
+http://wiki.eclipse.org/JGit/User_Guide (et surtout http://wiki.eclipse.org/JGit/User_Guide#API)
+
+
+De base, cette API pourrait bien nous proposer des morceaux de code necessaire au bon fonctionnement de l'application. Entre autre, on trouve la fonction :
+http://wiki.eclipse.org/JGit/User_Guide#git-clone
+A notter que la doc ne parle de la fonction clone que dans le cadre d'un script ant. Mais il semble évident qu'elle existe quelquepart dans l'API. Reste à 
+trouver où. C'est pourquoi nous allons télécharger l'API afin de l'utiliser dans notre projet. Ceci ce fait de la manière suivante :
+ ( http://eclipse.org/jgit/download/ )
+
+- Ajout des bonnes lignes dans le pom.xml .
+/!\ Note : Du coup j'ai crée un projet chargé uniquement d'importer le code issue d'un dépot GIT. /!\
+
+Et après, un bon gros code barbare de ce genre là devrait donner quelquechose de pas trop moche. :p ^^
+> FileRepositoryBuilder builder = new FileRepositoryBuilder();
+> Repository repository = builder.setGitDir(new File("test")).readEnvironment().findGitDir().build();
+> Git git = new Git(repository);
+> PullCommand pc = git.pull();
+> pc.call();
+
+La suite de l'aventure se passe dans le projet simplex-loader-git.

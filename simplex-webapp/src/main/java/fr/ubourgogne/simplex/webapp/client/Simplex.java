@@ -21,8 +21,6 @@ public class Simplex implements EntryPoint {
 
 	private final SimplePanel menuPanel = new SimplePanel();
 
-	// private final SimplePanel mainPanel = new SimplePanel();
-
 	public void onModuleLoad() {
 		/*
 		 * Starting the menu.
@@ -32,6 +30,13 @@ public class Simplex implements EntryPoint {
 		menuActivity.start(menuPanel, null);
 
 		// TODO(raphael)
+
+		/*
+		 * On récupère le panneau principal (qui se charge de lancer son
+		 * gestionnaire d'activité) et on lance aussi le HistoryHandler.
+		 */
+		RootPanel.get("app_panel").add(injector.getMainPanel());
+		injector.getPlaceHistoryHandler().handleCurrentHistory();
 	}
 
 }

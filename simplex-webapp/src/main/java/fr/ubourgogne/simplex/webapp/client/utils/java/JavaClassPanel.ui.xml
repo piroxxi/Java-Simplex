@@ -1,0 +1,40 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:j="urn:import:fr.ubourgogne.simplex.webapp.client.utils.java">
+
+
+	<ui:style>
+		.panel {
+			border-left: 1px solid #B2B2B2;
+			margin: 15px 0px 15px 5px;
+			padding-left: 3px;
+		}
+		
+		/*.panel:hover {
+											border-left: 1px solid #969696;
+										}*/
+		.innerPanel {
+			padding-left: 24px;
+		}
+		
+		.inline {
+			display: inline;
+			height: 25px;
+		}
+		
+		.bottom {
+			position: relative;
+			bottom: -3px;
+		}
+		
+		.marginRight {
+			padding-right: 5px;
+		}
+	</ui:style>
+
+	<g:HTMLPanel styleName="{style.panel}">
+		<g:Label ui:field="clazzDesc"></g:Label>
+		{
+		<g:VerticalPanel ui:field="content" styleName="{style.innerPanel}"></g:VerticalPanel>
+		}
+	</g:HTMLPanel>
+</ui:UiBinder>

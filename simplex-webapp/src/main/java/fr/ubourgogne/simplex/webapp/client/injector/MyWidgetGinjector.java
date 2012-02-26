@@ -5,6 +5,7 @@ import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 
 import fr.ubourgogne.simplex.webapp.client.menu.MenuActivity;
+import fr.ubourgogne.simplex.webapp.client.utils.MainPanel;
 
 /**
  * Voici la "Factory" que l'on souhaite obtenir. Toutes les entitées que l'on
@@ -21,4 +22,9 @@ public interface MyWidgetGinjector extends Ginjector {
 	PlaceHistoryHandler getPlaceHistoryHandler();
 
 	MenuActivity getMenuActivity();
+
+	/**
+	 * Renvoie le paneau principal, avec le gestionnaire d'activité associé.
+	 */
+	MainPanel getMainPanel();
 }
