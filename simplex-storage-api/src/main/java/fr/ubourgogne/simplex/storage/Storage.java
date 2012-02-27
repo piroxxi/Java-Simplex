@@ -38,4 +38,5 @@ public interface Storage {
 	 * Récupère toutes les entitées du type passé en paramètre.
 	 */
 	public <E extends BasicEntity> List<E> getEntities(Class<E> clazz);
+	
 }

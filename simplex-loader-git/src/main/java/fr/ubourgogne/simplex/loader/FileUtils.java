@@ -28,8 +28,8 @@ public class FileUtils {
 		if (!listeRepositories.exists()) {
 			return;
 		}
+		List<String> file = new ArrayList<String>();
 		try {
-			List<String> file = new ArrayList<String>();
 			BufferedReader fichier = new BufferedReader(new FileReader(
 					listeRepositories));
 			String ligne;
@@ -64,6 +64,10 @@ public class FileUtils {
 			e.printStackTrace();
 			return;
 		}
+		/*
+		 * Suppression des projets pas dans le fichier. (devrait pas arriver, mais on sait jamais).
+		 */
+		//TODO(raphael);
 	}
 
 	private static String toDate(long dateLimite) {

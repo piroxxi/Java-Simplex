@@ -31,7 +31,6 @@ public class GitSourceLoadingTest {
 		/*
 		 * Do your stuff.
 		 */
-
 		FileUtils.deleteRecursively(localRepo);
 	}
 
