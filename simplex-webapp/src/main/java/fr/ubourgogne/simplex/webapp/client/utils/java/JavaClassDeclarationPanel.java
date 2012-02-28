@@ -20,12 +20,7 @@ public class JavaClassDeclarationPanel extends Composite {
 		}
 		Label name = new Label(clazz.getName());
 		panel.add(name);
-		if ((clazz.getParams() == null || clazz.getParams().isEmpty())
-				&& (clazz.getSuperClass() == null)
-				&& (clazz.getImplementedInterfaces() == null || clazz
-						.getImplementedInterfaces().isEmpty())) {
-			name.addStyleName("rightPadding");
-		}
+		
 		if (clazz.getParams() != null && !clazz.getParams().isEmpty()) {
 			panel.add(new Label("<"));
 			for (int i = 0; i < clazz.getParams().size(); i++) {
@@ -39,7 +34,10 @@ public class JavaClassDeclarationPanel extends Composite {
 			Label l = new Label(">");
 			l.addStyleName("rightPadding");
 			panel.add(l);
+		} else {
+			name.addStyleName("rightPadding");
 		}
+		
 		if (clazz.getSuperClass() != null) {
 			Label l = new Label("extends");
 			l.addStyleName("java_motR");

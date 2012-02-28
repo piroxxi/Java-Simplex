@@ -10,7 +10,8 @@
 		}
 		
 		.panel:hover {
-			border-left: 1px solid #969696;
+			border-left: 1px solid #828282;
+			background: rgba(0, 0, 0, 0.03);
 		}
 		
 		.innerPanel {
