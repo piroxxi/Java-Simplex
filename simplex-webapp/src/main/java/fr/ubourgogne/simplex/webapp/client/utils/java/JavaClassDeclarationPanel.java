@@ -18,7 +18,14 @@ public class JavaClassDeclarationPanel extends Composite {
 			l.addStyleName("rightPadding");
 			panel.add(l);
 		}
-		panel.add(new Label(clazz.getName()));
+		Label name = new Label(clazz.getName());
+		panel.add(name);
+		if ((clazz.getParams() == null || clazz.getParams().isEmpty())
+				&& (clazz.getSuperClass() == null)
+				&& (clazz.getImplementedInterfaces() == null || clazz
+						.getImplementedInterfaces().isEmpty())) {
+			name.addStyleName("rightPadding");
+		}
 		if (clazz.getParams() != null && !clazz.getParams().isEmpty()) {
 			panel.add(new Label("<"));
 			for (int i = 0; i < clazz.getParams().size(); i++) {
@@ -38,7 +45,8 @@ public class JavaClassDeclarationPanel extends Composite {
 			l.addStyleName("java_motR");
 			l.addStyleName("rightPadding");
 			panel.add(l);
-			JavaReferenceObjectPanel q = new JavaReferenceObjectPanel(clazz.getSuperClass());
+			JavaReferenceObjectPanel q = new JavaReferenceObjectPanel(
+					clazz.getSuperClass());
 			panel.add(q);
 			if (clazz.getImplementedInterfaces() == null
 					|| clazz.getImplementedInterfaces().isEmpty()) {
@@ -62,7 +70,7 @@ public class JavaClassDeclarationPanel extends Composite {
 					Label ll = new Label(",");
 					ll.addStyleName("rightPadding");
 					panel.add(ll);
-				}else{
+				} else {
 					q.addStyleName("rightPadding");
 				}
 			}
@@ -71,5 +79,4 @@ public class JavaClassDeclarationPanel extends Composite {
 		// même ligne)
 		panel.add(new Label("{"));
 	}
-
 }
