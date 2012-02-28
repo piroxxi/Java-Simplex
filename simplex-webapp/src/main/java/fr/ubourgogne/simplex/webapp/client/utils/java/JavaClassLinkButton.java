@@ -21,6 +21,8 @@ public class JavaClassLinkButton extends Composite {
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
+	public static final int DELAY = 700; 
+	
 	@UiField
 	Button link;
 	@UiField
@@ -52,7 +54,7 @@ public class JavaClassLinkButton extends Composite {
 				}
 			}
 		};
-		t.schedule(1250);
+		t.schedule(DELAY);
 	}
 	
 	@UiHandler({"link", "javadoc"})

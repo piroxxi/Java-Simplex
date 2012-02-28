@@ -34,7 +34,6 @@
 
 	<g:HTMLPanel styleName="{style.panel}">
 		<j:JavaClassDeclarationPanel ui:field="clazzDesc"></j:JavaClassDeclarationPanel>
-		{
 		<g:VerticalPanel ui:field="content" styleName="{style.innerPanel}"></g:VerticalPanel>
 		}
 	</g:HTMLPanel>
