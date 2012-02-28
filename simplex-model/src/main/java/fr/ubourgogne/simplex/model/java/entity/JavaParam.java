@@ -10,6 +10,15 @@ public class JavaParam extends JavaEntity { // TODO useful inheritence?
 	public JavaParam() {
 		super();
 	}
+
+	public JavaParam(String name) {
+		super(name);
+	}
+
+	public JavaParam(JavaReferenceObject extent) {
+		super();
+		this.setExtent(extent);
+	}
 	
 	public JavaParam(String name, JavaReferenceObject extent) {
 		super(name);

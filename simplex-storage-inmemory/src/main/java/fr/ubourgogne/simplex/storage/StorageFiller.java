@@ -4,6 +4,7 @@ import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
 import fr.ubourgogne.simplex.model.java.entity.JavaReferenceClass;
 import fr.ubourgogne.simplex.model.java.entity.JavaReferenceInterface;
+import fr.ubourgogne.simplex.model.java.entity.JavaReferenceObject;
 import fr.ubourgogne.simplex.model.java.entity.JavaSimpleType;
 import fr.ubourgogne.simplex.model.java.entity.JavaVariable;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
@@ -37,12 +38,25 @@ public class StorageFiller {
 		storage.store(interface1);
 
 		JavaClass class1 = new JavaClass("public", "Class1");
+		class1.setPackage("fr.ubourgogne.simplex.model.java.entity.Class1");
+		class1.getImports().add("java.util.List");
+		class1.getImports().add(
+				"fr.ubourgogne.simplex.model.java.entity.JavaSimpleType");
+		class1.getImports().add(
+				"fr.ubourgogne.simplex.model.java.entity.JavaVariable");
+		class1.getImports().add(
+				"fr.ubourgogne.simplex.model.java.object.JavaClass");
+		class1.getImports().add(
+				"fr.ubourgogne.simplex.model.java.object.JavaInterface");
 		class1.setSuperClass(new JavaReferenceClass(superClass, new JavaParam(
 				"", new JavaReferenceClass(string))));
 		class1.getImplementedInterfaces().add(
 				new JavaReferenceInterface(interface1));
 		class1.getParams().add(
-				new JavaParam("T", new JavaReferenceClass(class2)));
+				new JavaParam("T", new JavaReferenceClass(class2,
+						new JavaParam(new JavaReferenceObject(new JavaClass("",
+								"List"), new JavaParam(new JavaReferenceObject(
+								string)))))));
 		storage.store(class1);
 
 		JavaClass class3 = new JavaClass("public", "Class3");
