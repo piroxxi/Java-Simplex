@@ -73,7 +73,7 @@ public class StorageFiller {
 					new JavaReferenceClass(class2));
 			storage.store(var1methode1);
 
-			methode1.getParams().add(var1methode1);
+			methode1.getVarParams().add(var1methode1);
 			methode1.setRawCode(
 					"System.out.println(\"Appel à la méthode \\\"methode1\\\" .\");",
 					"parametre.fonction(\"toto\");", "return null;");
@@ -112,7 +112,7 @@ public class StorageFiller {
 		/*
 		 * 
 		 */
-		JavaMethod methode4 = new JavaMethod("public abstrac",
+		JavaMethod methode4 = new JavaMethod("public abstract",
 				JavaSimpleType.SHORT, "methodeAbstraite");
 		methode4.setHasCode(false);
 		storage.store(methode4);

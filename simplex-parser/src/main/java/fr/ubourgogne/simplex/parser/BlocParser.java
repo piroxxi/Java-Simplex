@@ -274,7 +274,7 @@ public abstract class BlocParser {
 
 			entete = entete.substring(i);
 			parametre = InlineParser.decodeParam(token);
-			jm.getAutreParams().add(parametre);
+			jm.getParams().add(parametre);
 		}
 
 		// maintenant on a le type de retour

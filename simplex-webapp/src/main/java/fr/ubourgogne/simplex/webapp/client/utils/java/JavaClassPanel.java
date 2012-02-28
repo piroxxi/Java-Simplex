@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 
 public class JavaClassPanel extends Composite {
@@ -58,6 +59,9 @@ public class JavaClassPanel extends Composite {
 		for (JavaEntity entity : clazz.getContent()) {
 			if (entity instanceof JavaClass) {
 				content.add(new JavaClassPanel((JavaClass) entity));
+			}
+			if (entity instanceof JavaMethod) {
+				content.add(new JavaMethodPanel((JavaMethod) entity));
 			}
 		}
 	}

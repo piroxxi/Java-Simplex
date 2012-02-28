@@ -14,8 +14,8 @@ public class JavaMethod extends JavaEntity {
 	private boolean hasCode = true;
 
 	private JavaReferenceObject returnType;
-	private ArrayList<JavaVariable> params = new ArrayList<JavaVariable>();
-	private ArrayList<JavaParam> autreParams = new ArrayList<JavaParam>();
+	private ArrayList<JavaVariable> varParams = new ArrayList<JavaVariable>();
+	private ArrayList<JavaParam> params = new ArrayList<JavaParam>();
 	private ArrayList<String> lines = new ArrayList<String>();
 
 	public JavaMethod() {
@@ -32,16 +32,16 @@ public class JavaMethod extends JavaEntity {
 	/**
 	 * @return the params
 	 */
-	public ArrayList<JavaVariable> getParams() {
-		return params;
+	public ArrayList<JavaVariable> getVarParams() {
+		return varParams;
 	}
 
 	/**
 	 * @param params
 	 *            the params to set
 	 */
-	public void setParams(ArrayList<JavaVariable> params) {
-		this.params = params;
+	public void setVarParams(ArrayList<JavaVariable> params) {
+		this.varParams = params;
 	}
 
 	public void setRawCode(String... lines) {
@@ -63,9 +63,9 @@ public class JavaMethod extends JavaEntity {
 		String ret = prefix + getModifiers()
 				+ ((returnType != null) ? " " + returnType.print() : "") + " "
 				+ getName() + "(";
-		for (int i = 0; i < params.size(); i++) {
-			ret += params.get(i).printAsParamFonction();
-			if (i < params.size() - 1) {
+		for (int i = 0; i < varParams.size(); i++) {
+			ret += varParams.get(i).printAsParamFonction();
+			if (i < varParams.size() - 1) {
 				ret += ", ";
 			}
 		}
@@ -97,12 +97,12 @@ public class JavaMethod extends JavaEntity {
 		this.hasCode = hasCode;
 	}
 
-	public ArrayList<JavaParam> getAutreParams() {
-		return autreParams;
+	public ArrayList<JavaParam> getParams() {
+		return params;
 	}
 
-	public void setAutreParams(ArrayList<JavaParam> autreParams) {
-		this.autreParams = autreParams;
+	public void setParams(ArrayList<JavaParam> autreParams) {
+		this.params = autreParams;
 	}
 
 	public String getModifiers() {
