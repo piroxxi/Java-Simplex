@@ -1,0 +1,43 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:style>
+		.panel {
+			position: relative;
+		}
+		
+		.link {
+			position: relative;
+			top: -2px;
+			background: none repeat scroll 0 0 transparent;
+			border: none;
+			border-bottom: 1px solid #D6D6D6;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.link:hover {
+			border-bottom: 1px solid #AAA;
+		}
+		
+		.javadoc {
+			display: none;
+			position: absolute;
+			background: white;
+			padding: 10px;
+			border: 1px solid #DDD;
+			border-radius: 3px;
+			top: 18px;
+			left: 10px;
+			width: 250px;
+			z-index: 1;
+		}
+	</ui:style>
+
+	<g:HTMLPanel styleName="{style.panel}">
+		<div>
+			<g:Button ui:field="link" styleName="{style.link}"></g:Button>
+			<g:Label ui:field="javadoc" styleName="{style.javadoc}">JAVADOC</g:Label>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>
