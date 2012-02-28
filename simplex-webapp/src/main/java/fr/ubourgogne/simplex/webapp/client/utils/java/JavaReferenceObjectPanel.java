@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import fr.ubourgogne.simplex.model.java.entity.JavaReferenceObject;
+import fr.ubourgogne.simplex.model.java.entity.JavaSimpleType;
 
 public class JavaReferenceObjectPanel extends Composite {
 
@@ -12,6 +13,11 @@ public class JavaReferenceObjectPanel extends Composite {
 
 	public JavaReferenceObjectPanel(final JavaReferenceObject object) {
 		initWidget(panel);
+		if(object instanceof JavaSimpleType){
+			Label l = new Label("");
+			l.addStyleName("java_motR");
+			panel.add(l);
+		}
 		panel.add(new JavaClassLinkButton(object));
 		if (object.getParams() != null && !object.getParams().isEmpty()) {
 			panel.add(new Label("<"));
