@@ -18,12 +18,12 @@ public class JavaClassPanel extends Composite {
 
 	@UiField(provided = true)
 	JavaClassDeclarationPanel clazzDesc;
+
 	@UiField
 	VerticalPanel content;
 	
 	public JavaClassPanel(JavaClass clazz) {
 		clazzDesc = new JavaClassDeclarationPanel(clazz);
-
 		initWidget(uiBinder.createAndBindUi(this));
 
 		for (JavaEntity entity : clazz.getContent()) {
