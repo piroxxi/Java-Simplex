@@ -18,15 +18,15 @@ public class JavaClassDeclarationPanel extends Composite {
 			l.addStyleName("rightPadding");
 			panel.add(l);
 		}
-		Label name = new Label(clazz.getName());
-		name.addStyleName("rightPadding");
-		panel.add(name);
+		panel.add(new Label(clazz.getName()));
 		if (clazz.getParams() != null && !clazz.getParams().isEmpty()) {
 			panel.add(new Label("<"));
 			for (int i = 0; i < clazz.getParams().size(); i++) {
 				panel.add(new JavaParamPanel(clazz.getParams().get(i)));
 				if (i < clazz.getParams().size() - 1) {
-					panel.add(new Label(", "));
+					Label l = new Label(",");
+					l.addStyleName("rightPadding");
+					panel.add(l);
 				}
 			}
 			Label l = new Label(">");
@@ -38,8 +38,37 @@ public class JavaClassDeclarationPanel extends Composite {
 			l.addStyleName("java_motR");
 			l.addStyleName("rightPadding");
 			panel.add(l);
-			panel.add(new JavaReferenceObjectPanel(clazz.getSuperClass()));
+			JavaReferenceObjectPanel q = new JavaReferenceObjectPanel(clazz.getSuperClass());
+			panel.add(q);
+			if (clazz.getImplementedInterfaces() == null
+					|| clazz.getImplementedInterfaces().isEmpty()) {
+				q.addStyleName("rightPadding");
+			}
 		}
+		if (clazz.getImplementedInterfaces() != null
+				&& !clazz.getImplementedInterfaces().isEmpty()) {
+			Label l = new Label("implements");
+			l.addStyleName("java_motR");
+			l.addStyleName("rightPadding");
+			if (clazz.getSuperClass() != null) {
+				l.addStyleName("leftPadding");
+			}
+			panel.add(l);
+			for (int i = 0; i < clazz.getImplementedInterfaces().size(); i++) {
+				JavaReferenceObjectPanel q = new JavaReferenceObjectPanel(clazz
+						.getImplementedInterfaces().get(i));
+				panel.add(q);
+				if (i < clazz.getImplementedInterfaces().size() - 1) {
+					Label ll = new Label(",");
+					ll.addStyleName("rightPadding");
+					panel.add(ll);
+				}else{
+					q.addStyleName("rightPadding");
+				}
+			}
+		}
+		// je le met là, pasque dans le ui.xml, ca fais pas beau :/ (pas sur la
+		// même ligne)
 		panel.add(new Label("{"));
 	}
 
