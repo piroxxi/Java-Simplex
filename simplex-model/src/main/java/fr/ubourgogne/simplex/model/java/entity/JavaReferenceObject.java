@@ -2,7 +2,6 @@ package fr.ubourgogne.simplex.model.java.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
 
@@ -10,16 +9,12 @@ public class JavaReferenceObject implements Serializable {
 	private static final long serialVersionUID = -7354348310792167308L;
 
 	private String objectId;
+	private String objectName;
 	private String objectClazz;
-	private List<String> paramsIds = new ArrayList<String>();
-
-	private String serializedString;
+	private String objectJavaDoc;
+	private ArrayList<JavaParam> params = new ArrayList<JavaParam>();
 
 	public JavaReferenceObject() {
-	}
-
-	public JavaReferenceObject(String serializedString) {
-		this.serializedString = serializedString;
 	}
 
 	public JavaReferenceObject(JavaObject object) {
@@ -28,13 +23,14 @@ public class JavaReferenceObject implements Serializable {
 
 	public JavaReferenceObject(JavaObject object, JavaParam... params) {
 		objectId = object.getId();
+		objectName = object.getName();
 		objectClazz = object.getClass().getName();
+		objectJavaDoc = "NO JAVADOC YET!";
 		if (params != null && params.length > 0) {
 			for (JavaParam p : params) {
-				paramsIds.add(p.getId());
+				this.getParams().add(p);
 			}
 		}
-		this.serializedString = serialize(object, params);
 	}
 
 	public String getObjectId() {
@@ -53,38 +49,43 @@ public class JavaReferenceObject implements Serializable {
 		this.objectClazz = objectClazz;
 	}
 
-	public List<String> getParamsIds() {
-		return paramsIds;
+	public String getObjectName() {
+		return objectName;
 	}
 
-	public void setParamsIds(List<String> paramsIds) {
-		this.paramsIds = paramsIds;
+	public void setObjectName(String objectName) {
+		this.objectName = objectName;
 	}
 
-	public String getSerializedString() {
-		return serializedString;
+	public String getObjectJavaDoc() {
+		return objectJavaDoc;
 	}
 
-	public void setSerializedString(String serializedString) {
-		this.serializedString = serializedString;
+	public void setObjectJavaDoc(String objectJavaDoc) {
+		this.objectJavaDoc = objectJavaDoc;
+	}
+
+	public ArrayList<JavaParam> getParams() {
+		return params;
+	}
+
+	public void setParams(ArrayList<JavaParam> params) {
+		this.params = params;
 	}
 
 	public String print() {
-		return serializedString;
-	}
-
-	private String serialize(JavaObject object, JavaParam[] params) {
-		String ret = object.getName();
-		if (params != null && params.length > 0) {
-			ret += "<";
-			for (int i = 0; i < params.length; i++) {
-				ret += params[i].print("");
-				if (i < params.length - 1) {
-					ret += ", ";
+		String t = "";
+		t += objectName;
+		if (!params.isEmpty()) {
+			t += "<";
+			for (int i = 0; i < params.size(); i++) {
+				t += params.get(i).print("");
+				if (i < params.size() - 1) {
+					t += ", ";
 				}
 			}
-			ret += ">";
+			t += ">";
 		}
-		return ret;
+		return t;
 	}
 }

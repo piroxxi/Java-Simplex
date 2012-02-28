@@ -9,9 +9,10 @@
 			padding-left: 3px;
 		}
 		
-		/*.panel:hover {
-											border-left: 1px solid #969696;
-										}*/
+		.panel:hover {
+			border-left: 1px solid #969696;
+		}
+		
 		.innerPanel {
 			padding-left: 24px;
 		}
@@ -32,7 +33,7 @@
 	</ui:style>
 
 	<g:HTMLPanel styleName="{style.panel}">
-		<g:Label ui:field="clazzDesc"></g:Label>
+		<j:JavaClassDeclarationPanel ui:field="clazzDesc"></j:JavaClassDeclarationPanel>
 		{
 		<g:VerticalPanel ui:field="content" styleName="{style.innerPanel}"></g:VerticalPanel>
 		}

@@ -8,10 +8,6 @@ public class JavaReferenceClass extends JavaReferenceObject {
 	public JavaReferenceClass(){
 		super();
 	}
-	
-	public JavaReferenceClass(String serializedString) {
-		setSerializedString(serializedString);
-	}
 
 	public JavaReferenceClass(JavaClass object) {
 		this(object, (JavaParam[]) null);

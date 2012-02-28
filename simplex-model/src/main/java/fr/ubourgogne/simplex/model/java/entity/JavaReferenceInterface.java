@@ -9,10 +9,6 @@ public class JavaReferenceInterface extends JavaReferenceObject {
 	public JavaReferenceInterface(){
 		super();
 	}
-	
-	public JavaReferenceInterface(String serializedString) {
-		setSerializedString(serializedString);
-	}
 
 	public JavaReferenceInterface(JavaInterface object) {
 		this(object, (JavaParam[]) null);

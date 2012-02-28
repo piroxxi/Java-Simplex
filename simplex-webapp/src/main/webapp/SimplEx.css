@@ -76,3 +76,10 @@ body {
 .java_string{
 	color: #0000c0;
 }
+
+.leftPadding{
+	padding-left: 7px;
+}
+.rightPadding{
+	padding-right: 7px;
+}

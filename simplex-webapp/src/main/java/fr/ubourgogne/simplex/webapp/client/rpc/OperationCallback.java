@@ -23,6 +23,7 @@ public abstract class OperationCallback<T> implements AsyncCallback<T> {
 		} else {
 			Window.alert(message + caught);
 		}
+		System.err.println("\n[ERROR][CLIENT] => Erreur lors de la récéption d'un appel asynchrone :");
 		caught.printStackTrace();
 	}
 

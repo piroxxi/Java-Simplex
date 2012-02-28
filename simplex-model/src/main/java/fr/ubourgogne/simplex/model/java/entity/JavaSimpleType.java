@@ -32,8 +32,9 @@ public class JavaSimpleType extends JavaReferenceClass { // TODO
 	}
 	
 	private JavaSimpleType(String name) {
-		super(name);
+		super();
 		this.setName(name);
+		this.setObjectName(name);
 	}
 
 	public String getName() {

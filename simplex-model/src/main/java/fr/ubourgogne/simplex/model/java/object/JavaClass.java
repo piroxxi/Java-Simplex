@@ -10,13 +10,13 @@ import fr.ubourgogne.simplex.model.java.entity.JavaReferenceClass;
 import fr.ubourgogne.simplex.model.java.entity.JavaReferenceInterface;
 
 public class JavaClass extends JavaObject {
-	private static final long serialVersionUID = 3569382617831254352L;
+	private static final long serialVersionUID = 7281658763100904213L;
 
 	private String modifiers = "";
-	private List<JavaReferenceInterface> implementedInterfaces = new ArrayList<JavaReferenceInterface>();
+	private ArrayList<JavaReferenceInterface> implementedInterfaces = new ArrayList<JavaReferenceInterface>();
 	private JavaReferenceClass superClass;
-	private List<JavaEntity> content = new ArrayList<JavaEntity>();
-	private List<JavaParam> params = new ArrayList<JavaParam>();
+	private ArrayList<JavaEntity> content = new ArrayList<JavaEntity>();
+	private ArrayList<JavaParam> params = new ArrayList<JavaParam>();
 
 	public JavaClass() {
 		super();
@@ -36,15 +36,15 @@ public class JavaClass extends JavaObject {
 	 *            the implementedInterfacesIds to set
 	 */
 	public void setImplementedInterfaces(
-			List<JavaReferenceInterface> implementedInterfaces) {
+			ArrayList<JavaReferenceInterface> implementedInterfaces) {
 		this.implementedInterfaces = implementedInterfaces;
 	}
 
-	public List<JavaEntity> getContent() {
+	public ArrayList<JavaEntity> getContent() {
 		return this.content;
 	}
 
-	public void setContent(List<JavaEntity> content) {
+	public void setContent(ArrayList<JavaEntity> content) {
 		this.content = content;
 	}
 
@@ -64,11 +64,11 @@ public class JavaClass extends JavaObject {
 		this.modifiers = modifiers;
 	}
 
-	public List<JavaParam> getParams() {
+	public ArrayList<JavaParam> getParams() {
 		return params;
 	}
 
-	public void setParams(List<JavaParam> params) {
+	public void setParams(ArrayList<JavaParam> params) {
 		this.params = params;
 	}
 

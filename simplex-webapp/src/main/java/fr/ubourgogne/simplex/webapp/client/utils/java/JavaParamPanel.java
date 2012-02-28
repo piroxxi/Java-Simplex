@@ -1,7 +1,5 @@
 package fr.ubourgogne.simplex.webapp.client.utils.java;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -12,24 +10,20 @@ public class JavaParamPanel extends Composite {
 
 	HorizontalPanel panel = new HorizontalPanel();
 
-	public JavaParamPanel() {
+	public JavaParamPanel(JavaParam params) {
 		initWidget(panel);
-	}
-
-	public void setParams(List<JavaParam> params) {
-		if (params.isEmpty())
-			return;
-		
-		panel.add(new Label("<"));
-
-		for (int i = 0; i < params.size(); i++) {
-			Label l = new Label();
-			l.getElement().setInnerHTML(
-					LigneCodeRenderer.render(params.get(i).print("")));
-			panel.add(l);
+		if (params.getName() != null && !params.getName().isEmpty()) {
+			panel.add(new Label(params.getName()));
+			if (params.getExtent() != null) {
+				Label l = new Label("extends");
+				l.addStyleName("java_motR");
+				l.addStyleName("rightPadding");
+				l.addStyleName("leftPadding");
+				panel.add(l);
+			}
 		}
-
-		panel.add(new Label(">"));
+		if (params.getExtent() != null) {
+			panel.add(new JavaReferenceObjectPanel(params.getExtent()));
+		}
 	}
-
 }

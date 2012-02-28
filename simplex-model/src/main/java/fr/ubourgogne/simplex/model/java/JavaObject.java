@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class JavaObject extends JavaEntity {
 	private static final long serialVersionUID = 2236523118747299153L;
 	private String _package;
-	private ArrayList<String> imports;
+	private ArrayList<String> imports = new ArrayList<String>();
 
 	public JavaObject() {
 		super();

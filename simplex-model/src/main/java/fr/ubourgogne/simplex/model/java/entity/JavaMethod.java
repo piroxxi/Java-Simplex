@@ -1,7 +1,6 @@
 package fr.ubourgogne.simplex.model.java.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
 
@@ -15,9 +14,9 @@ public class JavaMethod extends JavaEntity {
 	private boolean hasCode = true;
 
 	private JavaReferenceObject returnType;
-	private List<JavaVariable> params = new ArrayList<JavaVariable>();
-	private List<JavaParam> autreParams = new ArrayList<JavaParam>();
-	private List<String> lines = new ArrayList<String>();
+	private ArrayList<JavaVariable> params = new ArrayList<JavaVariable>();
+	private ArrayList<JavaParam> autreParams = new ArrayList<JavaParam>();
+	private ArrayList<String> lines = new ArrayList<String>();
 
 	public JavaMethod() {
 		super();
@@ -33,7 +32,7 @@ public class JavaMethod extends JavaEntity {
 	/**
 	 * @return the params
 	 */
-	public List<JavaVariable> getParams() {
+	public ArrayList<JavaVariable> getParams() {
 		return params;
 	}
 
@@ -41,7 +40,7 @@ public class JavaMethod extends JavaEntity {
 	 * @param params
 	 *            the params to set
 	 */
-	public void setParams(List<JavaVariable> params) {
+	public void setParams(ArrayList<JavaVariable> params) {
 		this.params = params;
 	}
 
@@ -51,11 +50,11 @@ public class JavaMethod extends JavaEntity {
 		}
 	}
 
-	public List<String> getLines() {
+	public ArrayList<String> getLines() {
 		return lines;
 	}
 
-	public void setLines(List<String> lines) {
+	public void setLines(ArrayList<String> lines) {
 		this.lines = lines;
 	}
 
@@ -98,11 +97,11 @@ public class JavaMethod extends JavaEntity {
 		this.hasCode = hasCode;
 	}
 
-	public List<JavaParam> getAutreParams() {
+	public ArrayList<JavaParam> getAutreParams() {
 		return autreParams;
 	}
 
-	public void setAutreParams(List<JavaParam> autreParams) {
+	public void setAutreParams(ArrayList<JavaParam> autreParams) {
 		this.autreParams = autreParams;
 	}
 
