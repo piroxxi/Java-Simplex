@@ -1,12 +1,15 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:j="urn:import:fr.ubourgogne.simplex.webapp.client.utils.java">
 
+	<ui:with field='res'
+		type='fr.ubourgogne.simplex.webapp.client.utils.Resources' />
 
 	<ui:style>
 		.panel {
 			border-left: 1px solid #B2B2B2;
 			margin: 15px 0px 15px 5px;
 			padding-left: 3px;
+			position: relative;
 		}
 		
 		.panel:hover {
@@ -31,9 +34,19 @@
 		.marginRight {
 			padding-right: 5px;
 		}
+		
+		.plus {
+			border: none;
+			left: -25px;
+			position: absolute;
+			height: 13px;
+			width: 13px;
+		}
 	</ui:style>
 
+
 	<g:HTMLPanel styleName="{style.panel}">
+		<g:Image styleName="{style.plus}" ui:field="img"></g:Image>
 		<j:JavaMethodDeclarationPanel ui:field="methodDesc"></j:JavaMethodDeclarationPanel>
 		<g:VerticalPanel ui:field="content" styleName="{style.innerPanel}"></g:VerticalPanel>
 		<g:Label ui:field="accoladeFermante"></g:Label>

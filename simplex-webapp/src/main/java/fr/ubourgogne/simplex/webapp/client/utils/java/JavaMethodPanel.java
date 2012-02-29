@@ -1,16 +1,20 @@
 package fr.ubourgogne.simplex.webapp.client.utils.java;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.thirdparty.guava.common.io.Resources;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 
-public class JavaMethodPanel extends Composite {
+public class JavaMethodPanel extends Composite implements ClickHandler {
 	public interface MyUiBinder extends UiBinder<Widget, JavaMethodPanel> {
 	}
 
@@ -24,6 +28,9 @@ public class JavaMethodPanel extends Composite {
 	
 	@UiField
 	Label accoladeFermante;
+	
+	@UiField
+	Image img;
 
 	public JavaMethodPanel(JavaMethod method) {
 		methodDesc = new JavaMethodDeclarationPanel(method);
@@ -36,16 +43,17 @@ public class JavaMethodPanel extends Composite {
 		if (!method.getModifiers().contains("abstract")) {
 			accoladeFermante.setText("}");
 		}
-
+		
+		
+		img.addClickHandler(this);
+		Resources res = GWT.create(Resources.class);
 		//TODO
-//		for (JavaEntity entity : method.getContent()) {
-//			if (entity instanceof JavaClass) {
-//				content.add(new JavaClassPanel((JavaClass) entity));
-//			}
-//			if (entity instanceof JavaMethod) {
-//				content.add(new JavaMethodPanel((JavaMethod) entity));
-//			}
-//		}
+		//img.setResource(res.plusImg());
+	}
+
+	@Override
+	public void onClick(ClickEvent event) {
+		
 	}
 
 }

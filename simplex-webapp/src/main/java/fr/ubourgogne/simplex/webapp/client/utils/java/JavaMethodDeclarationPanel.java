@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Label;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 
 public class JavaMethodDeclarationPanel extends Composite {
-
+	
 	private HorizontalPanel panel = new HorizontalPanel();
 
 	public JavaMethodDeclarationPanel(JavaMethod method) {
