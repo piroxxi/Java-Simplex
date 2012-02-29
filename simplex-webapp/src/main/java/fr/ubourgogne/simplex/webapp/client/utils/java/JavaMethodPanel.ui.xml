@@ -37,8 +37,8 @@
 		
 		.plus {
 			border: none;
-			left: -25px;
 			position: absolute;
+			left: -15px;
 			height: 13px;
 			width: 13px;
 		}

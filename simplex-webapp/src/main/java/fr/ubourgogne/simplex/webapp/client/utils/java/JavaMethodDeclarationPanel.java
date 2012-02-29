@@ -9,8 +9,10 @@ import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 public class JavaMethodDeclarationPanel extends Composite {
 	
 	private HorizontalPanel panel = new HorizontalPanel();
+	private JavaMethod method;
 
 	public JavaMethodDeclarationPanel(JavaMethod method) {
+		this.method = method;
 		initWidget(panel);
 		if (!method.getModifiers().isEmpty()) {
 			Label l = new Label(method.getModifiers() + " ");
@@ -63,7 +65,20 @@ public class JavaMethodDeclarationPanel extends Composite {
 		if (method.getModifiers().contains("abstract")) {
 			panel.add(new Label(";"));
 		} else {
-			panel.add(new Label("{"));
+			panel.add(new Label("{ }"));
+		}
+	}
+
+	public void setExpanded(boolean expanded) {
+		if (method.getModifiers().contains("abstract"))
+			return;
+		
+		Label l = (Label)panel.getWidget(panel.getWidgetCount()-1);
+		
+		if (expanded) {
+			l.setText("{");
+		} else {
+			l.setText("{ }");
 		}
 	}
 
