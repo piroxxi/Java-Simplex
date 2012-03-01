@@ -3,6 +3,7 @@ package fr.ubourgogne.simplex.parser;
 import java.util.ArrayList;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
+import fr.ubourgogne.simplex.storage.EntityFactory;
 
 public class FileParser {
 	private String formatedBaseText;
@@ -10,6 +11,7 @@ public class FileParser {
 
 	public FileParser(String s) {
 		formatedBaseText = s;
+		EntityFactory ef;
 	}
 
 	public JavaObject getRepresentedObject() {
@@ -39,7 +41,7 @@ public class FileParser {
 			ppackage = code
 					.substring(code.indexOf(" ") + 1, code.indexOf(" ;"));
 			code = code.substring(code.indexOf(";") + 2);
-			System.out.println("le package est : \"" + ppackage + "\"");
+//			System.out.println("le package est : \"" + ppackage + "\"");
 			
 		}
 
@@ -48,7 +50,7 @@ public class FileParser {
 			String imp = code.substring(code.indexOf(" ") + 1,
 					code.indexOf(" ;"));
 			code = code.substring(code.indexOf(";") + 2);
-			System.out.println("import : \"" + imp + "\"");
+//			System.out.println("import : \"" + imp + "\"");
 			imports.add(imp);
 		}
 
@@ -58,7 +60,7 @@ public class FileParser {
 		String defClasse = code.substring(0, code.indexOf("{"));
 		code = code.substring(code.indexOf("{") + 2, code.lastIndexOf("}"));
 
-		representedObject = (JavaObject)BlocParser.decodeBloc(defClasse, code);
+		representedObject = (JavaObject)BlocParser.decodeBloc(defClasse, code, 0);
 		representedObject.setPackage(ppackage);
 		representedObject.setImports(imports);
 

@@ -65,7 +65,7 @@ public class JavaMethodDeclarationPanel extends Composite {
 		if (method.getModifiers().contains("abstract")) {
 			panel.add(new Label(";"));
 		} else {
-			panel.add(new Label("{ }"));
+			panel.add(new Label("{...}"));
 		}
 	}
 
@@ -78,7 +78,7 @@ public class JavaMethodDeclarationPanel extends Composite {
 		if (expanded) {
 			l.setText("{");
 		} else {
-			l.setText("{ }");
+			l.setText("{...}");
 		}
 	}
 

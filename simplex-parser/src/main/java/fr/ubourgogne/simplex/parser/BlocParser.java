@@ -12,30 +12,31 @@ import fr.ubourgogne.simplex.model.java.object.JavaInterface;
 
 public abstract class BlocParser {
 
-	public static JavaEntity decodeBloc(String entete, String contenu) {
-		System.out.println("bloc[" + entete + "]\n\t" + contenu);
+	public static JavaEntity decodeBloc(String entete, String contenu,
+			int prefixe) {
+		for (int i = 0; i < prefixe; i++)
+			System.out.print("\t");
+		System.out.println("bloc[" + entete + "]");
 
 		// on a soit une classe, soit un enum, soit une interface, soit une
 		// methode
 		if (entete.contains("class")) {
-			return BlocParser.decodeClasse(entete, contenu);
+			return BlocParser.decodeClasse(entete, contenu, prefixe);
 		} else if (entete.contains("enum")) {
-			return BlocParser.decodeEnum(entete, contenu);
+			return BlocParser.decodeEnum(entete, contenu, prefixe);
 		} else if (entete.contains("interface")) {
-			return BlocParser.decodeInterface(entete, contenu);
+			return BlocParser.decodeInterface(entete, contenu, prefixe);
 		} else {
-			return BlocParser.decodeMethode(entete, contenu);
+			return BlocParser.decodeMethode(entete, contenu, prefixe);
 		}
 	}
 
-	private static JavaClass decodeClasse(String entete, String contenu) {
+	private static JavaClass decodeClasse(String entete, String contenu,
+			int prefixe) {
 		// only public, protected, private, static, abstract & final are
 		// permitted
 		JavaClass jc = new JavaClass();
 
-		String name = null;
-		JavaParam parametre = null;
-		String superClasse = null;
 		ArrayList<String> implementedInterfaces = null;
 		ArrayList<String> implementedInterfacesParams = null;
 
@@ -46,23 +47,20 @@ public abstract class BlocParser {
 			String modif = "";
 
 			if (token.equals("public")) {
-				System.out.println("la classe est publique");
-				modif += "public";
+				modif += "public ";
 			} else if (token.equals("abstract")) {
-				System.out.println("la classe est abstraite");
-				modif += " abstract";
+				modif += "abstract ";
 			} else if (token.equals("final")) {
-				System.out.println("la classe est finale");
-				modif += " final";
+				modif += "final ";
 			} else if (token.equals("class")) {
 				classKeyWordFound = true;
-				jc.setModifiers(modif);
+				jc.setModifiers(modif.substring(0,
+						Math.max(modif.length() - 1, 0)));
 			}
 		}
 
 		// donc maintenant, on a le nom de la classe
-		name = entete.substring(0, entete.indexOf(" "));
-		System.out.println("son nom est : \"" + name + "\"");
+		String name = entete.substring(0, entete.indexOf(" "));
 		entete = entete.substring(entete.indexOf(" ") + 1);
 		jc.setName(name);
 
@@ -89,21 +87,22 @@ public abstract class BlocParser {
 			}
 
 			entete = entete.substring(i);
-			parametre = InlineParser.decodeParam(token);
+			JavaParam parametre = InlineParser.decodeParam(token);
 			jc.getParams().add(parametre);
 		}
 
 		// eventuellement un extends
 		if (entete.startsWith("extends")) {
-			superClasse = entete.substring(8, entete.indexOf(" ", 8));
-			System.out
-					.println("la classe parent est : \"" + superClasse + "\"");
+			String superClasse = entete.substring(8, entete.indexOf(" ", 8));
 			entete = entete.substring(entete.indexOf(" ", 8) + 1);
 			if (entete.startsWith("<")) {
-				// TODO classe parent parametree
+				JavaParam jp = InlineParser.decodeParam(entete.substring(2,
+						entete.lastIndexOf(" >")));
+				// TODO
+				// superclasse.setParam(jp);
 			}
 			// TODO
-			jc.setSuperClass(null);
+			// jc.setSuperClass(superClasse);
 		}
 
 		// eventuellement un implements
@@ -120,11 +119,6 @@ public abstract class BlocParser {
 							inter.indexOf(" >"));
 					inter = inter.substring(0, inter.indexOf(" <"));
 				}
-				System.out.println("Interface implementee : \""
-						+ inter
-						+ "\""
-						+ (param != null ? " avec comme parametre \"" + param
-								+ "\"" : ""));
 
 				implementedInterfaces.add(inter);
 				implementedInterfacesParams.add(param);
@@ -138,26 +132,21 @@ public abstract class BlocParser {
 						inter.indexOf(" >"));
 				inter = inter.substring(0, inter.indexOf(" <"));
 			}
-			System.out.println("Interface implementee : \""
-					+ inter
-					+ "\""
-					+ (param != null ? " avec comme parametre \"" + param
-							+ "\"" : ""));
 
 			implementedInterfaces.add(inter);
 			implementedInterfacesParams.add(param);
 		}
 
-		while (!contenu.equals("")) {
+		while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
 			// soit on a un bloc (methode, classe imbriquee...), soit un field
 
 			// cas du field
-			if (contenu.indexOf(";") != -1
-					&& contenu.indexOf(";") < contenu.indexOf("{")) {
+			if (contenu.indexOf(";") < contenu.indexOf("{")) {
 				String defField = contenu.substring(0, contenu.indexOf(";"));
 				contenu = contenu.substring(contenu.indexOf(";") + 2);
 
-				JavaVariable tmp = InlineParser.decodeField(defField);
+				JavaVariable tmp = InlineParser.decodeField(defField,
+						prefixe + 1);
 				jc.getContent().add(tmp);
 			} else {
 				String defBloc = contenu.substring(0, contenu.indexOf("{"));
@@ -185,24 +174,27 @@ public abstract class BlocParser {
 
 				contenu = contenu.substring(i);
 
-				JavaEntity tmp = decodeBloc(defBloc, contenuBloc);
+				JavaEntity tmp = decodeBloc(defBloc, contenuBloc, prefixe + 1);
 				jc.getContent().add(tmp);
 			}
 		}
 		return jc;
 	}
 
-	private static JavaEnum decodeEnum(String entete, String contenu) {
+	private static JavaEnum decodeEnum(String entete, String contenu,
+			int prefixe) {
 		// only public, protected, private & static are permitted
 		return null;
 	}
 
-	private static JavaInterface decodeInterface(String entete, String contenu) {
+	private static JavaInterface decodeInterface(String entete, String contenu,
+			int prefixe) {
 		// only public, protected, private, static & abstract are permitted
 		return null;
 	}
 
-	private static JavaMethod decodeMethode(String entete, String contenu) {
+	private static JavaMethod decodeMethode(String entete, String contenu,
+			int prefixe) {
 		// only public, protected, private, static, final, abstract,
 		// synchronized & native are permitted
 		JavaMethod jm = new JavaMethod();
@@ -211,42 +203,36 @@ public abstract class BlocParser {
 		String returnType = null;
 		JavaParam parametre = null;
 
-		// la on a pas vraiment de keyword a trouver, mais on s'arrete quand on
+		// la on a pas vraiment de keyword a trouver, mais on s'arrete quand
+		// on
 		// trouve un mot qui n'est pas un mot clef en fait...
 		boolean classKeyWordFound = false;
 		while (!classKeyWordFound) {
-			String token = entete.substring(0, entete.indexOf(" "));			
+			String token = entete.substring(0, entete.indexOf(" "));
 			String modif = "";
 
 			if (token.equals("public")) {
-				System.out.println("la méthode est public");
-				modif += "public";
+				modif += "public ";
 			} else if (token.equals("protected")) {
-				System.out.println("la méthode est protected");
-				modif += " protected";
+				modif += "protected ";
 			} else if (token.equals("private")) {
-				System.out.println("la méthode est private");
-				modif += " private";
+				modif += "private ";
 			} else if (token.equals("static")) {
-				System.out.println("la méthode est static");
-				modif += " static";
+				modif += "static ";
 			} else if (token.equals("final")) {
-				System.out.println("la méthode est final");
-				modif += " final";
+				modif += "final ";
 			} else if (token.equals("abstract")) {
-				System.out.println("la méthode est abstract");
-				modif += " abstract";
+				modif += "abstract ";
 			} else if (token.equals("synchronized")) {
-				System.out.println("la méthode est synchronized");
-				modif += " synchronized";
+				modif += "synchronized ";
 			} else if (token.equals("native")) {
-				System.out.println("la méthode est native");
-				modif += " native";
+				modif += "native ";
 			} else {
 				classKeyWordFound = true;
-				jm.setModifiers(modif);
+				jm.setModifiers(modif.substring(0,
+						Math.max(modif.length() - 1, 0)));
 			}
-			
+
 			if (!classKeyWordFound)
 				entete = entete.substring(entete.indexOf(" ") + 1);
 		}
@@ -279,73 +265,68 @@ public abstract class BlocParser {
 
 		// maintenant on a le type de retour
 		returnType = entete.substring(0, entete.indexOf(" "));
-		System.out.println("son type de retour est : \"" + returnType + "\"");
 		entete = entete.substring(entete.indexOf(" ") + 1);
 		if (entete.startsWith("<")) {
-			// TODO returntype parametre
+			JavaParam jp = InlineParser.decodeParam(entete.substring(2,
+					entete.lastIndexOf(" >")));
+			// TODO
+			// superclasse.setParam(jp);
 		}
 		// TODO
-		jm.setReturnType(null);
+		// jm.setReturnType(returnType);
 
 		// donc maintenant, on a le nom de la methode
 		name = entete.substring(0, entete.indexOf(" "));
 		if (name.equals("(")) {
-			//on a un constructeur, donc le nom est le token d'avant
+			// on a un constructeur, donc le nom est le token d'avant
 			name = returnType;
 		} else {
 			entete = entete.substring(entete.indexOf(" ") + 1);
 		}
-		System.out.println("son nom est : \"" + name + "\"");
 		jm.setName(name);
 
 		// et enfin, on a les parametres
-		entete = entete.substring(entete.indexOf("(")+2, entete.lastIndexOf(")"));
-		System.out.println("parametres : " + (entete.equals("") ? "aucun" : entete));
+		entete = entete.substring(entete.indexOf("(") + 2,
+				entete.lastIndexOf(")"));
 
-//		while (!contenu.equals("")) {
-//			// soit on a un bloc (methode, classe imbriquee...), soit une
-//			// variable locale, soit une action quelconque
-//			
-//			//TODO
-//
-//			// cas du field
-//			if (contenu.indexOf(";") != -1
-//					&& contenu.indexOf(";") < contenu.indexOf("{")) {
-//				String defField = contenu.substring(0, contenu.indexOf(";"));
-//				contenu = contenu.substring(contenu.indexOf(";") + 2);
-//
-//				JavaVariable tmp = InlineParser.decodeField(defField);
-//				jc.getContent().add(tmp);
-//			} else {
-//				String defBloc = contenu.substring(0, contenu.indexOf("{"));
-//				contenu = contenu.substring(contenu.indexOf("{") + 2);
-//
-//				int compteurAccolade = 1;
-//				int i = 0;
-//				String contenuBloc = "";
-//				while (compteurAccolade > 0) {
-//					char actuel = contenu.charAt(i);
-//					if (actuel == '{') {
-//						compteurAccolade++;
-//					}
-//					if (actuel == '}') {
-//						compteurAccolade--;
-//					}
-//
-//					if (compteurAccolade > 0)
-//						contenuBloc += actuel;
-//					else
-//						i++;
-//
-//					i++;
-//				}
-//
-//				contenu = contenu.substring(i);
-//
-//				JavaEntity tmp = decodeBloc(defBloc, contenuBloc);
-//				jc.getContent().add(tmp);
-//			}
-//		}
+		while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
+			// faut prevoir tous les cas... pas de la tarte
+
+			if (contenu.indexOf(";") < contenu.indexOf("{")) {
+				String defField = contenu.substring(0, contenu.indexOf(";"));
+				InlineParser.decodeLocalVar(defField, prefixe + 1);
+				jm.getLines().add(defField);
+				contenu = contenu.substring(contenu.indexOf(";") + 2);
+
+			} else {
+				String defBloc = contenu.substring(0, contenu.indexOf("{"));
+				contenu = contenu.substring(contenu.indexOf("{") + 2);
+
+				int compteurAccolade = 1;
+				int i = 0;
+				String contenuBloc = "";
+				while (compteurAccolade > 0) {
+					char actuel = contenu.charAt(i);
+					if (actuel == '{') {
+						compteurAccolade++;
+					}
+					if (actuel == '}') {
+						compteurAccolade--;
+					}
+
+					if (compteurAccolade > 0)
+						contenuBloc += actuel;
+					else
+						i++;
+
+					i++;
+				}
+
+				contenu = contenu.substring(i);
+
+			}
+		}
+
 		return jm;
 	}
 }

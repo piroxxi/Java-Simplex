@@ -6,14 +6,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class FileFormater {
-	public static final String firstPasseFileName = "formated/commentsErased.code";
-	public static final String secondPasseFileName = "formated/formated.code";
+	public static final String directoryName = "formated";
+	public static final String firstPasseFileName = "commentsErased.code";
+	public static final String secondPasseFileName = "formated.code";
 
 	private File baseFile;
+	private HashMap<String, String> javadoc;
 
-	public FileFormater(File f) {
+	public FileFormater() {
+		javadoc = new HashMap<String, String>();
+		File parsed = new File(directoryName);
+		parsed.mkdirs();
+	}
+	
+	public void setFile(File f) {
 		baseFile = f;
 	}
 
@@ -43,10 +52,13 @@ public class FileFormater {
 	private File removeComments(File fichier) {
 		File f = null;
 		boolean inString = false;
+		boolean javadocFound = false;
+		String javadocContent = "";
+		String javadocBlocDef = "";
 		try {
-			f = new File(firstPasseFileName);
-			if (!f.exists())
-				f.createNewFile();
+			f = new File(directoryName, firstPasseFileName);
+			f.createNewFile();
+
 			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);
 
@@ -64,14 +76,23 @@ public class FileFormater {
 						}
 						System.out.println("\n");
 					} else if (c2 == '*') {
-						System.out.print("commentaire \"/*\" trouvé : ");
-						char c4;
-						char c3 = 'a';
-						while (c3 != '/') {
-							while ((c4 = (char) reader.read()) != '*') {
-								System.out.print(c4);
+						char c3 = (char) reader.read();
+						if (c3 == '*') {
+							System.out.print("javadoc trouvée : ");
+							javadocFound = true;
+							javadocContent = "";
+							javadocBlocDef = "";
+						} else {
+							System.out.print("commentaire \"/*\" trouvé : ");
+						}
+						char c4 = 'a';
+						while (c4 != '/') {
+							while ((c3 = (char) reader.read()) != '*') {
+								System.out.print(c3);
+								if (javadocFound && c3 != '\t')
+									javadocContent += c3;
 							}
-							c3 = (char) reader.read();
+							c4 = (char) reader.read();
 						}
 						System.out.println("\n");
 					} else {
@@ -118,10 +139,30 @@ public class FileFormater {
 						// c'est pas une parenthese, c'est la fin de
 						// l'annotation
 						writer.write(c2);
+						if (javadocFound && c2 != '\n' && c2 != '\r'
+								&& c2 != '\t') {
+							javadocBlocDef += c2;
+						}
 					}
 				} else {
 					if (c == '\"')
 						inString = !inString;
+					if (javadocFound) {
+						boolean firstCharWritten = false;
+						if (c != '{' && c != ';') {
+							if (firstCharWritten) {
+								javadocBlocDef += c;
+							} else {
+								if (c != '\n' && c != '\r' && c != '\t') {
+									javadocBlocDef += c;
+									firstCharWritten = true;
+								}
+							}
+						} else {
+							javadocFound = false;
+							getJavadoc().put(javadocBlocDef, javadocContent);
+						}
+					}
 					writer.write(c);
 				}
 			}
@@ -149,9 +190,9 @@ public class FileFormater {
 		boolean lastCharWasSpace = false;
 
 		try {
-			f = new File(secondPasseFileName);
-			if (!f.exists())
-				f.createNewFile();
+			f = new File(directoryName, secondPasseFileName);
+			f.createNewFile();
+			
 			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);
 
@@ -202,5 +243,9 @@ public class FileFormater {
 	private static boolean isKeyChar(char c) {
 		return c == '(' || c == ')' || c == '{' || c == '}' || c == '['
 				|| c == ']' || c == ',' || c == ';' || c == '<' || c == '>';
+	}
+
+	public HashMap<String, String> getJavadoc() {
+		return javadoc;
 	}
 }

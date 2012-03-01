@@ -65,9 +65,10 @@ public class FileUtils {
 			return;
 		}
 		/*
-		 * Suppression des projets pas dans le fichier. (devrait pas arriver, mais on sait jamais).
+		 * Suppression des projets pas dans le fichier. (devrait pas arriver,
+		 * mais on sait jamais).
 		 */
-		//TODO(raphael);
+		// TODO(raphael);
 	}
 
 	private static String toDate(long dateLimite) {
@@ -120,5 +121,20 @@ public class FileUtils {
 		}
 		file.delete();
 		file.deleteOnExit();
+	}
+
+	public static List<File> getJavaFiles(File file) {
+		List<File> ret = new ArrayList<File>();
+		if (file.getName().endsWith(".java")) {
+			ret.add(file);
+		}
+
+		File[] fils = file.listFiles();
+		if (fils != null) {
+			for (File f : fils) {
+				ret.addAll(getJavaFiles(f));
+			}
+		}
+		return ret;
 	}
 }
