@@ -1,10 +1,11 @@
 package fr.ubourgogne.simplex.model.java.entity;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 
 public class JavaVariable extends JavaEntity {
 	private static final long serialVersionUID = 6854183583392505352L;
-	
+
 	private JavaReferenceObject type;
 	// private String name; //=> existe déja pour toutes les entitées
 	private String modifiers = "";
@@ -19,8 +20,7 @@ public class JavaVariable extends JavaEntity {
 		this.type = type;
 	}
 
-	public JavaVariable(String modifiers, String name,
-			JavaReferenceObject type) {
+	public JavaVariable(String modifiers, String name, JavaReferenceObject type) {
 		super(name);
 		this.modifiers = modifiers;
 		this.type = type;

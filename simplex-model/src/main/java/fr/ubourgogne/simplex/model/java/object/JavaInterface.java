@@ -9,13 +9,9 @@ public class JavaInterface extends JavaObject {
 		super();
 	}
 
-	public JavaInterface(String name) {
-		super(name);
-	}
-
 	@Override
 	public String print(String prefix) {
-		
+
 		return null;
 	}
 

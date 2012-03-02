@@ -6,8 +6,8 @@ import java.util.List;
 import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
-import fr.ubourgogne.simplex.model.java.entity.JavaReferenceClass;
-import fr.ubourgogne.simplex.model.java.entity.JavaReferenceInterface;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceClass;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceInterface;
 
 public class JavaClass extends JavaObject {
 	private static final long serialVersionUID = 7281658763100904213L;
@@ -20,11 +20,6 @@ public class JavaClass extends JavaObject {
 
 	public JavaClass() {
 		super();
-	}
-
-	public JavaClass(String modifiers, String name) {
-		super(name);
-		this.modifiers = modifiers;
 	}
 
 	public List<JavaReferenceInterface> getImplementedInterfaces() {

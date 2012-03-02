@@ -3,6 +3,7 @@ package fr.ubourgogne.simplex.model.java.entity;
 import java.util.ArrayList;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 
 /**
  * Représente une méthode java.

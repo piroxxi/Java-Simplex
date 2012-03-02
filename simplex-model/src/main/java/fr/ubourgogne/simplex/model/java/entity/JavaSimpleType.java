@@ -1,5 +1,7 @@
 package fr.ubourgogne.simplex.model.java.entity;
 
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceClass;
+
 
 /**
  * Représente un type simple
