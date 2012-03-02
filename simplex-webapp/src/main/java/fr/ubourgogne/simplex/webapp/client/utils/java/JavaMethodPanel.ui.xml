@@ -6,6 +6,7 @@
 
 	<ui:style>
 		.panel {
+			position: relative;
 			border-left: 1px solid #B2B2B2;
 			margin: 15px 0px 15px 5px;
 			padding-left: 3px;

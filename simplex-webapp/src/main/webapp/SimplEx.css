@@ -41,6 +41,7 @@ body {
 	padding-top: 6px;
 	padding-left: 120px;
 	height: 28px;
+	width: 100%;
 	background: #d8cdba;
 }
 
@@ -48,6 +49,7 @@ body {
 	background: white;
 	font-size: 12px;
 	height: 600px;
+	width: 100%;
 	overflow: auto;
 	padding-left: 15px;
 }
@@ -70,19 +72,22 @@ body {
 	text-decoration: underline;
 }
 
-.java_motR{
+.java_motR {
 	color: #950055;
 }
-.java_string{
+
+.java_string {
 	color: #0000c0;
 }
 
-.leftPadding{
+.leftPadding {
 	padding-left: 7px;
 }
-.rightPadding{
+
+.rightPadding {
 	padding-right: 7px;
 }
-.bottomPadding{
+
+.bottomPadding {
 	padding-bottom: 14px;
 }

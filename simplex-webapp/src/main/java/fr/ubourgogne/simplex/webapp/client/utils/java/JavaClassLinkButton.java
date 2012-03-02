@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.ubourgogne.simplex.model.java.entity.JavaReferenceObject;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 
 public class JavaClassLinkButton extends Composite {
 	public interface MyUiBinder extends UiBinder<Widget, JavaClassLinkButton> {
@@ -21,8 +21,8 @@ public class JavaClassLinkButton extends Composite {
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-	public static final int DELAY = 700; 
-	
+	public static final int DELAY = 700;
+
 	@UiField
 	Button link;
 	@UiField
@@ -35,7 +35,11 @@ public class JavaClassLinkButton extends Composite {
 		this.object = object;
 		initWidget(uiBinder.createAndBindUi(this));
 		this.link.setText(object.getObjectName());
-		this.javadoc.setText(object.getObjectJavaDoc());
+
+		String javadoc = object.getObjectJavaDoc();
+		this.javadoc
+				.setText((javadoc == null || javadoc.isEmpty()) ? "<aucune javadoc trouvée"
+						: javadoc);
 	}
 
 	@UiHandler("link")
@@ -43,28 +47,30 @@ public class JavaClassLinkButton extends Composite {
 		System.out.println("qsf => " + object);
 	}
 
-	@UiHandler({"link", "javadoc"})
+	@UiHandler({ "link", "javadoc" })
 	public void onMouseOver(MouseOverEvent event) {
 		hover = true;
 		Timer t = new Timer() {
 			@Override
 			public void run() {
-				if(hover){
-					javadoc.getElement().setAttribute("style", "display: block;");
+				if (hover) {
+					javadoc.getElement().setAttribute("style",
+							"display: block;");
 				}
 			}
 		};
 		t.schedule(DELAY);
 	}
-	
-	@UiHandler({"link", "javadoc"})
+
+	@UiHandler({ "link", "javadoc" })
 	public void onMouseOut(MouseOutEvent event) {
 		hover = false;
 		Timer t = new Timer() {
 			@Override
 			public void run() {
-				if(!hover){
-					javadoc.getElement().setAttribute("style", "display: none;");
+				if (!hover) {
+					javadoc.getElement()
+							.setAttribute("style", "display: none;");
 				}
 			}
 		};

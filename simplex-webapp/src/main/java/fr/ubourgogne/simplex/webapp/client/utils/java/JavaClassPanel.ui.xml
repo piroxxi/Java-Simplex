@@ -16,6 +16,7 @@
 		
 		.innerPanel {
 			padding-left: 24px;
+			padding-right: 24px;
 		}
 		
 		.inline {
@@ -28,8 +29,8 @@
 			bottom: -3px;
 		}
 		
-		.marginRight {
-			padding-right: 5px;
+		.fullWidth {
+			width: 100%;
 		}
 	</ui:style>
 
@@ -38,9 +39,10 @@
 			<g:Label styleName="rightPadding java_motR">package</g:Label>
 			<g:Label ui:field="pckage"></g:Label>
 		</g:HorizontalPanel>
-		<g:VerticalPanel ui:field="imports"></g:VerticalPanel>
+		<g:VerticalPanel ui:field="imports" styleName="{style.fullWidth}"></g:VerticalPanel>
 		<j:JavaClassDeclarationPanel ui:field="clazzDesc"></j:JavaClassDeclarationPanel>
-		<g:VerticalPanel ui:field="content" styleName="{style.innerPanel}"></g:VerticalPanel>
+		<g:VerticalPanel ui:field="content"
+			styleName="{style.innerPanel} {style.fullWidth}"></g:VerticalPanel>
 		}
 	</g:HTMLPanel>
 </ui:UiBinder>

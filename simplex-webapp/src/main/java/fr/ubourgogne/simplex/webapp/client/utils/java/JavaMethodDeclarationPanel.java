@@ -5,14 +5,18 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
+import fr.ubourgogne.simplex.webapp.client.utils.arrow.JavaMethodArrowsStartingLine;
 
 public class JavaMethodDeclarationPanel extends Composite {
 	
 	private HorizontalPanel panel = new HorizontalPanel();
 	private JavaMethod method;
 
-	public JavaMethodDeclarationPanel(JavaMethod method) {
+	public JavaMethodDeclarationPanel(JavaMethod method,
+			JavaMethodArrowsStartingLine methodArrowsStartingLine) {
 		this.method = method;
+		methodArrowsStartingLine.setLineWidget(this);
+		
 		initWidget(panel);
 		if (!method.getModifiers().isEmpty()) {
 			Label l = new Label(method.getModifiers() + " ");
@@ -20,11 +24,14 @@ public class JavaMethodDeclarationPanel extends Composite {
 			l.addStyleName("rightPadding");
 			panel.add(l);
 		}
-		
+
 		if (method.getParams() != null && !method.getParams().isEmpty()) {
 			panel.add(new Label("<"));
 			for (int i = 0; i < method.getParams().size(); i++) {
-				panel.add(new JavaParamPanel(method.getParams().get(i)));
+
+				panel.add(new JavaParamPanel(method.getParams().get(i),
+						methodArrowsStartingLine));
+
 				if (i < method.getParams().size() - 1) {
 					Label l = new Label(",");
 					l.addStyleName("rightPadding");
@@ -35,26 +42,29 @@ public class JavaMethodDeclarationPanel extends Composite {
 			l.addStyleName("rightPadding");
 			panel.add(l);
 		}
-		
-		JavaReferenceObjectPanel returnType = new JavaReferenceObjectPanel(method.getReturnType());
+
+		JavaReferenceObjectPanel returnType = new JavaReferenceObjectPanel(
+				method.getReturnType(), methodArrowsStartingLine);
 		returnType.addStyleName("rightPadding");
 		panel.add(returnType);
 		panel.add(new Label(method.getName()));
-		
+
 		panel.add(new Label("("));
-		if (method.getVarParams() != null && !method.getVarParams().isEmpty()) {	
+		if (method.getVarParams() != null && !method.getVarParams().isEmpty()) {
 			for (int i = 0; i < method.getVarParams().size(); i++) {
-				JavaReferenceObjectPanel type = new JavaReferenceObjectPanel(method.getVarParams().get(i).getType());
+				JavaReferenceObjectPanel type = new JavaReferenceObjectPanel(
+						method.getVarParams().get(i).getType(),
+						methodArrowsStartingLine);
 				type.addStyleName("rightPadding");
 				panel.add(type);
 				panel.add(new Label(method.getVarParams().get(i).getName()));
-				
+
 				if (i < method.getVarParams().size() - 1) {
 					Label l = new Label(",");
 					l.addStyleName("rightPadding");
 					panel.add(l);
 				}
-			}			
+			}
 		}
 		Label l = new Label(")");
 		l.addStyleName("rightPadding");
