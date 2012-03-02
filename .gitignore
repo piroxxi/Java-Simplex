@@ -1,9 +1,13 @@
 simplex-loader-git/target/
+simplex-loader-git/.classpath
+simplex-loader-git/.settings/
+
 simplex-model/target/
 
 simplex-parser/target/
 simplex-parser/.classpath
 simplex-parser/.settings/
+simplex-parser/formated/
 
 simplex-storage-api/target/
 

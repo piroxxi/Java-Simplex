@@ -8,7 +8,7 @@ import com.google.gwt.place.shared.Prefix;
  * Place d'acceuil pour l'utilisateur.
  */
 public class MainPlace extends Place {
-	@Prefix("MainPlace")
+	@Prefix("Main")
 	public static class Tokenizer implements PlaceTokenizer<MainPlace> {
 
 		@Override

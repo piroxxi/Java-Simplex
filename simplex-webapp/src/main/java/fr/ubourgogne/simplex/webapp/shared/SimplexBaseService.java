@@ -9,6 +9,8 @@ import fr.ubourgogne.simplex.webapp.shared.security.SimplexSecurityException;
 @RemoteServiceRelativePath("base")
 public interface SimplexBaseService extends RemoteService {
 	void welcome(String accountId) throws SimplexSecurityException;
-	
+
 	JavaClass getClassByName(String className) throws SimplexSecurityException;
+
+	String loadGitProject(String type) throws SimplexSecurityException;
 }

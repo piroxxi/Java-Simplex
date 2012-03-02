@@ -7,7 +7,7 @@ import com.google.gwt.resources.client.ImageResource;
 public interface Resources extends ClientBundle {
 	@Source("plus.png")
 	public ImageResource plusImg();
-	
+
 	@Source("moins.png")
 	public ImageResource moinsImg();
 

@@ -20,6 +20,7 @@ public class GuiceServerModule extends ActionHandlerModule {
 	@Override
 	protected void configureHandlers() {
 		bind(Storage.class).to(StorageImpl.class).in(Singleton.class);
+
 	}
 
 	@Provides

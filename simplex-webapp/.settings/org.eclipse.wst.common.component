@@ -17,6 +17,9 @@
         <dependent-module archiveName="simplex-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/simplex-model/simplex-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="simplex-loader-git-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/simplex-loader-git/simplex-loader-git">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="simplex-webapp"/>
         <property name="java-output-path" value="/simplex-webapp/target/simplex-webapp-1.0-SNAPSHOT/WEB-INF/classes"/>
     </wb-module>

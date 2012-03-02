@@ -1,5 +1,6 @@
-package fr.ubourgogne.simplex.model.java.entity;
+package fr.ubourgogne.simplex.model.java.meta;
 
+import fr.ubourgogne.simplex.model.java.entity.JavaParam;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 
 public class JavaReferenceClass extends JavaReferenceObject {

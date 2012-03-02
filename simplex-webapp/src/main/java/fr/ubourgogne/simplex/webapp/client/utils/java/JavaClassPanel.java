@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.Widget;
 import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
+import fr.ubourgogne.simplex.webapp.client.utils.arrow.ArrowGestionnary;
+import fr.ubourgogne.simplex.webapp.client.utils.arrow.JavaMethodArrowsStartingLine;
 
 public class JavaClassPanel extends Composite {
 	public interface MyUiBinder extends UiBinder<Widget, JavaClassPanel> {
@@ -31,14 +33,19 @@ public class JavaClassPanel extends Composite {
 	@UiField
 	VerticalPanel content;
 
-	public JavaClassPanel(JavaClass clazz) {
-		clazzDesc = new JavaClassDeclarationPanel(clazz);
+	private JavaMethodArrowsStartingLine methodArrowsStartingLine;
+
+	public JavaClassPanel(JavaClass clazz, ArrowGestionnary gestionnary) {
+		methodArrowsStartingLine = new JavaMethodArrowsStartingLine();
+		clazzDesc = new JavaClassDeclarationPanel(clazz,
+				methodArrowsStartingLine);
+
 		initWidget(uiBinder.createAndBindUi(this));
 
 		if (clazz.getPackage() != null && !clazz.getPackage().isEmpty()) {
 			pckage.setText(clazz.getPackage());
 			pckage.addStyleName("bottomPadding");
-		}else{
+		} else {
 			pckageP.setVisible(false);
 		}
 
@@ -58,11 +65,23 @@ public class JavaClassPanel extends Composite {
 
 		for (JavaEntity entity : clazz.getContent()) {
 			if (entity instanceof JavaClass) {
-				content.add(new JavaClassPanel((JavaClass) entity));
+				content.add(new JavaClassPanel((JavaClass) entity, gestionnary));
 			}
 			if (entity instanceof JavaMethod) {
-				content.add(new JavaMethodPanel((JavaMethod) entity));
+				content.add(new JavaMethodPanel((JavaMethod) entity,
+						gestionnary));
 			}
 		}
+
+		// Si jamais on veut afficher La javadoc lors de la déclaration d'une
+		// classe, il faut décommenter les lignes suivante :
+
+		// Timer t = new Timer() {
+		// @Override
+		// public void run() {
+		// JavaMethodPanel.this.methodArrowsStartingLine.refreshGraph();
+		// }
+		// };
+		// t.schedule(150);
 	}
 }

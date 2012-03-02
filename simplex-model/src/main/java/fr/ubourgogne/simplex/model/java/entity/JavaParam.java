@@ -1,6 +1,7 @@
 package fr.ubourgogne.simplex.model.java.entity;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 
 public class JavaParam extends JavaEntity { // TODO useful inheritence?
 	private static final long serialVersionUID = 810681201777588389L;

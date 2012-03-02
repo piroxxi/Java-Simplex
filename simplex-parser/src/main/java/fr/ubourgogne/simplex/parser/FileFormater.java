@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class FileFormater {
 	public static final String directoryName = "formated";
+	
 	public static final String firstPasseFileName = "commentsErased.code";
 	public static final String secondPasseFileName = "formated.code";
 
@@ -59,6 +60,7 @@ public class FileFormater {
 		try {
 			f = new File(directoryName, firstPasseFileName);
 			f.createNewFile();
+
 
 			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);

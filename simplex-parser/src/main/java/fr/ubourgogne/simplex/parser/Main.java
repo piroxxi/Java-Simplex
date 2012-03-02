@@ -13,6 +13,7 @@ import com.google.inject.Singleton;
 
 import fr.ubourgogne.simplex.loader.FileUtils;
 import fr.ubourgogne.simplex.loader.git.GitLoader;
+
 import fr.ubourgogne.simplex.storage.EntityFactory;
 import fr.ubourgogne.simplex.storage.EntityFactoryImpl;
 import fr.ubourgogne.simplex.storage.Storage;
@@ -43,18 +44,18 @@ public class Main {
 	@Inject
 	public Main(Provider<FileFormater> formaterProvider) {
 		this.formaterProvider = formaterProvider;
-
 	}
-
-	public void start() {
-//		 FileUtils.clearLocalTemporaryDir(5 * FileUtils.MINUTE + 15
-//		 * FileUtils.SECONDE);
+	
+	public void start(){
+		// FileUtils.clearLocalTemporaryDir(5 * FileUtils.MINUTE + 15
+		// * FileUtils.SECONDE);
 
 		final String url = "https://code.google.com/p/java-simplex";
 		// String url = "https://java-simplex.googlecode.com/";
 
 //		 String localURL = GitLoader.loadExternalCode(url);
 		String localURL = "C:\\Users\\Fab\\AppData\\Local\\Temp\\simplex_temp\\c46013bc-25f5-4679-9330-6acbc37d3749";
+
 		if (localURL == null || localURL.isEmpty()) {
 			System.out
 					.println("Echec lors de l'import du dépot distant '"

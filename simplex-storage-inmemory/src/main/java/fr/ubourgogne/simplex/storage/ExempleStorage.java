@@ -7,7 +7,7 @@ public class ExempleStorage {
 	public static void main(String[] args) {
 		Storage storage = new StorageImpl();
 		try {
-			StorageFiller.fillStorage(storage);
+			StorageFiller.fillStorage(storage, new EntityFactoryImpl(storage));
 		} catch (StorageException e) {
 			e.printStackTrace();
 		}
