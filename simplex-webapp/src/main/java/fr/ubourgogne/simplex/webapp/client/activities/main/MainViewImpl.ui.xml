@@ -1,0 +1,81 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:style
+		type='fr.ubourgogne.simplex.webapp.client.activities.main.MainViewImpl.MyStyle'>
+			.panel {
+				width: 700px;
+			}
+			
+			.note {
+				color: #888;
+				font-size: 11px;
+			}
+			
+			.line {
+				margin-top: 40px;
+				width: 85%;
+				border-top: 1px solid #DDD;
+			}
+			
+			.button {
+				color: #3A1F05;
+				font-size: 12px;
+				border: none;
+				border-bottom: 1px solid #BBB;
+				background: none;
+			}
+			
+			.button:hover {
+				border-bottom: 1px solid #777;
+			}
+			
+			.adresse {
+				width: 300px;
+			}
+		</ui:style>
+
+	<g:HTMLPanel styleName="{style.panel}">
+		<center>
+			<h2>
+				Bienvenue sur simplex
+			</h2>
+			<p>
+				Cette application vous permet d'analyser et d'explorer vos codes
+				sources. Pour ce faire, il vous suffit simplement d'entrer l'adresse
+				d'un dépot Git/SVN où se trouve votre code source.
+			</p>
+			<p class="{style.note}">
+				Note : Pour l'instant le téléchargement depuis un dépot
+				SVN n'est pas disponible.
+			</p>
+			<div>
+				<g:RadioButton ui:field="depotGit" value="true" name="typeDepot">
+					Depot distant GIT
+				</g:RadioButton>
+				<br />
+				<g:RadioButton ui:field="depotSvn" enabled="false"
+					name="typeDepot">
+					Depot distant SVN
+				</g:RadioButton>
+			</div>
+			<br />
+			<div class="{style.note}">
+				Adresse :
+				<g:TextBox ui:field="adresse" styleName="{style.adresse}"></g:TextBox>
+				<g:Button ui:field="go">Go</g:Button>
+			</div>
+			<div class="{style.line}"></div>
+			<h4>
+				Dépots récement utilisés
+			</h4>
+			<g:VerticalPanel ui:field="oldDepots"></g:VerticalPanel>
+			<div class="{style.line}"></div>
+			<g:Button ui:field="ourFavori" styleName="{style.button}">
+				Vous pouvez
+				également visiter notre
+				dépot
+			</g:Button>
+		</center>
+	</g:HTMLPanel>
+</ui:UiBinder>

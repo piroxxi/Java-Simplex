@@ -9,4 +9,6 @@ public interface SimplexBaseServiceAsync {
 
 	void getClassByName(String className, AsyncCallback<JavaClass> callback);
 
+	void loadGitProject(String type, AsyncCallback<String> callback);
+
 }
