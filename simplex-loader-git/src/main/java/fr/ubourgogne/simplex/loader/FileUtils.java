@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 public class FileUtils {
-	public static long SECONDE = 1000;
-	public static long MINUTE = 60 * SECONDE;
+	public static final long SECONDE = 1000;
+	public static final long MINUTE = 60 * SECONDE;
 
 	public static void clearLocalTemporaryDir(long dateLimite) {
 		File directory = new File(System.getProperty("java.io.tmpdir")

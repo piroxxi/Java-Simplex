@@ -111,7 +111,7 @@ public class FileFormater {
 					while (isSpace(c2 = (char) reader.read())) {
 					}
 					System.out.print(c2);
-					
+
 					String nomAnno = "@" + c2;
 					while (!isSpace(c2 = (char) reader.read()) && c2 != '(') {
 						System.out.print(c2);
@@ -159,30 +159,44 @@ public class FileFormater {
 						}
 					}
 				} else {
-					if (c == '\"' && !lastCharWasAntiSlash) {
-						inString = !inString;
-						lastCharWasAntiSlash = false;
-					}
-					if (c=='\\')
-						lastCharWasAntiSlash = true;
-					
-					if (javadocFound) {
-						boolean firstCharWritten = false;
-						if (c != '{' && c != ';') {
-							if (firstCharWritten) {
-								javadocBlocDef += c;
-							} else {
-								if (c != '\n' && c != '\r' && c != '\t') {
+					if (c == '\\') {
+						if (lastCharWasAntiSlash)
+							lastCharWasAntiSlash = false;
+						else
+							lastCharWasAntiSlash = true;
+						writer.write(c);
+					} else if (c == '\'') {
+						writer.write(c);
+						char c2 = (char) reader.read();
+						writer.write(c2);
+						writer.write((char) reader.read());
+						if (c2 == '\\')
+							writer.write((char) reader.read());
+					} else {
+						if (c == '\"' && !lastCharWasAntiSlash)
+							inString = !inString;
+
+						if (javadocFound) {
+							boolean firstCharWritten = false;
+							if (c != '{' && c != ';') {
+								if (firstCharWritten) {
 									javadocBlocDef += c;
-									firstCharWritten = true;
+								} else {
+									if (c != '\n' && c != '\r' && c != '\t') {
+										javadocBlocDef += c;
+										firstCharWritten = true;
+									}
 								}
+							} else {
+								javadocFound = false;
+								getJavadoc()
+										.put(javadocBlocDef, javadocContent);
 							}
-						} else {
-							javadocFound = false;
-							getJavadoc().put(javadocBlocDef, javadocContent);
 						}
+
+						lastCharWasAntiSlash = false;
+						writer.write(c);
 					}
-					writer.write(c);
 				}
 			}
 
@@ -221,7 +235,10 @@ public class FileFormater {
 				char c = (char) lu;
 				if (inString) {
 					if (c == '\\') {
-						lastCharWasAntiSlash = true;
+						if (lastCharWasAntiSlash)
+							lastCharWasAntiSlash = false;
+						else
+							lastCharWasAntiSlash = true;
 					} else if (c == '\"' && !lastCharWasAntiSlash) {
 						inString = false;
 					} else {
@@ -229,8 +246,15 @@ public class FileFormater {
 					}
 					writer.write(c);
 					lastCharWasSpace = false;
+				} else if (c == '\'') {
+					writer.write(c);
+					char c2 = (char) reader.read();
+					writer.write(c2);
+					writer.write((char) reader.read());
+					if (c2 == '\\')
+						writer.write((char) reader.read());
 				} else {
-					if (c == '\"') {
+					if (c == '\"' && !lastCharWasAntiSlash) {
 						inString = true;
 						writer.write(c);
 						lastCharWasSpace = false;
@@ -243,9 +267,17 @@ public class FileFormater {
 							writer.write(" ");
 						writer.write(c + " ");
 						lastCharWasSpace = true;
+					} else if (c == '\\') {
+						if (lastCharWasAntiSlash)
+							lastCharWasAntiSlash = false;
+						else
+							lastCharWasAntiSlash = true;
+						writer.write(c);
+						lastCharWasSpace = false;
 					} else {
 						writer.write(c);
 						lastCharWasSpace = false;
+						lastCharWasAntiSlash = false;
 					}
 				}
 			}

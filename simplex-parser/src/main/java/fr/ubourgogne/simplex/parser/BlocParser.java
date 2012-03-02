@@ -21,16 +21,16 @@ public abstract class BlocParser {
 
 		// on a soit une classe, soit un enum, soit une interface, soit une
 		// methode
-		if (entete.contains("class")) {
+		if (entete.contains(" class ")) {
 			System.out.println("classe");
 			return BlocParser.decodeClasse(entete, contenu, prefixe);
-		} else if (entete.contains("@interface")) {
+		} else if (entete.contains(" @interface ")) {
 			System.out.println("annotation");
 			return BlocParser.decodeAnnotation(entete, contenu, prefixe);
-		} else if (entete.contains("enum")) {
+		} else if (entete.contains(" enum ")) {
 			System.out.println("enum");
 			return BlocParser.decodeEnum(entete, contenu, prefixe);
-		} else if (entete.contains("interface")) {
+		} else if (entete.contains(" interface ")) {
 			System.out.println("interface");
 			return BlocParser.decodeInterface(entete, contenu, prefixe);
 		} else {
@@ -165,42 +165,82 @@ public abstract class BlocParser {
 				String contenuBloc = "";
 				boolean inString = false;
 				boolean lastCharWasAntiSlash = false;
+				System.out.println(compteurAccolade);
 				while (compteurAccolade > 0) {
 					char actuel = contenu.charAt(i);
 
 					if (inString) {
 						if (actuel == '\\') {
-							lastCharWasAntiSlash = true;
+							if (lastCharWasAntiSlash)
+								lastCharWasAntiSlash = false;
+							else
+								lastCharWasAntiSlash = true;
 						} else if (actuel == '\"' && !lastCharWasAntiSlash) {
 							inString = false;
+							lastCharWasAntiSlash = false;
 						} else {
 							lastCharWasAntiSlash = false;
 						}
+					} else if (actuel == '\'') {
+						contenuBloc += actuel;
+						char c2 = contenu.charAt(i + 1);
+						contenuBloc += c2;
+						actuel += contenu.charAt(i + 2);
+						i = i + 2;
+						if (c2 == '\\') {
+							contenu += actuel;
+							actuel = contenu.charAt(i + 1);
+							i++;
+						}
 					} else {
-						if (actuel == '\"')
+						if (actuel == '\"' && !lastCharWasAntiSlash)
 							inString = true;
 
 						if (actuel == '{') {
 							compteurAccolade++;
+							System.out.println(compteurAccolade);
 						}
 
 						if (actuel == '}') {
 							compteurAccolade--;
+							System.out.println(compteurAccolade);
+						}
+
+						if (actuel == '\\') {
+							if (lastCharWasAntiSlash)
+								lastCharWasAntiSlash = false;
+							else
+								lastCharWasAntiSlash = true;
+						} else {
+							lastCharWasAntiSlash = false;
 						}
 					}
 
-					if (compteurAccolade > 0)
+					if (compteurAccolade > 0) {
 						contenuBloc += actuel;
-					else
+					} else {
 						i++;
+					}
 
 					i++;
 				}
 
+				boolean blocSpecial = false;
+				if (i < contenu.length() && contenu.charAt(i) == ';') {
+					blocSpecial = true;
+					i = i + 2;
+				}
+
 				contenu = contenu.substring(i);
 
-				JavaEntity tmp = decodeBloc(defBloc, contenuBloc, prefixe + 1);
-				jc.getContent().add(tmp);
+				// a priori, ca peut etre par exemple une declaration de tableau
+				// a la volee
+				// on verra plus tard
+				if (!blocSpecial) {
+					JavaEntity tmp = decodeBloc(defBloc, contenuBloc,
+							prefixe + 1);
+					jc.getContent().add(tmp);
+				}
 			}
 		}
 		return jc;

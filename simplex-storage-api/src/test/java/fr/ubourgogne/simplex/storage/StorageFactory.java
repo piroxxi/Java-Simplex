@@ -1,5 +1,11 @@
+package fr.ubourgogne.simplex.storage;
+
 /**
- * Classe abstraite dont la méthode get() renvoie une instance de
- * l'interface Storage. Chaque implémentation du storage doit redéfinir
+ * Classe abstraite dont la mï¿½thode get() renvoie une instance de
+ * l'interface Storage. Chaque implï¿½mentation du storage doit redï¿½finir
  * Factory.
  */
+
+public abstract class StorageFactory{
+	
+}
