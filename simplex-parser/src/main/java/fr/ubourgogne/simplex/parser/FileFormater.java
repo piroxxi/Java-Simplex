@@ -21,7 +21,7 @@ public class FileFormater {
 		File parsed = new File(directoryName);
 		parsed.mkdirs();
 	}
-	
+
 	public void setFile(File f) {
 		baseFile = f;
 	}
@@ -53,6 +53,7 @@ public class FileFormater {
 		File f = null;
 		boolean inString = false;
 		boolean javadocFound = false;
+		boolean lastCharWasAntiSlash = false;
 		String javadocContent = "";
 		String javadocBlocDef = "";
 		try {
@@ -106,47 +107,65 @@ public class FileFormater {
 					System.out.print("annotation trouvée : ");
 					// tant qu'on rencontre pas d'espace ou de parenthese, on
 					// vire
+					// sauf si c'est une ***** de ***** de @interface
+					while (isSpace(c2 = (char) reader.read())) {
+					}
+					System.out.print(c2);
+					
+					String nomAnno = "@" + c2;
 					while (!isSpace(c2 = (char) reader.read()) && c2 != '(') {
 						System.out.print(c2);
+						nomAnno += c2;
 					}
 					System.out.println("\n");
 
-					// si on a recontré un espace, on continue de virer tant
-					// qu'on a pas rencontré autre chose
-					if (isSpace(c2))
-						while (isSpace(c2 = (char) reader.read())) {
-						}
-
-					// des qu'on a rencontré autre chose, on regarde si c'est
-					// une parenthese
-					if (c2 == '(') {
-						boolean inEmbedString = false;
-						int parenthesisCounter = 1;
-						// si c'est une parenthese, faut virer tant qu'on a pas
-						// trouvé
-						// la parenthèse fermante
-						char c3;
-						while (parenthesisCounter != 0) {
-							c3 = (char) reader.read();
-							if (c3 == '"')
-								inEmbedString = !inEmbedString;
-							if (c3 == '(' && !inEmbedString)
-								parenthesisCounter++;
-							if (c3 == ')' && !inEmbedString)
-								parenthesisCounter--;
-						}
+					if (nomAnno.contains("@interface")) {
+						writer.write("@interface ");
 					} else {
-						// c'est pas une parenthese, c'est la fin de
-						// l'annotation
-						writer.write(c2);
-						if (javadocFound && c2 != '\n' && c2 != '\r'
-								&& c2 != '\t') {
-							javadocBlocDef += c2;
+						// si on a recontré un espace, on continue de virer tant
+						// qu'on a pas rencontré autre chose
+						if (isSpace(c2))
+							while (isSpace(c2 = (char) reader.read())) {
+							}
+
+						// des qu'on a rencontré autre chose, on regarde si
+						// c'est
+						// une parenthese
+						if (c2 == '(') {
+							boolean inEmbedString = false;
+							int parenthesisCounter = 1;
+							// si c'est une parenthese, faut virer tant qu'on a
+							// pas
+							// trouvé
+							// la parenthèse fermante
+							char c3;
+							while (parenthesisCounter != 0) {
+								c3 = (char) reader.read();
+								if (c3 == '\"')
+									inEmbedString = !inEmbedString;
+								if (c3 == '(' && !inEmbedString)
+									parenthesisCounter++;
+								if (c3 == ')' && !inEmbedString)
+									parenthesisCounter--;
+							}
+						} else {
+							// c'est pas une parenthese, c'est la fin de
+							// l'annotation
+							writer.write(c2);
+							if (javadocFound && c2 != '\n' && c2 != '\r'
+									&& c2 != '\t') {
+								javadocBlocDef += c2;
+							}
 						}
 					}
 				} else {
-					if (c == '\"')
+					if (c == '\"' && !lastCharWasAntiSlash) {
 						inString = !inString;
+						lastCharWasAntiSlash = false;
+					}
+					if (c=='\\')
+						lastCharWasAntiSlash = true;
+					
 					if (javadocFound) {
 						boolean firstCharWritten = false;
 						if (c != '{' && c != ';') {
@@ -188,11 +207,12 @@ public class FileFormater {
 		File f = null;
 		boolean inString = false;
 		boolean lastCharWasSpace = false;
+		boolean lastCharWasAntiSlash = false;
 
 		try {
 			f = new File(directoryName, secondPasseFileName);
 			f.createNewFile();
-			
+
 			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);
 
@@ -200,8 +220,13 @@ public class FileFormater {
 			while ((lu = reader.read()) != -1) {
 				char c = (char) lu;
 				if (inString) {
-					if (c == '\"')
+					if (c == '\\') {
+						lastCharWasAntiSlash = true;
+					} else if (c == '\"' && !lastCharWasAntiSlash) {
 						inString = false;
+					} else {
+						lastCharWasAntiSlash = false;
+					}
 					writer.write(c);
 					lastCharWasSpace = false;
 				} else {

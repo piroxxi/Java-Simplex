@@ -6,6 +6,7 @@ import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
 import fr.ubourgogne.simplex.model.java.entity.JavaVariable;
+import fr.ubourgogne.simplex.model.java.object.JavaAnnotation;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.model.java.object.JavaEnum;
 import fr.ubourgogne.simplex.model.java.object.JavaInterface;
@@ -16,17 +17,24 @@ public abstract class BlocParser {
 			int prefixe) {
 		for (int i = 0; i < prefixe; i++)
 			System.out.print("\t");
-		System.out.println("bloc[" + entete + "]");
+		System.out.print("bloc[" + entete + "] --> ");
 
 		// on a soit une classe, soit un enum, soit une interface, soit une
 		// methode
 		if (entete.contains("class")) {
+			System.out.println("classe");
 			return BlocParser.decodeClasse(entete, contenu, prefixe);
+		} else if (entete.contains("@interface")) {
+			System.out.println("annotation");
+			return BlocParser.decodeAnnotation(entete, contenu, prefixe);
 		} else if (entete.contains("enum")) {
+			System.out.println("enum");
 			return BlocParser.decodeEnum(entete, contenu, prefixe);
 		} else if (entete.contains("interface")) {
+			System.out.println("interface");
 			return BlocParser.decodeInterface(entete, contenu, prefixe);
 		} else {
+			System.out.println("methode");
 			return BlocParser.decodeMethode(entete, contenu, prefixe);
 		}
 	}
@@ -155,13 +163,30 @@ public abstract class BlocParser {
 				int compteurAccolade = 1;
 				int i = 0;
 				String contenuBloc = "";
+				boolean inString = false;
+				boolean lastCharWasAntiSlash = false;
 				while (compteurAccolade > 0) {
 					char actuel = contenu.charAt(i);
-					if (actuel == '{') {
-						compteurAccolade++;
-					}
-					if (actuel == '}') {
-						compteurAccolade--;
+
+					if (inString) {
+						if (actuel == '\\') {
+							lastCharWasAntiSlash = true;
+						} else if (actuel == '\"' && !lastCharWasAntiSlash) {
+							inString = false;
+						} else {
+							lastCharWasAntiSlash = false;
+						}
+					} else {
+						if (actuel == '\"')
+							inString = true;
+
+						if (actuel == '{') {
+							compteurAccolade++;
+						}
+
+						if (actuel == '}') {
+							compteurAccolade--;
+						}
 					}
 
 					if (compteurAccolade > 0)
@@ -184,13 +209,13 @@ public abstract class BlocParser {
 	private static JavaEnum decodeEnum(String entete, String contenu,
 			int prefixe) {
 		// only public, protected, private & static are permitted
-		return null;
+		return new JavaEnum();
 	}
 
 	private static JavaInterface decodeInterface(String entete, String contenu,
 			int prefixe) {
 		// only public, protected, private, static & abstract are permitted
-		return null;
+		return new JavaInterface();
 	}
 
 	private static JavaMethod decodeMethode(String entete, String contenu,
@@ -289,44 +314,50 @@ public abstract class BlocParser {
 		entete = entete.substring(entete.indexOf("(") + 2,
 				entete.lastIndexOf(")"));
 
-		while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
-			// faut prevoir tous les cas... pas de la tarte
-
-			if (contenu.indexOf(";") < contenu.indexOf("{")) {
-				String defField = contenu.substring(0, contenu.indexOf(";"));
-				InlineParser.decodeLocalVar(defField, prefixe + 1);
-				jm.getLines().add(defField);
-				contenu = contenu.substring(contenu.indexOf(";") + 2);
-
-			} else {
-				String defBloc = contenu.substring(0, contenu.indexOf("{"));
-				contenu = contenu.substring(contenu.indexOf("{") + 2);
-
-				int compteurAccolade = 1;
-				int i = 0;
-				String contenuBloc = "";
-				while (compteurAccolade > 0) {
-					char actuel = contenu.charAt(i);
-					if (actuel == '{') {
-						compteurAccolade++;
-					}
-					if (actuel == '}') {
-						compteurAccolade--;
-					}
-
-					if (compteurAccolade > 0)
-						contenuBloc += actuel;
-					else
-						i++;
-
-					i++;
-				}
-
-				contenu = contenu.substring(i);
-
-			}
-		}
+		// while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
+		// // faut prevoir tous les cas... pas de la tarte
+		//
+		// if (contenu.indexOf(";") < contenu.indexOf("{")) {
+		// String defField = contenu.substring(0, contenu.indexOf(";"));
+		// InlineParser.decodeLocalVar(defField, prefixe + 1);
+		// jm.getLines().add(defField);
+		// contenu = contenu.substring(contenu.indexOf(";") + 2);
+		//
+		// } else {
+		// String defBloc = contenu.substring(0, contenu.indexOf("{"));
+		// contenu = contenu.substring(contenu.indexOf("{") + 2);
+		//
+		// int compteurAccolade = 1;
+		// int i = 0;
+		// String contenuBloc = "";
+		// while (compteurAccolade > 0) {
+		// char actuel = contenu.charAt(i);
+		// if (actuel == '{') {
+		// compteurAccolade++;
+		// }
+		// if (actuel == '}') {
+		// compteurAccolade--;
+		// }
+		//
+		// if (compteurAccolade > 0)
+		// contenuBloc += actuel;
+		// else
+		// i++;
+		//
+		// i++;
+		// }
+		//
+		// contenu = contenu.substring(i);
+		//
+		// }
+		// }
 
 		return jm;
+	}
+
+	private static JavaAnnotation decodeAnnotation(String entete,
+			String contenu, int prefixe) {
+		System.out.println("je suis passé la");
+		return new JavaAnnotation();
 	}
 }

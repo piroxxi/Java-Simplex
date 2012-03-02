@@ -54,7 +54,7 @@ public class Main {
 		// String url = "https://java-simplex.googlecode.com/";
 
 //		 String localURL = GitLoader.loadExternalCode(url);
-		String localURL = "C:\\Users\\Fab\\AppData\\Local\\Temp\\simplex_temp\\4c5baab6-3180-4b6a-b932-c23098ea4488";
+		String localURL = "C:\\Users\\Fab\\AppData\\Local\\Temp\\simplex_temp\\98aaac1c-7d62-4bf5-b384-9c331b94e6e7";
 		if (localURL == null || localURL.isEmpty()) {
 			System.out
 					.println("Echec lors de l'import du dépot distant '"
