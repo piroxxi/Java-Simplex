@@ -6,7 +6,7 @@ import fr.ubourgogne.simplex.model.java.object.JavaEnum;
 import fr.ubourgogne.simplex.model.java.object.JavaInterface;
 import fr.ubourgogne.simplex.storage.exceptions.StorageException;
 
-public class EntityFactoryImpl implements EntityFactory {
+public class EntityFactoryImpl implements EntityFactory{
 
 	private Storage storage;
 
@@ -39,8 +39,8 @@ public class EntityFactoryImpl implements EntityFactory {
 	@Override
 	public JavaAnnotation getJavaAnnotation(String name)
 			throws StorageException {
-		JavaAnnotation annotation = storage.getByName(JavaAnnotation.class,
-				name);
+
+		JavaAnnotation annotation = storage.getByName(JavaAnnotation.class, name);
 		if (annotation == null) {
 			annotation = new JavaAnnotation();
 			annotation.setName(name);
