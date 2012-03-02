@@ -1,5 +1,7 @@
 package fr.ubourgogne.simplex.webapp.client.activities.loading;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,7 +22,6 @@ public class LoadingProjectViewImpl extends Composite implements
 		initWidget(panel);
 	}
 
-	@SuppressWarnings("unused")
 	private Delegate delegate;
 
 	@Override
@@ -32,12 +33,24 @@ public class LoadingProjectViewImpl extends Composite implements
 	public void loadingSuccesFull(String result) {
 		panel.clear();
 		Button arbo = new Button("Afficher l'arborecence du projet");
+		arbo.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				afficherArbo(event);
+			}
+		});
 
 		Label l = new Label();
 		l.getElement().setInnerHTML(
 				SafeHtmlUtils.fromTrustedString(
 						result.replaceAll("\\n", "<br />")).asString());
 		panel.add(l);
+	}
+
+	private void afficherArbo(ClickEvent event) {
+		if (this.delegate != null) {
+			this.delegate.printArborecence();
+		}
 	}
 
 }

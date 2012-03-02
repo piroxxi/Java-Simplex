@@ -4,7 +4,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
-import fr.ubourgogne.simplex.webapp.client.utils.Resources.Favori;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 
 /**
  * Il suffit d'aller sur cette place pour lancer le chargement d'un projet.

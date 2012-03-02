@@ -13,8 +13,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import fr.ubourgogne.simplex.webapp.client.places.LoadProjectPlace;
 import fr.ubourgogne.simplex.webapp.client.places.MainPlace;
-import fr.ubourgogne.simplex.webapp.client.utils.Resources;
-import fr.ubourgogne.simplex.webapp.client.utils.Resources.Favori;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 
 public class MainActivity extends AbstractActivity implements MainView.Delegate {
 	private final MainView view;
@@ -32,11 +32,11 @@ public class MainActivity extends AbstractActivity implements MainView.Delegate 
 	}
 
 	private List<Favori> getFavoris() {
-		String favorisToken = Cookies.getCookie(Resources.FAVORIS);
+		String favorisToken = Cookies.getCookie(Utils.FAVORIS);
 		if (favorisToken == null || favorisToken.isEmpty()) {
 			return null;
 		}
-		return Resources.deserializeFavoris(favorisToken);
+		return Utils.deserializeFavoris(favorisToken);
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class MainActivity extends AbstractActivity implements MainView.Delegate 
 
 		Favori f = new Favori(type, adresse);
 		favoris.add(f);
-		Cookies.setCookie(Resources.FAVORIS,
-				Resources.serializeFavoris(favoris));
+		Cookies.setCookie(Utils.FAVORIS,
+				Utils.serializeFavoris(favoris));
 		goToFavori(f);
 	}
 }

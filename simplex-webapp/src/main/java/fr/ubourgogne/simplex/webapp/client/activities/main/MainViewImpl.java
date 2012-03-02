@@ -17,8 +17,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.ubourgogne.simplex.webapp.client.utils.Resources;
-import fr.ubourgogne.simplex.webapp.client.utils.Resources.Favori;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 
 public class MainViewImpl extends Composite implements MainView {
 	public interface MyUiBinder extends UiBinder<Widget, MainViewImpl> {
@@ -85,13 +85,13 @@ public class MainViewImpl extends Composite implements MainView {
 		if (this.delegate != null && adresse.getValue() != null
 				&& !adresse.getValue().isEmpty()) {
 			if (depotGit.getValue()) {
-				this.delegate.createAndGoFavori(Resources.TYPE_GIT,
+				this.delegate.createAndGoFavori(Utils.TYPE_GIT,
 						adresse.getValue());
 				return;
 			}
 
 			if (depotSvn.getValue()) {
-				this.delegate.createAndGoFavori(Resources.TYPE_SVN,
+				this.delegate.createAndGoFavori(Utils.TYPE_SVN,
 						adresse.getValue());
 				return;
 			}
@@ -100,7 +100,7 @@ public class MainViewImpl extends Composite implements MainView {
 
 	@UiHandler("ourFavori")
 	public void goToOurFavori(ClickEvent event) {
-		goToFavori(new Favori(Resources.TYPE_GIT,
+		goToFavori(new Favori(Utils.TYPE_GIT,
 				"https://code.google.com/p/java-simplex/"));
 	}
 

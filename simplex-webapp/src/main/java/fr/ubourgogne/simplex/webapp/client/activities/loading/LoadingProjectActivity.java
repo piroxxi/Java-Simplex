@@ -8,8 +8,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import fr.ubourgogne.simplex.webapp.client.rpc.OperationCallback;
 import fr.ubourgogne.simplex.webapp.client.rpc.ServiceProvider;
-import fr.ubourgogne.simplex.webapp.client.utils.Resources;
-import fr.ubourgogne.simplex.webapp.client.utils.Resources.Favori;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 
 public class LoadingProjectActivity extends AbstractActivity implements
 		LoadingProjectView.Delegate {
@@ -21,7 +21,7 @@ public class LoadingProjectActivity extends AbstractActivity implements
 			@Assisted Favori favoriToLoad, ServiceProvider serviceProvider) {
 		this.view = view;
 
-		if (favoriToLoad.type.equals(Resources.TYPE_GIT)) {
+		if (favoriToLoad.type.equals(Utils.TYPE_GIT)) {
 			serviceProvider.getSimplexBaseService().loadGitProject(
 					favoriToLoad.adresse, new OperationCallback<String>() {
 						@Override

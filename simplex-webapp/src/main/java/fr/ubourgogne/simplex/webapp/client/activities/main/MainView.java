@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.inject.ImplementedBy;
 
-import fr.ubourgogne.simplex.webapp.client.utils.Resources.Favori;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 import fr.ubourgogne.simplex.webapp.client.utils.view.View;
 
 @ImplementedBy(MainViewImpl.class)

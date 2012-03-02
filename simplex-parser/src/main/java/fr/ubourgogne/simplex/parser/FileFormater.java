@@ -8,10 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.google.inject.Inject;
-
 public class FileFormater {
-
+	public static final String directoryName = "formated";
+	
 	public static final String firstPasseFileName = "commentsErased.code";
 	public static final String secondPasseFileName = "formated.code";
 

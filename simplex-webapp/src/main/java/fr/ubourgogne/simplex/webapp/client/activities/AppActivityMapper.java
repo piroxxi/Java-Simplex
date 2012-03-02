@@ -11,7 +11,7 @@ import fr.ubourgogne.simplex.webapp.client.activities.main.MainActivity;
 import fr.ubourgogne.simplex.webapp.client.places.LoadProjectPlace;
 import fr.ubourgogne.simplex.webapp.client.places.MainPlace;
 import fr.ubourgogne.simplex.webapp.client.places.ObjectPlace;
-import fr.ubourgogne.simplex.webapp.client.utils.Resources.Favori;
+import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 
 /**
  * Classe chargée de renvoyer l'activité qui correspond à la place. Ce grace à
