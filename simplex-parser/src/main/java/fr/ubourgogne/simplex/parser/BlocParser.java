@@ -21,16 +21,16 @@ public abstract class BlocParser {
 
 		// on a soit une classe, soit un enum, soit une interface, soit une
 		// methode
-		if (entete.contains(" class ")) {
+		if (entete.contains(" class ") || entete.startsWith("class")) {
 			System.out.println("classe");
 			return BlocParser.decodeClasse(entete, contenu, prefixe);
-		} else if (entete.contains(" @interface ")) {
+		} else if (entete.contains(" @interface ") || entete.startsWith("@interface")) {
 			System.out.println("annotation");
 			return BlocParser.decodeAnnotation(entete, contenu, prefixe);
-		} else if (entete.contains(" enum ")) {
+		} else if (entete.contains(" enum ") || entete.startsWith("enum")) {
 			System.out.println("enum");
 			return BlocParser.decodeEnum(entete, contenu, prefixe);
-		} else if (entete.contains(" interface ")) {
+		} else if (entete.contains(" interface ") || entete.startsWith("interface")) {
 			System.out.println("interface");
 			return BlocParser.decodeInterface(entete, contenu, prefixe);
 		} else {
