@@ -3,6 +3,7 @@ package fr.ubourgogne.simplex.model.java;
 import java.util.ArrayList;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
+import fr.ubourgogne.simplex.model.java.object.JavaClass;
 
 public class JavaProject extends BasicEntity {
 	private static final long serialVersionUID = 624109605727189878L;
@@ -94,5 +95,9 @@ public class JavaProject extends BasicEntity {
 		return jp.getPackageByFullName(otherChildren);
 
 		// return storage.getByName(JavaPackage.class,name);
+	}
+
+	public void addJavaClass(JavaClass clazz) {
+		//TODO
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.inject.Inject;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
 import fr.ubourgogne.simplex.model.java.entity.JavaVariable;
@@ -21,7 +22,7 @@ public abstract class BlocParser {
 	@Inject
 	private static EntityFactory entityFactory;
 
-	public static JavaEntity decodeBloc(String entete, String contenu,
+	public static JavaEntity decodeBloc(JavaProject project, String entete, String contenu,
 			int prefixe) {
 		for (int i = 0; i < prefixe; i++)
 			System.out.print("\t");
@@ -31,25 +32,25 @@ public abstract class BlocParser {
 		// methode
 		if (entete.contains(" class ") || entete.startsWith("class")) {
 			System.out.println("classe");
-			return BlocParser.decodeClasse(entete, contenu, prefixe);
+			return BlocParser.decodeClasse(project, entete, contenu, prefixe);
 		} else if (entete.contains(" @interface ")
 				|| entete.startsWith("@interface")) {
 			System.out.println("annotation");
 			return BlocParser.decodeAnnotation(entete, contenu, prefixe);
 		} else if (entete.contains(" enum ") || entete.startsWith("enum")) {
 			System.out.println("enum");
-			return BlocParser.decodeEnum(entete, contenu, prefixe);
+			return BlocParser.decodeEnum(project, entete, contenu, prefixe);
 		} else if (entete.contains(" interface ")
 				|| entete.startsWith("interface")) {
 			System.out.println("interface");
-			return BlocParser.decodeInterface(entete, contenu, prefixe);
+			return BlocParser.decodeInterface(project, entete, contenu, prefixe);
 		} else {
 			System.out.println("methode");
-			return BlocParser.decodeMethode(entete, contenu, prefixe);
+			return BlocParser.decodeMethode(project, entete, contenu, prefixe);
 		}
 	}
 
-	private static JavaClass decodeClasse(String entete, String contenu,
+	private static JavaClass decodeClasse(JavaProject project, String entete, String contenu,
 			int prefixe) {
 		// only public, protected, private, static, abstract & final are
 		// permitted
@@ -76,7 +77,8 @@ public abstract class BlocParser {
 		// donc maintenant, on a le nom de la classe
 		String name = entete.substring(0, entete.indexOf(" "));
 		entete = entete.substring(entete.indexOf(" ") + 1);
-		jc = entityFactory.getJavaClass(name);
+		jc = entityFactory.getJavaClass(project, name);
+		project.addJavaClass(jc);
 		jc.setModifiers(modif);
 
 		// la classe peut etre parametrisee
@@ -111,7 +113,7 @@ public abstract class BlocParser {
 			entete = entete.substring(i);
 			params.add(token);
 			for (String s : params ) {
-				JavaParam parametre = InlineParser.decodeParam(s);
+				JavaParam parametre = InlineParser.decodeParam(project, s);
 				jc.getParams().add(parametre);
 			}
 		}
@@ -122,11 +124,11 @@ public abstract class BlocParser {
 					.substring(8, entete.indexOf(" ", 8));
 
 			JavaReferenceClass superClasse = new JavaReferenceClass(
-					entityFactory.getJavaClass(superClasseName));;
+					entityFactory.getJavaClass(project, superClasseName));;
 
 			entete = entete.substring(entete.indexOf(" ", 8) + 1);
 			if (entete.startsWith("<")) {
-				JavaParam jp = InlineParser.decodeParam(entete.substring(2,
+				JavaParam jp = InlineParser.decodeParam(project, entete.substring(2,
 						entete.lastIndexOf(" >")));
 
 				superClasse.getParams().add(jp);
@@ -150,7 +152,7 @@ public abstract class BlocParser {
 					paramDef = interDef.substring(interDef.indexOf("<") + 2,
 							interDef.indexOf(" >"));
 					implementedInterfacesParams.add(InlineParser
-							.decodeParam(paramDef));
+							.decodeParam(project, paramDef));
 					interDef = interDef.substring(0, interDef.indexOf(" <"));
 				}
 
@@ -165,7 +167,7 @@ public abstract class BlocParser {
 				paramDef = interDef.substring(interDef.indexOf("<") + 2,
 						interDef.indexOf(" >"));
 				implementedInterfacesParams.add(InlineParser
-						.decodeParam(paramDef));
+						.decodeParam(project, paramDef));
 				interDef = interDef.substring(0, interDef.indexOf(" <"));
 			}
 
@@ -183,7 +185,7 @@ public abstract class BlocParser {
 				String defField = contenu.substring(0, contenu.indexOf(";"));
 				contenu = contenu.substring(contenu.indexOf(";") + 2);
 
-				JavaVariable tmp = InlineParser.decodeField(defField,
+				JavaVariable tmp = InlineParser.decodeField(project, defField,
 						prefixe + 1);
 				jc.getContent().add(tmp);
 			} else {
@@ -266,7 +268,7 @@ public abstract class BlocParser {
 				// a la volee
 				// on verra plus tard
 				if (!blocSpecial) {
-					JavaEntity tmp = decodeBloc(defBloc, contenuBloc,
+					JavaEntity tmp = decodeBloc(project, defBloc, contenuBloc,
 							prefixe + 1);
 					jc.getContent().add(tmp);
 				}
@@ -275,19 +277,19 @@ public abstract class BlocParser {
 		return jc;
 	}
 
-	private static JavaEnum decodeEnum(String entete, String contenu,
+	private static JavaEnum decodeEnum(JavaProject project, String entete, String contenu,
 			int prefixe) {
 		// only public, protected, private & static are permitted
 		return new JavaEnum();
 	}
 
-	private static JavaInterface decodeInterface(String entete, String contenu,
+	private static JavaInterface decodeInterface(JavaProject project, String entete, String contenu,
 			int prefixe) {
 		// only public, protected, private, static & abstract are permitted
 		return new JavaInterface();
 	}
 
-	private static JavaMethod decodeMethode(String entete, String contenu,
+	private static JavaMethod decodeMethode(JavaProject project, String entete, String contenu,
 			int prefixe) {
 		// only public, protected, private, static, final, abstract,
 		// synchronized & native are permitted
@@ -353,7 +355,7 @@ public abstract class BlocParser {
 			}
 
 			entete = entete.substring(i);
-			parametre = InlineParser.decodeParam(token);
+			parametre = InlineParser.decodeParam(project, token);
 			jm.getParams().add(parametre);
 		}
 
@@ -361,12 +363,12 @@ public abstract class BlocParser {
 		returnTypeName = entete.substring(0, entete.indexOf(" "));
 		entete = entete.substring(entete.indexOf(" ") + 1);
 		if (entete.startsWith("<")) {
-			JavaParam jp = InlineParser.decodeParam(entete.substring(2,
+			JavaParam jp = InlineParser.decodeParam(project, entete.substring(2,
 					entete.lastIndexOf(" >")));
 			jm.getParams().add(jp);
 		}
 		
-		JavaReferenceObject returnType = new JavaReferenceObject(entityFactory.getJavaClass(returnTypeName));
+		JavaReferenceObject returnType = new JavaReferenceObject(entityFactory.getJavaClass(project, returnTypeName));
 		jm.setReturnType(returnType);
 
 		// donc maintenant, on a le nom de la methode

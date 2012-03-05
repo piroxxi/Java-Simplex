@@ -5,7 +5,7 @@ package fr.ubourgogne.simplex.storage.exceptions;
  * 
  * @author POITTEVIN Raphaël
  */
-public class StorageException extends Exception {
+public class StorageException extends RuntimeException {
 	private static final long serialVersionUID = 8086862707683670363L;
 
 	public StorageException() {

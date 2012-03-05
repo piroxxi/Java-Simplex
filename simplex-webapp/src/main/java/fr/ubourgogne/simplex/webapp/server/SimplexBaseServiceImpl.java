@@ -16,7 +16,6 @@ import fr.ubourgogne.simplex.storage.exceptions.StorageException;
 import fr.ubourgogne.simplex.webapp.shared.SimplexBaseService;
 import fr.ubourgogne.simplex.webapp.shared.security.ImpossibleToGetGitRepository;
 import fr.ubourgogne.simplex.webapp.shared.security.SimplexSecurityException;
-import fr.ubourgogne.simplex.webapp.shared.security.StorageExceptionHappenedException;
 
 @SuppressWarnings("serial")
 @Singleton
@@ -54,11 +53,7 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 	public JavaClass getClassByName(String className)
 			throws SimplexSecurityException {
 		System.out.println("[SERVER] getClassByName(" + className + ");");
-		try {
-			return storage.getByName(JavaClass.class, className);
-		} catch (StorageException e) {
-			throw new StorageExceptionHappenedException(e);
-		}
+		return storage.getByName(JavaClass.class, className);
 	}
 
 	@Override

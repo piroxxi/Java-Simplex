@@ -1,5 +1,6 @@
 package fr.ubourgogne.simplex.storage;
 
+import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaAnnotation;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.model.java.object.JavaEnum;
@@ -15,7 +16,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaClass getJavaClass(String name) {
+	public JavaClass getJavaClass(JavaProject project, String name) {
 		JavaClass clazz = storage.getByName(JavaClass.class, name);
 		if (clazz == null) {
 			clazz = new JavaClass();
@@ -26,7 +27,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaInterface getJavaInterface(String name) {
+	public JavaInterface getJavaInterface(JavaProject project, String name) {
 		JavaInterface interfaze = storage.getByName(JavaInterface.class, name);
 		if (interfaze == null) {
 			interfaze = new JavaInterface();
@@ -37,7 +38,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaAnnotation getJavaAnnotation(String name)
+	public JavaAnnotation getJavaAnnotation(JavaProject project, String name)
 			throws StorageException {
 
 		JavaAnnotation annotation = storage.getByName(JavaAnnotation.class, name);
@@ -50,7 +51,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaEnum getJavaEnum(String name) {
+	public JavaEnum getJavaEnum(JavaProject project, String name) {
 		JavaEnum enumz = storage.getByName(JavaEnum.class, name);
 		if (enumz == null) {
 			enumz = new JavaEnum();

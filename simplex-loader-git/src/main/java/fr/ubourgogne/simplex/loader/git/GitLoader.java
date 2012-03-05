@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
-import java.util.UUID;
 
 import org.eclipse.jgit.api.CloneCommand;
 
@@ -21,8 +20,8 @@ public class GitLoader {
 	 * @return L'url en locale de l'endroit ou le dépot distant à été chargé.
 	 * @throws IOException
 	 */
-	public static String loadExternalCode(String url){
-		String id = UUID.randomUUID().toString();
+	public static String loadExternalCode(String url, String id){
+
 		String date = new Date().getTime() + "";
 
 		CloneCommand commande = new CloneCommand();

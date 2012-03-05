@@ -4,13 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-	/**
-	 * <p>
-	 * A la suite d'un très mauvais merge, le code suivant c'est perdu... a
-	 * modifier dès que possible.
-	 * <p>
-	 */
-
 	public static final String TYPE_GIT = "git";
 	public static final String TYPE_SVN = "svn";
 

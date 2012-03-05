@@ -1,5 +1,6 @@
 package fr.ubourgogne.simplex.storage;
 
+import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaAnnotation;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.model.java.object.JavaEnum;
@@ -21,12 +22,12 @@ public interface EntityFactory {
 	 * @return
 	 * @throws StorageException
 	 */
-	public JavaClass getJavaClass(String name);
+	public JavaClass getJavaClass(JavaProject project, String name);
 
-	public JavaInterface getJavaInterface(String name);
+	public JavaInterface getJavaInterface(JavaProject project, String name);
 
-	public JavaAnnotation getJavaAnnotation(String name)
+	public JavaAnnotation getJavaAnnotation(JavaProject project, String name)
 			throws StorageException;
 
-	public JavaEnum getJavaEnum(String name);
+	public JavaEnum getJavaEnum(JavaProject project, String name);
 }

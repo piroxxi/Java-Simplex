@@ -3,12 +3,15 @@ package fr.ubourgogne.simplex.parser;
 import java.util.ArrayList;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
+import fr.ubourgogne.simplex.model.java.JavaProject;
 
 public class FileParser {
 	private String formatedBaseText;
 	private JavaObject representedObject;
+	private JavaProject project;
 
-	public FileParser(String s) {
+	public FileParser(JavaProject project, String s) {
+		this.project = project;
 		formatedBaseText = s;
 	}
 
@@ -58,7 +61,7 @@ public class FileParser {
 		String defClasse = code.substring(0, code.indexOf("{"));
 		code = code.substring(code.indexOf("{") + 2, code.lastIndexOf("}"));
 
-		representedObject = (JavaObject) BlocParser.decodeBloc(defClasse, code,
+		representedObject = (JavaObject) BlocParser.decodeBloc(project, defClasse, code,
 				0);
 		representedObject.setPackage(ppackage);
 		representedObject.setImports(imports);

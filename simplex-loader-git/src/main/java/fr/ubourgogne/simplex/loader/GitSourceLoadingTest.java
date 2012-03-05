@@ -2,6 +2,7 @@ package fr.ubourgogne.simplex.loader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import fr.ubourgogne.simplex.loader.git.GitLoader;
 
@@ -11,10 +12,11 @@ public class GitSourceLoadingTest {
 		FileUtils.clearLocalTemporaryDir(5 * FileUtils.MINUTE + 15
 				* FileUtils.SECONDE);
 
+		final String id = UUID.randomUUID().toString();
 		final String url = "https://code.google.com/p/java-simplex";
 		// String url = "https://java-simplex.googlecode.com/";
 
-		String localURL = GitLoader.loadExternalCode(url);
+		String localURL = GitLoader.loadExternalCode(url,id);
 		if (localURL == null || localURL.isEmpty()) {
 			System.out
 					.println("Echec lors de l'import du dépot distant '"

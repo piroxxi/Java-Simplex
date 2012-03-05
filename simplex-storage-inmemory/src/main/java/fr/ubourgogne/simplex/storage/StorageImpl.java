@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
 import fr.ubourgogne.simplex.model.java.JavaEntity;
+import fr.ubourgogne.simplex.storage.exceptions.VersionObsoletException;
 
 public class StorageImpl implements Storage {
 
@@ -40,14 +41,13 @@ public class StorageImpl implements Storage {
 			E inStoreEntity = collection.get(entity.getId());
 			if (inStoreEntity != null) {
 				if (entity.getVersion() < inStoreEntity.getVersion()) {
-					// TODO
-					// throw new VersionObsoletException(
-					// "L'entité "
-					// + entity.getId()
-					// + " que vous tentez de sauvegarder est en version "
-					// + entity.getVersion()
-					// + " tandis que cette entité existe déjà en version "
-					// + inStoreEntity.getVersion());
+					throw new VersionObsoletException(
+							"L'entité "
+									+ entity.getId()
+									+ " que vous tentez de sauvegarder est en version "
+									+ entity.getVersion()
+									+ " tandis que cette entité existe déjà en version "
+									+ inStoreEntity.getVersion());
 				}
 				entity.setVersion(entity.getVersion() + 1);
 			}

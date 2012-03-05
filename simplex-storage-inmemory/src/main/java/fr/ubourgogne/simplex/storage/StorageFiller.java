@@ -1,5 +1,8 @@
 package fr.ubourgogne.simplex.storage;
 
+import java.util.UUID;
+
+import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
 import fr.ubourgogne.simplex.model.java.entity.JavaSimpleType;
@@ -14,7 +17,8 @@ import fr.ubourgogne.simplex.storage.exceptions.StorageException;
 public class StorageFiller {
 	public static void fillStorage(Storage storage, EntityFactory entityFactory)
 			throws StorageException {
-		JavaClass class2 = entityFactory.getJavaClass("Class2");
+		JavaProject project = new JavaProject(UUID.randomUUID().toString());
+		JavaClass class2 = entityFactory.getJavaClass(project, "Class2");
 		class2.setModifiers("public");
 		{
 			JavaMethod methodeD = new JavaMethod("public static",
@@ -27,18 +31,20 @@ public class StorageFiller {
 		}
 		storage.store(class2);
 
-		JavaClass superClass = entityFactory.getJavaClass("SuperClass");
+		JavaClass superClass = entityFactory
+				.getJavaClass(project, "SuperClass");
 		superClass.setModifiers("public");
 		superClass.getParams().add(
 				new JavaParam("V", new JavaReferenceClass(class2,
 						new JavaParam("", new JavaReferenceClass(entityFactory
-								.getJavaClass("String"))))));
+								.getJavaClass(project, "String"))))));
 		storage.store(superClass);
 
-		JavaInterface interface1 = entityFactory.getJavaInterface("Interface1");
+		JavaInterface interface1 = entityFactory.getJavaInterface(project,
+				"Interface1");
 		storage.store(interface1);
 
-		JavaClass class1 = entityFactory.getJavaClass("Class1");
+		JavaClass class1 = entityFactory.getJavaClass(project, "Class1");
 		class1.setModifiers("public");
 		class1.setPackage("fr.ubourgogne.simplex.model.java.entity.Class1");
 		class1.getImports().add("java.util.List");
@@ -51,19 +57,19 @@ public class StorageFiller {
 		class1.getImports().add(
 				"fr.ubourgogne.simplex.model.java.object.JavaInterface");
 		class1.setSuperClass(new JavaReferenceClass(superClass, new JavaParam(
-				"",
-				new JavaReferenceClass(entityFactory.getJavaClass("String")))));
+				"", new JavaReferenceClass(entityFactory.getJavaClass(project,
+						"String")))));
 		class1.getImplementedInterfaces().add(
 				new JavaReferenceInterface(interface1));
 		class1.getParams().add(
 				new JavaParam("T", new JavaReferenceClass(class2,
 						new JavaParam(new JavaReferenceObject(entityFactory
-								.getJavaClass("List"), new JavaParam(
+								.getJavaClass(project, "List"), new JavaParam(
 								new JavaReferenceObject(entityFactory
-										.getJavaClass("String"))))))));
+										.getJavaClass(project, "String"))))))));
 		storage.store(class1);
 
-		JavaClass class3 = entityFactory.getJavaClass("Class3");
+		JavaClass class3 = entityFactory.getJavaClass(project, "Class3");
 		class3.setModifiers("public");
 		storage.store(class3);
 
@@ -78,9 +84,9 @@ public class StorageFiller {
 				new JavaVariable("par2", new JavaReferenceClass(class1)));
 		methode1.getVarParams().add(
 				new JavaVariable("id", new JavaReferenceClass(entityFactory
-						.getJavaClass("List"), new JavaParam(
-						new JavaReferenceObject(entityFactory
-								.getJavaClass("String"))))));
+						.getJavaClass(project, "List"), new JavaParam(
+						new JavaReferenceObject(entityFactory.getJavaClass(
+								project, "String"))))));
 		methode1.setRawCode(
 				"System.out.println(\"Appel à la méthode \\\"methode1\\\" .\");",
 				"parametre.fonction(\"toto\");", "return null;");
@@ -130,7 +136,7 @@ public class StorageFiller {
 				"getClass1");
 		methode5.getVarParams().add(
 				new JavaVariable("id", new JavaReferenceObject(entityFactory
-						.getJavaClass("String"))));
+						.getJavaClass(project, "String"))));
 		methode5.setReturnType(new JavaReferenceObject(class1));
 		methode5.setRawCode("return new Class1(id);");
 		storage.store(methode5);
