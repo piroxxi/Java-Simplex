@@ -12,8 +12,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import fr.ubourgogne.simplex.loader.FileUtils;
-import fr.ubourgogne.simplex.loader.git.GitLoader;
-
+import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.storage.EntityFactory;
 import fr.ubourgogne.simplex.storage.EntityFactoryImpl;
 import fr.ubourgogne.simplex.storage.Storage;
@@ -21,11 +20,16 @@ import fr.ubourgogne.simplex.storage.StorageImpl;
 
 public class Main {
 	private final Provider<FileFormater> formaterProvider;
+	private Storage storage;
+	private JavaProject projet;
 
 	public static void main(String[] args) {
 		Injector injector = Guice.createInjector(new AbstractModule() {
 			@Override
 			protected void configure() {
+				requestStaticInjection(BlocParser.class);
+				requestStaticInjection(InlineParser.class);
+				
 				bind(Storage.class).to(StorageImpl.class).in(Singleton.class);
 			}
 
@@ -38,7 +42,7 @@ public class Main {
 		});
 
 		Main m = injector.getInstance(Main.class);
-		m.start();
+		m.test();
 	}
 
 	@Inject
@@ -46,14 +50,25 @@ public class Main {
 		this.formaterProvider = formaterProvider;
 	}
 	
-	public void start(){
+	public void test() {
+		File testClass = new File("sample/sampleclass.java");
+		FileFormater ff = formaterProvider.get();
+		ff.setFile(testClass);
+
+		String formated = ff.format();
+		FileParser fp = new FileParser(formated);
+
+		fp.retrieveClassInfos();
+	}
+
+	public void start() {
 		// FileUtils.clearLocalTemporaryDir(5 * FileUtils.MINUTE + 15
 		// * FileUtils.SECONDE);
 
 		final String url = "https://code.google.com/p/java-simplex";
 		// String url = "https://java-simplex.googlecode.com/";
 
-//		 String localURL = GitLoader.loadExternalCode(url);
+		// String localURL = GitLoader.loadExternalCode(url);
 		String localURL = "C:\\Users\\Fab\\AppData\\Local\\Temp\\simplex_temp\\ba2a7fe5-7c1b-4569-9d6f-2d8adc7c3fa1";
 
 		if (localURL == null || localURL.isEmpty()) {
@@ -74,6 +89,7 @@ public class Main {
 		 */
 		List<File> files = FileUtils.getJavaFiles(localRepo);
 		for (File f : files) {
+			System.out.println("---------------------------------------------------------------------\n");
 			System.out.println("le file " + f
 					+ " est un fichier java. on le parse.");
 			FileFormater ff = formaterProvider.get();
@@ -83,8 +99,11 @@ public class Main {
 			FileParser fp = new FileParser(formated);
 
 			fp.retrieveClassInfos();
+			
+			//TODO
+			//projet.add(fp.getRepresentedObject());
 
 		}
-//		FileUtils.deleteRecursively(localRepo);
+		// FileUtils.deleteRecursively(localRepo);
 	}
 }

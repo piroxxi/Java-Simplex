@@ -15,7 +15,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaClass getJavaClass(String name) throws StorageException {
+	public JavaClass getJavaClass(String name) {
 		JavaClass clazz = storage.getByName(JavaClass.class, name);
 		if (clazz == null) {
 			clazz = new JavaClass();
@@ -26,7 +26,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaInterface getJavaInterface(String name) throws StorageException {
+	public JavaInterface getJavaInterface(String name) {
 		JavaInterface interfaze = storage.getByName(JavaInterface.class, name);
 		if (interfaze == null) {
 			interfaze = new JavaInterface();
@@ -50,7 +50,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public JavaEnum getJavaEnum(String name) throws StorageException {
+	public JavaEnum getJavaEnum(String name) {
 		JavaEnum enumz = storage.getByName(JavaEnum.class, name);
 		if (enumz == null) {
 			enumz = new JavaEnum();

@@ -10,6 +10,7 @@ public class JavaVariable extends JavaEntity {
 	// private String name; //=> existe déja pour toutes les entitées
 	private String modifiers = "";
 	private String allocation = "";
+	private String defaultValue = "";
 
 	public JavaVariable() {
 		super();
@@ -22,7 +23,7 @@ public class JavaVariable extends JavaEntity {
 
 	public JavaVariable(String modifiers, String name, JavaReferenceObject type) {
 		super(name);
-		this.modifiers = modifiers;
+		this.setModifiers(modifiers);
 		this.type = type;
 	}
 
@@ -44,13 +45,29 @@ public class JavaVariable extends JavaEntity {
 
 	@Override
 	public String print(String prefix) {
-		return prefix + ((!modifiers.isEmpty()) ? modifiers + " " : "")
+		return prefix + ((!getModifiers().isEmpty()) ? getModifiers() + " " : "")
 				+ type.print() + " " + getName()
 				+ ((!allocation.isEmpty()) ? " = " + allocation : "") + ";\n";
 	}
 
 	public String printAsParamFonction() {
-		return ((modifiers.indexOf("final") != -1) ? "final " : "")
+		return ((getModifiers().indexOf("final") != -1) ? "final " : "")
 				+ type.print() + " " + getName();
+	}
+
+	public String getModifiers() {
+		return modifiers;
+	}
+
+	public void setModifiers(String modifiers) {
+		this.modifiers = modifiers;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 }

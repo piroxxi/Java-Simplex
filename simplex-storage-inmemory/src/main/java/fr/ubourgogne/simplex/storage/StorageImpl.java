@@ -8,8 +8,6 @@ import java.util.UUID;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
 import fr.ubourgogne.simplex.model.java.JavaEntity;
-import fr.ubourgogne.simplex.storage.exceptions.StorageException;
-import fr.ubourgogne.simplex.storage.exceptions.VersionObsoletException;
 
 public class StorageImpl implements Storage {
 
@@ -21,7 +19,7 @@ public class StorageImpl implements Storage {
 	}
 
 	@Override
-	public <E extends BasicEntity> void store(E entity) throws StorageException {
+	public <E extends BasicEntity> void store(E entity) {
 		System.out.println("[STORAGE] Sauvegarde de l'entité " + entity.getId()
 				+ "(" + entity.getClass().getSimpleName() + ": v"
 				+ entity.getVersion() + ")");
@@ -42,13 +40,14 @@ public class StorageImpl implements Storage {
 			E inStoreEntity = collection.get(entity.getId());
 			if (inStoreEntity != null) {
 				if (entity.getVersion() < inStoreEntity.getVersion()) {
-					throw new VersionObsoletException(
-							"L'entité "
-									+ entity.getId()
-									+ " que vous tentez de sauvegarder est en version "
-									+ entity.getVersion()
-									+ " tandis que cette entité existe déjà en version "
-									+ inStoreEntity.getVersion());
+					// TODO
+					// throw new VersionObsoletException(
+					// "L'entité "
+					// + entity.getId()
+					// + " que vous tentez de sauvegarder est en version "
+					// + entity.getVersion()
+					// + " tandis que cette entité existe déjà en version "
+					// + inStoreEntity.getVersion());
 				}
 				entity.setVersion(entity.getVersion() + 1);
 			}
@@ -58,8 +57,7 @@ public class StorageImpl implements Storage {
 	}
 
 	@Override
-	public <E extends BasicEntity> E get(Class<E> clazz, String id)
-			throws StorageException {
+	public <E extends BasicEntity> E get(Class<E> clazz, String id) {
 		System.out.println("[STORAGE] Recupération de l'entité " + id + "("
 				+ clazz.getSimpleName() + ")");
 		@SuppressWarnings("unchecked")
@@ -71,8 +69,7 @@ public class StorageImpl implements Storage {
 	}
 
 	@Override
-	public <E extends BasicEntity> E getByName(Class<E> clazz, String name)
-			throws StorageException {
+	public <E extends BasicEntity> E getByName(Class<E> clazz, String name) {
 		System.out.println("[STORAGE] Recupération de l'entité par le nom"
 				+ name + "(" + clazz.getSimpleName() + ")");
 		if (name == null) {
@@ -97,8 +94,7 @@ public class StorageImpl implements Storage {
 	}
 
 	@Override
-	public <E extends BasicEntity> void remove(Class<E> clazz, String id)
-			throws StorageException {
+	public <E extends BasicEntity> void remove(Class<E> clazz, String id) {
 		System.out.println("[STORAGE] Suppression de l'entité " + id + "("
 				+ clazz.getSimpleName() + ")");
 		@SuppressWarnings("unchecked")

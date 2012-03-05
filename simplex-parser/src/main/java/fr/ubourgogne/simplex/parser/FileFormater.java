@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class FileFormater {
 	public static final String directoryName = "formated";
-	
 	public static final String firstPasseFileName = "commentsErased.code";
 	public static final String secondPasseFileName = "formated.code";
 

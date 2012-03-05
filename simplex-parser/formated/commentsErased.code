@@ -1,14 +1,103 @@
-package fr.ubourgogne.simplex.webapp.shared;
+﻿package fr.ubourgogne.simplex.model.sample;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import fr.ubourgogne.simplex.model.java.object.JavaClass;
+import fr.ubourgogne.simplex.model.sample.other.pack.TotalyUselessClassButNotInTheSamePackage;
+import fr.ubourgogne.simplex.model.sample.other.pack.TotalyUselessClassButNotInTheSamePackage2;
 
-public interface SimplexBaseServiceAsync {
-	void welcome(String accountId, AsyncCallback<Void> callback);
 
-	void getClassByName(String className, AsyncCallback<JavaClass> callback);
+public class SampleClass<F extends HashMap<Integer,List<String>>> extends SampleParentClass<String> implements
+		SampleInterface<String> {
 
-	void loadGitProject(String type, AsyncCallback<String> callback);
+	
 
+	public class T {
+		
+		public void methode() {
+			new TotalyUselessClassButNotInTheSamePackage();
+		}
+
+		
+		
+		public void methode2(String t) {
+			new TotalyUselessClassButNotInTheSamePackage2();
+			new TG().ouiBonCaArriveRarementMaisQuandMeme();
+		}
+
+		
+		public void methode3(String t) {
+			new TotalyUselessClassButNotInTheSamePackage2();
+			new TG().ouiBonCaArriveRarementMaisQuandMeme();
+		}
+
+		public class TG extends T implements SampleInterface<Integer>{
+			
+			private void ouiBonCaArriveRarementMaisQuandMeme() {
+
+			}
+
+			public Integer inheritedMethodeWitoutCommentButAStringReturnType() {
+				return 3959;
+			}
+		}
+
+		public final void qsf(String toto) {
+
+		}
+	}
+
+	public enum SampleEnum {
+		QSFLKj, QSFqsk, fqf
+	}
+
+	
+	private final String fieldToto = "";
+	private String justAnotherField;
+
+	public static final String encoreUnAutreField = "encoreUnAutreField";
+
+	private String fieldTiti;
+
+	
+	
+	public SampleClass() {
+
+	}
+
+	public SampleClass(String fqsf) {
+		new List();
+		for (String s : new String[] { "a", "b", "c", "d", "e", "f", "g" }) {
+			System.out.println(" " + s + " =>");
+		}
+	}
+
+	public SampleClass(String fqsf, String qsf) {
+		new ArrayList<String>();
+		for (int i = 0; i < 200; i++) {
+			System.out.println("" + Math.random()
+					+ "qsfmlqskfjqmlskfjqmslfkjqsmf => " + justAnotherField);
+		}
+	}
+
+	
+	public static void methodeWithCommentAndThatIsStatic() {
+		System.out.println("test");
+		Map<String, String> map = new HashMap<String, String>();
+		System.out.println(map);
+	}
+
+	public void methodeWitoutComment(String pp, String t) {
+		System.out.println("qfglmkqjsf");
+		System.out.println(fieldTiti);
+	}
+
+	public String inheritedMethodeWitoutCommentButAStringReturnType() {
+		String toto = fieldToto;
+		justAnotherField = "";
+		System.out.println(toto);
+		return "";
+	}
 }

@@ -21,12 +21,12 @@ public interface EntityFactory {
 	 * @return
 	 * @throws StorageException
 	 */
-	public JavaClass getJavaClass(String name) throws StorageException;
+	public JavaClass getJavaClass(String name);
 
-	public JavaInterface getJavaInterface(String name) throws StorageException;
+	public JavaInterface getJavaInterface(String name);
 
 	public JavaAnnotation getJavaAnnotation(String name)
 			throws StorageException;
 
-	public JavaEnum getJavaEnum(String name) throws StorageException;
+	public JavaEnum getJavaEnum(String name);
 }

@@ -2,16 +2,24 @@ package fr.ubourgogne.simplex.parser;
 
 import java.util.ArrayList;
 
+import com.google.inject.Inject;
+
 import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
 import fr.ubourgogne.simplex.model.java.entity.JavaVariable;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceClass;
+import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 import fr.ubourgogne.simplex.model.java.object.JavaAnnotation;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.model.java.object.JavaEnum;
 import fr.ubourgogne.simplex.model.java.object.JavaInterface;
+import fr.ubourgogne.simplex.storage.EntityFactory;
 
 public abstract class BlocParser {
+
+	@Inject
+	private static EntityFactory entityFactory;
 
 	public static JavaEntity decodeBloc(String entete, String contenu,
 			int prefixe) {
@@ -24,13 +32,15 @@ public abstract class BlocParser {
 		if (entete.contains(" class ") || entete.startsWith("class")) {
 			System.out.println("classe");
 			return BlocParser.decodeClasse(entete, contenu, prefixe);
-		} else if (entete.contains(" @interface ") || entete.startsWith("@interface")) {
+		} else if (entete.contains(" @interface ")
+				|| entete.startsWith("@interface")) {
 			System.out.println("annotation");
 			return BlocParser.decodeAnnotation(entete, contenu, prefixe);
 		} else if (entete.contains(" enum ") || entete.startsWith("enum")) {
 			System.out.println("enum");
 			return BlocParser.decodeEnum(entete, contenu, prefixe);
-		} else if (entete.contains(" interface ") || entete.startsWith("interface")) {
+		} else if (entete.contains(" interface ")
+				|| entete.startsWith("interface")) {
 			System.out.println("interface");
 			return BlocParser.decodeInterface(entete, contenu, prefixe);
 		} else {
@@ -43,16 +53,14 @@ public abstract class BlocParser {
 			int prefixe) {
 		// only public, protected, private, static, abstract & final are
 		// permitted
-		JavaClass jc = new JavaClass();
 
-		ArrayList<String> implementedInterfaces = null;
-		ArrayList<String> implementedInterfacesParams = null;
+		JavaClass jc;
 
+		String modif = "";
 		boolean classKeyWordFound = false;
 		while (!classKeyWordFound) {
 			String token = entete.substring(0, entete.indexOf(" "));
 			entete = entete.substring(entete.indexOf(" ") + 1);
-			String modif = "";
 
 			if (token.equals("public")) {
 				modif += "public ";
@@ -62,18 +70,18 @@ public abstract class BlocParser {
 				modif += "final ";
 			} else if (token.equals("class")) {
 				classKeyWordFound = true;
-				jc.setModifiers(modif.substring(0,
-						Math.max(modif.length() - 1, 0)));
 			}
 		}
 
 		// donc maintenant, on a le nom de la classe
 		String name = entete.substring(0, entete.indexOf(" "));
 		entete = entete.substring(entete.indexOf(" ") + 1);
-		jc.setName(name);
+		jc = entityFactory.getJavaClass(name);
+		jc.setModifiers(modif);
 
 		// la classe peut etre parametrisee
 
+		ArrayList<String> params = new ArrayList<String>();
 		if (entete.startsWith("<")) {
 			int compteurInf = 1;
 			int i = 2;
@@ -86,6 +94,12 @@ public abstract class BlocParser {
 				if (actuel == '>') {
 					compteurInf--;
 				}
+				
+				if (compteurInf == 1 && actuel==',') {
+					params.add(token.substring(0));
+					token="";
+					i++;
+				}
 
 				if (compteurInf > 0)
 					token += actuel;
@@ -95,58 +109,74 @@ public abstract class BlocParser {
 			}
 
 			entete = entete.substring(i);
-			JavaParam parametre = InlineParser.decodeParam(token);
-			jc.getParams().add(parametre);
+			params.add(token);
+			for (String s : params ) {
+				JavaParam parametre = InlineParser.decodeParam(s);
+				jc.getParams().add(parametre);
+			}
 		}
 
 		// eventuellement un extends
 		if (entete.startsWith("extends")) {
-			String superClasse = entete.substring(8, entete.indexOf(" ", 8));
+			String superClasseName = entete
+					.substring(8, entete.indexOf(" ", 8));
+
+			JavaReferenceClass superClasse = new JavaReferenceClass(
+					entityFactory.getJavaClass(superClasseName));;
+
 			entete = entete.substring(entete.indexOf(" ", 8) + 1);
 			if (entete.startsWith("<")) {
 				JavaParam jp = InlineParser.decodeParam(entete.substring(2,
 						entete.lastIndexOf(" >")));
-				// TODO
-				// superclasse.setParam(jp);
+
+				superClasse.getParams().add(jp);
 			}
-			// TODO
-			// jc.setSuperClass(superClasse);
+			jc.setSuperClass(superClasse);
 		}
 
+		ArrayList<String> implementedInterfaces = null;
+		ArrayList<JavaParam> implementedInterfacesParams = null;
 		// eventuellement un implements
 		if (entete.startsWith("implements")) {
 			implementedInterfaces = new ArrayList<String>();
-			implementedInterfacesParams = new ArrayList<String>();
+			// implementedInterfaces = new ArrayList<JavaInterface>();
+			implementedInterfacesParams = new ArrayList<JavaParam>();
 			entete = entete.substring(11);
 
 			while (entete.indexOf(",") != -1) {
-				String inter = entete.substring(0, entete.indexOf(" ,"));
-				String param = null;
-				if (inter.contains("<")) {
-					param = inter.substring(inter.indexOf("<") + 2,
-							inter.indexOf(" >"));
-					inter = inter.substring(0, inter.indexOf(" <"));
+				String interDef = entete.substring(0, entete.indexOf(" ,"));
+				String paramDef = null;
+				if (interDef.contains("<")) {
+					paramDef = interDef.substring(interDef.indexOf("<") + 2,
+							interDef.indexOf(" >"));
+					implementedInterfacesParams.add(InlineParser
+							.decodeParam(paramDef));
+					interDef = interDef.substring(0, interDef.indexOf(" <"));
 				}
 
-				implementedInterfaces.add(inter);
-				implementedInterfacesParams.add(param);
+				implementedInterfaces.add(interDef);
+				// implementedInterfaces.add(storage.getByName(JavaInterface.class,interDef);
 				entete = entete.substring(entete.indexOf(",") + 2);
 			}
 
-			String inter = entete.substring(0, entete.lastIndexOf(" "));
-			String param = null;
-			if (inter.contains("<")) {
-				param = inter.substring(inter.indexOf("<") + 2,
-						inter.indexOf(" >"));
-				inter = inter.substring(0, inter.indexOf(" <"));
+			String interDef = entete.substring(0, entete.lastIndexOf(" "));
+			String paramDef = null;
+			if (interDef.contains("<")) {
+				paramDef = interDef.substring(interDef.indexOf("<") + 2,
+						interDef.indexOf(" >"));
+				implementedInterfacesParams.add(InlineParser
+						.decodeParam(paramDef));
+				interDef = interDef.substring(0, interDef.indexOf(" <"));
 			}
 
-			implementedInterfaces.add(inter);
-			implementedInterfacesParams.add(param);
+			implementedInterfaces.add(interDef);
+			// implementedInterfaces.add(storage.getByName(JavaInterface.class,interDef);
+			entete = entete.substring(entete.indexOf(",") + 2);
 		}
 
 		while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
-			// soit on a un bloc (methode, classe imbriquee...), soit un field
+			// soit on a un bloc (methode, classe imbriquee...), soit un
+			// field
 
 			// cas du field
 			if (contenu.indexOf(";") < contenu.indexOf("{")) {
@@ -165,7 +195,7 @@ public abstract class BlocParser {
 				String contenuBloc = "";
 				boolean inString = false;
 				boolean lastCharWasAntiSlash = false;
-				System.out.println(compteurAccolade);
+				// System.out.println(compteurAccolade);
 				while (compteurAccolade > 0) {
 					char actuel = contenu.charAt(i);
 
@@ -198,12 +228,10 @@ public abstract class BlocParser {
 
 						if (actuel == '{') {
 							compteurAccolade++;
-							System.out.println(compteurAccolade);
 						}
 
 						if (actuel == '}') {
 							compteurAccolade--;
-							System.out.println(compteurAccolade);
 						}
 
 						if (actuel == '\\') {
@@ -233,7 +261,8 @@ public abstract class BlocParser {
 
 				contenu = contenu.substring(i);
 
-				// a priori, ca peut etre par exemple une declaration de tableau
+				// a priori, ca peut etre par exemple une declaration de
+				// tableau
 				// a la volee
 				// on verra plus tard
 				if (!blocSpecial) {
@@ -263,18 +292,18 @@ public abstract class BlocParser {
 		// only public, protected, private, static, final, abstract,
 		// synchronized & native are permitted
 		JavaMethod jm = new JavaMethod();
+		// JavaMethod jm;
 
 		String name = null;
-		String returnType = null;
+		String returnTypeName = null;
 		JavaParam parametre = null;
-
+		String modif = "";
 		// la on a pas vraiment de keyword a trouver, mais on s'arrete quand
 		// on
 		// trouve un mot qui n'est pas un mot clef en fait...
 		boolean classKeyWordFound = false;
 		while (!classKeyWordFound) {
 			String token = entete.substring(0, entete.indexOf(" "));
-			String modif = "";
 
 			if (token.equals("public")) {
 				modif += "public ";
@@ -329,31 +358,34 @@ public abstract class BlocParser {
 		}
 
 		// maintenant on a le type de retour
-		returnType = entete.substring(0, entete.indexOf(" "));
+		returnTypeName = entete.substring(0, entete.indexOf(" "));
 		entete = entete.substring(entete.indexOf(" ") + 1);
 		if (entete.startsWith("<")) {
 			JavaParam jp = InlineParser.decodeParam(entete.substring(2,
 					entete.lastIndexOf(" >")));
-			// TODO
-			// superclasse.setParam(jp);
+			jm.getParams().add(jp);
 		}
-		// TODO
-		// jm.setReturnType(returnType);
+		
+		JavaReferenceObject returnType = new JavaReferenceObject(entityFactory.getJavaClass(returnTypeName));
+		jm.setReturnType(returnType);
 
 		// donc maintenant, on a le nom de la methode
 		name = entete.substring(0, entete.indexOf(" "));
 		if (name.equals("(")) {
 			// on a un constructeur, donc le nom est le token d'avant
-			name = returnType;
+			name = returnTypeName;
 		} else {
 			entete = entete.substring(entete.indexOf(" ") + 1);
 		}
 		jm.setName(name);
 
+		// TODO
 		// et enfin, on a les parametres
 		entete = entete.substring(entete.indexOf("(") + 2,
 				entete.lastIndexOf(")"));
 
+		// TODO aussi, mais plus complique...
+		// faudrait au moins appeler jm.getLines.add(),
 		// while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
 		// // faut prevoir tous les cas... pas de la tarte
 		//
@@ -397,7 +429,6 @@ public abstract class BlocParser {
 
 	private static JavaAnnotation decodeAnnotation(String entete,
 			String contenu, int prefixe) {
-		System.out.println("je suis passé la");
 		return new JavaAnnotation();
 	}
 }

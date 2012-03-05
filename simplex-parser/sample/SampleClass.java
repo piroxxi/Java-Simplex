@@ -1,4 +1,4 @@
-package fr.ubourgogne.simplex.model.sample;
+﻿package fr.ubourgogne.simplex.model.sample;
 
 import java.awt.List;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import fr.ubourgogne.simplex.model.sample.other.pack.TotalyUselessClassButNotInT
  * 
  */
 @SampleAnnotation
-public class SampleClass<F> extends SampleParentClass implements
+public class SampleClass<F extends HashMap<Integer,List<String>>> extends SampleParentClass<String> implements
 		SampleInterface<String> {
 
 	/**
@@ -24,6 +24,7 @@ public class SampleClass<F> extends SampleParentClass implements
 	 * @author Chloé
 	 * 
 	 */
+
 	public class T {
 		/**
 		 * This is sparta! (comment pour la méthode methode() de la sous class
