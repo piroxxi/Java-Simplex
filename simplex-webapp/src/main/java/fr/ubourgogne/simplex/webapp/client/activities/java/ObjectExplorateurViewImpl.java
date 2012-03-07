@@ -12,9 +12,10 @@ import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.ArrowGestionnary;
 import fr.ubourgogne.simplex.webapp.client.utils.java.JavaClassPanel;
+import fr.ubourgogne.simplex.webapp.client.utils.java.ObjectLinkDelegate;
 
 public class ObjectExplorateurViewImpl extends Composite implements
-		ObjectExplorateurView {
+		ObjectExplorateurView, ObjectLinkDelegate {
 	public interface MyUiBinder extends
 			UiBinder<Widget, ObjectExplorateurViewImpl> {
 	}
@@ -28,6 +29,8 @@ public class ObjectExplorateurViewImpl extends Composite implements
 
 	private ArrowGestionnary gestionnary;
 
+	private Delegate delegate;
+
 	public ObjectExplorateurViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		gestionnary = new ArrowGestionnary(arrowPanel);
@@ -35,16 +38,27 @@ public class ObjectExplorateurViewImpl extends Composite implements
 
 	@Override
 	public void setDelegate(Delegate delegate) {
-
+		this.delegate = delegate;
 	}
 
 	@Override
 	public void printObject(JavaObject result) {
 		if (result.getType() == JavaObject.CLASS) {
-			panel.setWidget(new JavaClassPanel((JavaClass) result, gestionnary));
+			panel.setWidget(new JavaClassPanel((JavaClass) result, gestionnary,
+					this));
 		} else {
 			GWT.log("ObjectExplorateurViewImpl.printObject => Type non gérér",
 					new Throwable("[" + result.getClass() + "]"));
+		}
+	}
+
+	@Override
+	public void goToObject(int type, String name) {
+		if (this.delegate != null) {
+			this.delegate.goToObject(type,name);
+		} else {
+			GWT.log("MenuViewImpl.delegate == null; peut-etre avez vous oublié d'appeller setDelegate().",
+					new NullPointerException("MenuViewImpl.delegate == null"));
 		}
 	}
 

@@ -14,9 +14,9 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import fr.ubourgogne.simplex.loader.FileUtils;
-import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.JavaPackage;
 import fr.ubourgogne.simplex.model.java.JavaProject;
+import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfos;
 import fr.ubourgogne.simplex.storage.EntityFactory;
 import fr.ubourgogne.simplex.storage.EntityFactoryImpl;
 import fr.ubourgogne.simplex.storage.Storage;
@@ -78,9 +78,9 @@ public class Main {
 		// String url = "https://java-simplex.googlecode.com/";
 
 		// String localURL = GitLoader.loadExternalCode(url, id);
-		String localURL = "C:\\Users\\Fab\\AppData\\Local\\Temp\\simplex_temp\\b3e786ad-d78e-4629-b0d7-cc8c5c38b746";
 		// String localURL =
-		// "C:\\Users\\PiroXXI\\AppData\\Local\\Temp\\simplex_temp\\26860b3c-006c-4a21-8d63-0b6740fe78a7";
+		// "C:\\Users\\Fab\\AppData\\Local\\Temp\\simplex_temp\\b3e786ad-d78e-4629-b0d7-cc8c5c38b746";
+		String localURL = "C:\\Users\\PiroXXI\\AppData\\Local\\Temp\\simplex_temp\\1f570c63-a402-4a4f-be1b-d57d5326fe43";
 		if (localURL == null || localURL.isEmpty()) {
 			System.out
 					.println("Echec lors de l'import du dépot distant '"
@@ -127,9 +127,9 @@ public class Main {
 					+ ((p.getName().indexOf(".") != -1) ? p.getName()
 							.substring(p.getName().lastIndexOf(".") + 1) : p
 							.getName()));
-			for (JavaObject o : p.getObjects()) {
-				System.out.println(entete + " | " + o.getName() + " ("
-						+ o.getId() + ")");
+			for (JavaObjectCommonInfos o : p.getObjects()) {
+				System.out.println(entete + " | " + o.getObjectName() + " ("
+						+ o.getObjectId() + ")");
 			}
 			printPackages(p.getPackages(), entete + " ");
 		}

@@ -101,7 +101,7 @@ public class JavaProject extends BasicEntity {
 	public void addJavaObject(JavaObject object) {
 		if (object.getPackage() == null || object.getPackage().isEmpty()) {
 			// Defaultpackage...
-			defaultPackage.getObjects().add(object);
+			defaultPackage.getObjects().add(object.getCommonInfos());
 		} else {
 			System.out.println("pas dans le package default");
 			boolean found = false;

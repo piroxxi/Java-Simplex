@@ -30,9 +30,12 @@ public class JavaClassLinkButton extends Composite {
 
 	private final JavaReferenceObject object;
 	private boolean hover = false;
+	private final ObjectLinkDelegate delegate;
 
-	public JavaClassLinkButton(JavaReferenceObject object) {
+	public JavaClassLinkButton(JavaReferenceObject object,
+			ObjectLinkDelegate delegate) {
 		this.object = object;
+		this.delegate = delegate;
 		initWidget(uiBinder.createAndBindUi(this));
 		this.link.setText(object.getObjectName());
 
@@ -44,7 +47,7 @@ public class JavaClassLinkButton extends Composite {
 
 	@UiHandler("link")
 	public void onClick(ClickEvent event) {
-		System.out.println("qsf => " + object);
+		delegate.goToObject(object.getObjectType(), object.getObjectId());
 	}
 
 	@UiHandler({ "link", "javadoc" })

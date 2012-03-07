@@ -10,6 +10,7 @@ public class JavaReferenceObject implements Serializable {
 	private static final long serialVersionUID = -7354348310792167308L;
 
 	private String objectId;
+	private int objectType;
 	private String objectName;
 	private JavaObjectCommonInfos objectInfos;
 	private ArrayList<JavaParam> params = new ArrayList<JavaParam>();
@@ -27,6 +28,7 @@ public class JavaReferenceObject implements Serializable {
 					+ object.getName());
 		}
 		objectId = object.getId();
+		objectType = object.getType();
 		objectName = object.getName();
 		if (params != null && params.length > 0) {
 			for (JavaParam p : params) {
@@ -43,6 +45,14 @@ public class JavaReferenceObject implements Serializable {
 
 	public void setObjectId(String objectId) {
 		this.objectId = objectId;
+	}
+
+	public int getObjectType() {
+		return this.objectType;
+	}
+
+	public void setObjectType(int objectType) {
+		this.objectType = objectType;
 	}
 
 	public String getObjectName() {

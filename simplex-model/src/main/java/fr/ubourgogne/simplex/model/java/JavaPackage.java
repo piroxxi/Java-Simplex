@@ -3,13 +3,14 @@ package fr.ubourgogne.simplex.model.java;
 import java.util.ArrayList;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
+import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfos;
 
 public class JavaPackage extends BasicEntity {
 	private static final long serialVersionUID = 3896038364534678085L;
 
 	private String name;
 	private ArrayList<JavaPackage> subPackages;
-	private ArrayList<JavaObject> objects;
+	private ArrayList<JavaObjectCommonInfos> objects;
 
 	/**
 	 * 
@@ -17,7 +18,7 @@ public class JavaPackage extends BasicEntity {
 	public JavaPackage() {
 		super();
 		subPackages = new ArrayList<JavaPackage>();
-		objects = new ArrayList<JavaObject>();
+		objects = new ArrayList<JavaObjectCommonInfos>();
 	}
 
 	/**
@@ -27,7 +28,7 @@ public class JavaPackage extends BasicEntity {
 		super();
 		this.setName(name);
 		subPackages = new ArrayList<JavaPackage>();
-		objects = new ArrayList<JavaObject>();
+		objects = new ArrayList<JavaObjectCommonInfos>();
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class JavaPackage extends BasicEntity {
 	public JavaPackage(String id, long version) {
 		super(id, version);
 		subPackages = new ArrayList<JavaPackage>();
-		objects = new ArrayList<JavaObject>();
+		objects = new ArrayList<JavaObjectCommonInfos>();
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class JavaPackage extends BasicEntity {
 		super(id, version);
 		this.setName(name);
 		subPackages = new ArrayList<JavaPackage>();
-		objects = new ArrayList<JavaObject>();
+		objects = new ArrayList<JavaObjectCommonInfos>();
 	}
 
 	/**
@@ -75,11 +76,11 @@ public class JavaPackage extends BasicEntity {
 		this.subPackages = packages;
 	}
 
-	public ArrayList<JavaObject> getObjects() {
+	public ArrayList<JavaObjectCommonInfos> getObjects() {
 		return objects;
 	}
 
-	public void setObjects(ArrayList<JavaObject> objects) {
+	public void setObjects(ArrayList<JavaObjectCommonInfos> objects) {
 		this.objects = objects;
 	}
 
@@ -106,7 +107,7 @@ public class JavaPackage extends BasicEntity {
 
 	public void addObject(JavaObject object) {
 		if (object.getPackage().equals(name)) {
-			objects.add(object);
+			objects.add(object.getCommonInfos());
 			return;
 		}
 
@@ -124,7 +125,7 @@ public class JavaPackage extends BasicEntity {
 				packageName = packageName
 						.substring(0, packageName.indexOf("."));
 			}
-			
+
 			JavaPackage pack = new JavaPackage(name + "." + packageName);
 			subPackages.add(pack);
 			pack.addObject(object);

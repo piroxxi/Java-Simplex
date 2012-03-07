@@ -35,7 +35,14 @@ public class FileUtils {
 			String ligne;
 			while ((ligne = fichier.readLine()) != null) {
 				String[] champs = ligne.split(":", -1);
-				Date dateRecup = new Date(Long.parseLong(champs[1]));
+				Date dateRecup;
+				try {
+					dateRecup = new Date(Long.parseLong(champs[1]));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					dateRecup = new Date(0); // si il est mal enregistré, c'est
+												// un mauvais dossier...
+				}
 				if (dateRecup
 						.before(new Date(new Date().getTime() - dateLimite))) {
 					File toRemove = new File(directory, champs[0]);
@@ -44,6 +51,10 @@ public class FileUtils {
 								+ " a été récupéré il y a plus de "
 								+ toDate(dateLimite));
 						deleteRecursively(toRemove);
+					} else {
+						System.out.println("Le dépot " + champs[0]
+								+ " a été récupéré il y a moins de "
+								+ toDate(dateLimite) + " on le conserve donc.");
 					}
 				} else {
 					file.add(ligne);

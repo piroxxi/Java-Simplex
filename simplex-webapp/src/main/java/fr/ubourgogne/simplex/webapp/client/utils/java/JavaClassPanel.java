@@ -35,10 +35,11 @@ public class JavaClassPanel extends Composite {
 
 	private JavaMethodArrowsStartingLine methodArrowsStartingLine;
 
-	public JavaClassPanel(JavaClass clazz, ArrowGestionnary gestionnary) {
+	public JavaClassPanel(JavaClass clazz, ArrowGestionnary gestionnary,
+			ObjectLinkDelegate delegate) {
 		methodArrowsStartingLine = new JavaMethodArrowsStartingLine();
 		clazzDesc = new JavaClassDeclarationPanel(clazz,
-				methodArrowsStartingLine);
+				methodArrowsStartingLine, delegate);
 
 		initWidget(uiBinder.createAndBindUi(this));
 
@@ -49,27 +50,30 @@ public class JavaClassPanel extends Composite {
 			pckageP.setVisible(false);
 		}
 
-		for (int i = 0; i < clazz.getImports().size(); i++) {
-			HorizontalPanel p = new HorizontalPanel();
-			Label imp = new Label("import");
-			imp.addStyleName("rightPadding");
-			imp.addStyleName("java_motR");
-			p.add(imp);
-			Label l = new Label(clazz.getImports().get(i) + ";");
-			p.add(l);
-			imports.add(p);
-			if (i == (clazz.getImports().size() - 1)) {
-				l.addStyleName("bottomPadding");
+		if (clazz.getImports() != null && !clazz.getImports().isEmpty()) {
+			for (int i = 0; i < clazz.getImports().size(); i++) {
+				HorizontalPanel p = new HorizontalPanel();
+				Label imp = new Label("import");
+				imp.addStyleName("rightPadding");
+				imp.addStyleName("java_motR");
+				p.add(imp);
+				Label l = new Label(clazz.getImports().get(i) + ";");
+				p.add(l);
+				imports.add(p);
+				if (i == (clazz.getImports().size() - 1)) {
+					l.addStyleName("bottomPadding");
+				}
 			}
 		}
 
 		for (JavaEntity entity : clazz.getContent()) {
 			if (entity instanceof JavaClass) {
-				content.add(new JavaClassPanel((JavaClass) entity, gestionnary));
+				content.add(new JavaClassPanel((JavaClass) entity, gestionnary,
+						delegate));
 			}
 			if (entity instanceof JavaMethod) {
 				content.add(new JavaMethodPanel((JavaMethod) entity,
-						gestionnary));
+						gestionnary, delegate));
 			}
 		}
 

@@ -2,6 +2,7 @@ package fr.ubourgogne.simplex.webapp.client.activities.java;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
@@ -17,11 +18,16 @@ public class ObjectExplorateurActivity extends AbstractActivity implements
 		ObjectExplorateurView.Delegate {
 
 	private final ObjectExplorateurView view;
+	private final PlaceController placeController;
+	private final ObjectPlace place;
 
 	@Inject
 	public ObjectExplorateurActivity(ObjectExplorateurView view,
-			@Assisted ObjectPlace place, ServiceProvider serviceProvider) {
+			@Assisted ObjectPlace place, ServiceProvider serviceProvider,
+			PlaceController placeController) {
 		this.view = view;
+		this.place = place;
+		this.placeController = placeController;
 
 		if (place.getObjectType() == JavaObject.CLASS) {
 			serviceProvider.getSimplexBaseService().getJavaClass(
@@ -49,5 +55,10 @@ public class ObjectExplorateurActivity extends AbstractActivity implements
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view);
+	}
+
+	@Override
+	public void goToObject(int type, String name) {
+		placeController.goTo(new ObjectPlace(place.getProjectId(), type, name));
 	}
 }

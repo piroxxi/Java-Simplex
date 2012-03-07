@@ -43,12 +43,12 @@ public class JavaMethodPanel extends Composite implements ClickHandler {
 	JavaMethod method;
 
 	public JavaMethodPanel(final JavaMethod method,
-			final ArrowGestionnary gestionnary) {
+			final ArrowGestionnary gestionnary, ObjectLinkDelegate delegate) {
 		this.methodArrowsStartingLine = new JavaMethodArrowsStartingLine();
 		this.method = method;
 
 		methodDesc = new JavaMethodDeclarationPanel(method,
-				methodArrowsStartingLine);
+				methodArrowsStartingLine, delegate);
 		initWidget(uiBinder.createAndBindUi(this));
 
 		for (String line : method.getLines()) {

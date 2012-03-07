@@ -12,7 +12,7 @@ public class JavaParamPanel extends Composite {
 	HorizontalPanel panel = new HorizontalPanel();
 
 	public JavaParamPanel(JavaParam params,
-			JavaMethodArrowsStartingLine methodArrowsStartingLine) {
+			JavaMethodArrowsStartingLine methodArrowsStartingLine, ObjectLinkDelegate delegate) {
 		initWidget(panel);
 		if (params.getName() != null && !params.getName().isEmpty()) {
 			panel.add(new Label(params.getName()));
@@ -26,7 +26,7 @@ public class JavaParamPanel extends Composite {
 		}
 		if (params.getExtent() != null) {
 			panel.add(new JavaReferenceObjectPanel(params.getExtent(),
-					methodArrowsStartingLine));
+					methodArrowsStartingLine, delegate));
 		}
 	}
 }

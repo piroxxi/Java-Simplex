@@ -28,7 +28,12 @@ public abstract class JavaObject extends JavaEntity {
 		setId(id);
 		setVersion(version);
 		setName(name);
-		commonInfos = JavaObjectCommonInfosProvider.getInfosForObject(id);
+	}
+
+	@Override
+	public void setId(String id) {
+		super.setId(id);
+		setCommonInfos(JavaObjectCommonInfosProvider.getInfosForObject(this));
 	}
 
 	public String getPackage() {
@@ -48,31 +53,31 @@ public abstract class JavaObject extends JavaEntity {
 	}
 
 	public String getJavaDoc() {
-		if (commonInfos == null) {
+		if (getCommonInfos() == null) {
 			throw new NullPointerException();
 		}
-		return commonInfos.getObjectJavaDoc();
+		return getCommonInfos().getObjectJavaDoc();
 	}
 
 	public void setJavaDoc(String javadoc) {
-		if (commonInfos == null) {
+		if (getCommonInfos() == null) {
 			throw new NullPointerException();
 		}
-		this.commonInfos.setObjectJavaDoc(javadoc);
+		this.getCommonInfos().setObjectJavaDoc(javadoc);
 	}
 
 	public ArrayList<JavaObjectCommonInfos> getDependances() {
-		if (commonInfos == null) {
+		if (getCommonInfos() == null) {
 			throw new NullPointerException();
 		}
-		return commonInfos.getDependances();
+		return getCommonInfos().getDependances();
 	}
 
 	public void setDependances(ArrayList<JavaObjectCommonInfos> dependancies) {
-		if (commonInfos == null) {
+		if (getCommonInfos() == null) {
 			throw new NullPointerException();
 		}
-		commonInfos.setDependances(dependancies);
+		getCommonInfos().setDependances(dependancies);
 	}
 
 	/**
@@ -88,5 +93,20 @@ public abstract class JavaObject extends JavaEntity {
 	 */
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the commonInfos
+	 */
+	public JavaObjectCommonInfos getCommonInfos() {
+		return commonInfos;
+	}
+
+	/**
+	 * @param commonInfos
+	 *            the commonInfos to set
+	 */
+	public void setCommonInfos(JavaObjectCommonInfos commonInfos) {
+		this.commonInfos = commonInfos;
 	}
 }

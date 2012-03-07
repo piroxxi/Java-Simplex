@@ -12,7 +12,6 @@ public class JavaInterface extends JavaObject {
 
 	@Override
 	public String print(String prefix) {
-
 		return null;
 	}
 

@@ -3,6 +3,7 @@ package fr.ubourgogne.simplex.webapp.client.utils.arrow;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
@@ -28,6 +29,11 @@ public class JavaMethodArrowsStartingLine {
 	 * Or, toutes les JavaReferenceObject contiennent la méthode.
 	 */
 	private List<JavaReferenceObjectPanel> widgets = new ArrayList<JavaReferenceObjectPanel>();
+
+	/**
+	 * La c'est les flèches. Suffit de les modifier, ou de les enlever.
+	 */
+	private List<HTMLPanel> arrows = new ArrayList<HTMLPanel>();
 
 	/**
 	 * Indique si la méthode est collapsée ou non.
@@ -98,5 +104,20 @@ public class JavaMethodArrowsStartingLine {
 	 */
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	/**
+	 * @return the arrows
+	 */
+	public List<HTMLPanel> getArrows() {
+		return arrows;
+	}
+
+	/**
+	 * @param arrows
+	 *            the arrows to set
+	 */
+	public void setArrows(List<HTMLPanel> arrows) {
+		this.arrows = arrows;
 	}
 }

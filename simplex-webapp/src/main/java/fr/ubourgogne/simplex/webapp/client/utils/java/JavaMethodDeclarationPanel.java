@@ -13,7 +13,7 @@ public class JavaMethodDeclarationPanel extends Composite {
 	private JavaMethod method;
 
 	public JavaMethodDeclarationPanel(JavaMethod method,
-			JavaMethodArrowsStartingLine methodArrowsStartingLine) {
+			JavaMethodArrowsStartingLine methodArrowsStartingLine, ObjectLinkDelegate delegate) {
 		this.method = method;
 		methodArrowsStartingLine.setLineWidget(this);
 		
@@ -30,7 +30,7 @@ public class JavaMethodDeclarationPanel extends Composite {
 			for (int i = 0; i < method.getParams().size(); i++) {
 
 				panel.add(new JavaParamPanel(method.getParams().get(i),
-						methodArrowsStartingLine));
+						methodArrowsStartingLine, delegate));
 
 				if (i < method.getParams().size() - 1) {
 					Label l = new Label(",");
@@ -44,7 +44,7 @@ public class JavaMethodDeclarationPanel extends Composite {
 		}
 
 		JavaReferenceObjectPanel returnType = new JavaReferenceObjectPanel(
-				method.getReturnType(), methodArrowsStartingLine);
+				method.getReturnType(), methodArrowsStartingLine, delegate);
 		returnType.addStyleName("rightPadding");
 		panel.add(returnType);
 		panel.add(new Label(method.getName()));
@@ -54,7 +54,7 @@ public class JavaMethodDeclarationPanel extends Composite {
 			for (int i = 0; i < method.getVarParams().size(); i++) {
 				JavaReferenceObjectPanel type = new JavaReferenceObjectPanel(
 						method.getVarParams().get(i).getType(),
-						methodArrowsStartingLine);
+						methodArrowsStartingLine, delegate);
 				type.addStyleName("rightPadding");
 				panel.add(type);
 				panel.add(new Label(method.getVarParams().get(i).getName()));

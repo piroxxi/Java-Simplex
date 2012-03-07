@@ -45,6 +45,7 @@ public class ArrowGestionnary {
 			UMLItem umlItem = getOrCreateUMLItem(widget.getObject());
 			HTMLPanel arrow = drawArrow(methodArrowsStartingLine, widget,
 					umlItem);
+			methodArrowsStartingLine.getArrows().add(arrow);
 			panel.add(arrow);
 		}
 	}
@@ -110,9 +111,10 @@ public class ArrowGestionnary {
 					Point.HORIZONTAL);
 		} else {
 			// TODO(when will you stopp with f!!!ing magic numbers?)
-			start = new Point(widget.getAbsoluteLeft(),
-					widget.getAbsoluteTop() - offset, Point.VERTICAL);
-			widget.getElement().setAttribute("style", "border-top: 1px solid "+umlItem.color+";");
+			start = new Point(widget.getAbsoluteLeft(), widget.getAbsoluteTop()
+					- offset, Point.VERTICAL);
+			widget.getElement().setAttribute("style",
+					"border-top: 1px solid " + umlItem.color + ";");
 		}
 		int horizontalWidth1 = (700 + nbArrowsCrossing * 13) - start.x;
 		int horizontalWidth2 = end.x - (700 + nbArrowsCrossing * 13) + 2;

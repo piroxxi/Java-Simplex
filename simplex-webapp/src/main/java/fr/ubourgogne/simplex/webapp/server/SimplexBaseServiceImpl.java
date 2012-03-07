@@ -44,6 +44,27 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 		} catch (StorageException e) {
 			e.printStackTrace();
 		}
+
+		// Lancement de la routine chargée de supprimer les projets
+		// indésirables...
+		Thread cleaner = new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				while (true) {
+					System.out
+							.println("[SERVER] => vidage du répertoire temporaire local.");
+					FileUtils.clearLocalTemporaryDir(5 * FileUtils.MINUTE + 15
+							* FileUtils.SECONDE);
+					try {
+						Thread.sleep(FileUtils.MINUTE);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		cleaner.start();
 	}
 
 	@Override

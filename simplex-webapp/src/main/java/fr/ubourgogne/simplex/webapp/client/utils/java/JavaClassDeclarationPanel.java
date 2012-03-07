@@ -12,7 +12,8 @@ public class JavaClassDeclarationPanel extends Composite {
 	private HorizontalPanel panel = new HorizontalPanel();
 
 	public JavaClassDeclarationPanel(JavaClass clazz,
-			JavaMethodArrowsStartingLine methodArrowsStartingLine) {
+			JavaMethodArrowsStartingLine methodArrowsStartingLine,
+			ObjectLinkDelegate delegate) {
 		initWidget(panel);
 		if (!clazz.getModifiers().isEmpty()) {
 			Label l = new Label(clazz.getModifiers() + " ");
@@ -27,7 +28,7 @@ public class JavaClassDeclarationPanel extends Composite {
 			panel.add(new Label("<"));
 			for (int i = 0; i < clazz.getParams().size(); i++) {
 				panel.add(new JavaParamPanel(clazz.getParams().get(i),
-						methodArrowsStartingLine));
+						methodArrowsStartingLine, delegate));
 				if (i < clazz.getParams().size() - 1) {
 					Label l = new Label(",");
 					l.addStyleName("rightPadding");
@@ -47,7 +48,7 @@ public class JavaClassDeclarationPanel extends Composite {
 			l.addStyleName("rightPadding");
 			panel.add(l);
 			JavaReferenceObjectPanel q = new JavaReferenceObjectPanel(
-					clazz.getSuperClass(), methodArrowsStartingLine);
+					clazz.getSuperClass(), methodArrowsStartingLine, delegate);
 			panel.add(q);
 			if (clazz.getImplementedInterfaces() == null
 					|| clazz.getImplementedInterfaces().isEmpty()) {
@@ -66,7 +67,7 @@ public class JavaClassDeclarationPanel extends Composite {
 			for (int i = 0; i < clazz.getImplementedInterfaces().size(); i++) {
 				JavaReferenceObjectPanel q = new JavaReferenceObjectPanel(clazz
 						.getImplementedInterfaces().get(i),
-						methodArrowsStartingLine);
+						methodArrowsStartingLine, delegate);
 				panel.add(q);
 				if (i < clazz.getImplementedInterfaces().size() - 1) {
 					Label ll = new Label(",");

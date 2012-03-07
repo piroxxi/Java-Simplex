@@ -1,18 +1,14 @@
 package fr.ubourgogne.simplex.webapp.client.activities.project;
 
-import java.util.ArrayList;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import fr.ubourgogne.simplex.model.java.JavaObject;
-import fr.ubourgogne.simplex.model.java.JavaPackage;
 import fr.ubourgogne.simplex.model.java.JavaProject;
+import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfos;
 
-public class ProjectHomeViewImpl extends Composite implements ProjectHomeView {
+public class ProjectHomeViewImpl extends Composite implements ProjectHomeView,
+		PackageTree.Delegate {
 
 	private Delegate delegate;
 
@@ -21,6 +17,8 @@ public class ProjectHomeViewImpl extends Composite implements ProjectHomeView {
 	public ProjectHomeViewImpl() {
 		panel = new VerticalPanel();
 		initWidget(panel);
+
+		panel.add(new Label("chargement du projet ..."));
 	}
 
 	@Override
@@ -30,25 +28,15 @@ public class ProjectHomeViewImpl extends Composite implements ProjectHomeView {
 
 	@Override
 	public void setProject(JavaProject project) {
-		printPackages(project.getPackages());
+		panel.clear();
+		panel.add(new PackageTree(project.getPackages(), this));
 	}
 
-	private void printPackages(ArrayList<JavaPackage> packages) {
-		for (JavaPackage p : packages) {
-			for (final JavaObject o : p.getObjects()) {
-				Button b = new Button(p.getName() + "." + o.getName());
-				b.addClickHandler(new ClickHandler() {
-					@Override
-					public void onClick(ClickEvent event) {
-						if (delegate != null) {
-							delegate.goToObject(o.getType(), o.getId());
-						}
-					}
-				});
-				panel.add(b);
-			}
-			printPackages(p.getPackages());
+	@Override
+	public void onObjectSelected(JavaObjectCommonInfos object) {
+		if (this.delegate != null) {
+			this.delegate.goToObject(object.getObjectType(),
+					object.getObjectId());
 		}
 	}
-
 }

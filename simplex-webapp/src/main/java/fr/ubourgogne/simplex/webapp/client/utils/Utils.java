@@ -31,12 +31,15 @@ public class Utils {
 		}
 	}
 
-	private static String SEPARATOR = "\\$\\$";
+	private static String SEPARATOR = ":::";
+	private static String ANTISEPARATOR = ": : :";
 
 	public static String serializeFavoris(List<Favori> favoris) {
 		String token = "";
 		for (Favori favori : favoris) {
-			token += Favori.tokenize(favori) + SEPARATOR;
+			String s = Favori.tokenize(favori);
+			s.replaceAll(SEPARATOR, ANTISEPARATOR);
+			token += s + SEPARATOR;
 		}
 		return token;
 	}
@@ -48,6 +51,7 @@ public class Utils {
 			if (s.isEmpty()) {
 				continue;
 			}
+			s.replaceAll(ANTISEPARATOR, SEPARATOR);
 			favoris.add(new Favori(s));
 		}
 		return favoris;
