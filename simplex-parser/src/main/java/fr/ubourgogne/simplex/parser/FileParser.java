@@ -29,6 +29,12 @@ public class FileParser {
 	 *         base
 	 */
 	public void retrieveClassInfos() {
+		if(formatedBaseText == null || formatedBaseText.isEmpty()){
+			//FIXME(raphael) => wat?
+			return;
+		}
+		
+		
 		String code = formatedBaseText.substring(0);
 
 		// on va récupérer les elements suivants

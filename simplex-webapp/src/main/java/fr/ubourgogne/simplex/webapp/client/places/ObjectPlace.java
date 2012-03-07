@@ -13,22 +13,29 @@ public class ObjectPlace extends Place {
 
 		@Override
 		public ObjectPlace getPlace(String token) {
-			return new ObjectPlace(token);
+			String[] split = token.split(":", -1);
+			return new ObjectPlace(split[0], split[1]);
 		}
 
 		@Override
 		public String getToken(ObjectPlace place) {
-			return place.getObjectName();
+			return place.getProjectId() + ":" + place.getObjectId();
 		}
 	}
 
-	private final String objectName;
+	private final String objectId;
+	private final String projectId;
 
-	public ObjectPlace(String objectName) {
-		this.objectName = objectName;
+	public ObjectPlace(String projectId, String objectName) {
+		this.projectId = projectId;
+		this.objectId = objectName;
 	}
 
-	public String getObjectName() {
-		return objectName;
+	public String getObjectId() {
+		return objectId;
+	}
+
+	public String getProjectId() {
+		return projectId;
 	}
 }

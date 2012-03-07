@@ -9,7 +9,5 @@ public interface MenuView extends View<MenuView.Delegate> {
 
 	public interface Delegate extends View.Delegate {
 		void goToMainPlace();
-
-		void goToExemple();
 	}
 }

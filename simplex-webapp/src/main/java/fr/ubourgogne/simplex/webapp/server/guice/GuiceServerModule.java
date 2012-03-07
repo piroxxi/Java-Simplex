@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import fr.ubourgogne.simplex.parser.BlocParser;
+import fr.ubourgogne.simplex.parser.InlineParser;
 import fr.ubourgogne.simplex.storage.EntityFactory;
 import fr.ubourgogne.simplex.storage.EntityFactoryImpl;
 import fr.ubourgogne.simplex.storage.Storage;
@@ -19,8 +21,10 @@ public class GuiceServerModule extends ActionHandlerModule {
 
 	@Override
 	protected void configureHandlers() {
-		bind(Storage.class).to(StorageImpl.class).in(Singleton.class);
+		requestStaticInjection(BlocParser.class);
+		requestStaticInjection(InlineParser.class);
 
+		bind(Storage.class).to(StorageImpl.class).in(Singleton.class);
 	}
 
 	@Provides

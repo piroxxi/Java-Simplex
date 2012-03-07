@@ -20,7 +20,7 @@ public class ObjectExplorateurActivity extends AbstractActivity implements
 	public ObjectExplorateurActivity(ObjectExplorateurView view,
 			@Assisted ObjectPlace place, ServiceProvider serviceProvider) {
 		this.view = view;
-		serviceProvider.getSimplexBaseService().getClassByName(place.getObjectName(),
+		serviceProvider.getSimplexBaseService().getClassByName(place.getObjectId(),
 				new OperationCallback<JavaClass>() {
 					@Override
 					public void onSuccess(JavaClass result) {

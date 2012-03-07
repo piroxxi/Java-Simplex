@@ -33,14 +33,4 @@ public class MenuViewImpl extends Composite implements MenuView {
 					new NullPointerException("MenuViewImpl.delegate == null"));
 		}
 	}
-	
-	@UiHandler("exemple")
-	public void onExempleClick(ClickEvent event) {
-		if (this.delegate != null) {
-			this.delegate.goToExemple();
-		} else {
-			GWT.log("MenuViewImpl.delegate == null; peut-etre avez vous oublié d'appeller setDelegate().",
-					new NullPointerException("MenuViewImpl.delegate == null"));
-		}
-	}
 }

@@ -17,6 +17,9 @@
         <dependent-module archiveName="simplex-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/simplex-model/simplex-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="simplex-parser-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/simplex-parser/simplex-parser">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="simplex-loader-git-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/simplex-loader-git/simplex-loader-git">
             <dependency-type>uses</dependency-type>
         </dependent-module>

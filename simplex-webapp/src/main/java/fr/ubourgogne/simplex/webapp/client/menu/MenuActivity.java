@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
 import fr.ubourgogne.simplex.webapp.client.places.MainPlace;
-import fr.ubourgogne.simplex.webapp.client.places.ObjectPlace;
 import fr.ubourgogne.simplex.webapp.client.rpc.ServiceProvider;
 
 public class MenuActivity extends AbstractActivity implements MenuView.Delegate {
@@ -31,10 +30,5 @@ public class MenuActivity extends AbstractActivity implements MenuView.Delegate 
 	@Override
 	public void goToMainPlace() {
 		this.placeController.goTo(new MainPlace());
-	}
-
-	@Override
-	public void goToExemple() {
-		this.placeController.goTo(new ObjectPlace("Class1"));
 	}
 }

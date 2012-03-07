@@ -16,6 +16,5 @@
 
 	<g:HorizontalPanel>
 		<g:Button ui:field="main" styleName="{style.button}">welcome</g:Button>
-		<g:Button ui:field="exemple" styleName="{style.button}">GOTO_EXAMPLE</g:Button>
 	</g:HorizontalPanel>
 </ui:UiBinder>

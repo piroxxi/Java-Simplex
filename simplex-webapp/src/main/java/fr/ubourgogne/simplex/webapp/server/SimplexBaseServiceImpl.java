@@ -2,13 +2,18 @@ package fr.ubourgogne.simplex.webapp.server;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import fr.ubourgogne.simplex.loader.FileUtils;
+import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
+import fr.ubourgogne.simplex.parser.FileFormater;
+import fr.ubourgogne.simplex.parser.FileParser;
 import fr.ubourgogne.simplex.storage.EntityFactory;
 import fr.ubourgogne.simplex.storage.Storage;
 import fr.ubourgogne.simplex.storage.StorageFiller;
@@ -23,9 +28,12 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 		SimplexBaseService {
 
 	private final Storage storage;
+	private final Provider<FileFormater> formaterProvider;
 
 	@Inject
-	public SimplexBaseServiceImpl(Storage storage, EntityFactory entityFactory) {
+	public SimplexBaseServiceImpl(Storage storage, EntityFactory entityFactory,
+			Provider<FileFormater> formaterProvider) {
+		this.formaterProvider = formaterProvider;
 		System.out.println("[SERVER] creation du SimplexBaseServiceImpl("
 				+ this + ")");
 
@@ -61,7 +69,12 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 			throws SimplexSecurityException {
 		System.out.println("[SERVER] loadGitProject(" + adresse + ") =>");
 
-		// String localURL = GitLoader.loadExternalCode(adresse);
+		String id = UUID.randomUUID().toString();
+		JavaProject project = new JavaProject(id);
+		project.setId(id);
+
+		// String localURL =
+		// GitLoader.loadExternalCode(adresse,project.getId());
 		String localURL = "C:\\Users\\PiroXXI\\AppData\\Local\\Temp\\simplex_temp\\4edf0ed6-6ff4-41ff-a9be-c167e5ab5616";
 		if (localURL == null || localURL.isEmpty()) {
 			throw new ImpossibleToGetGitRepository(
@@ -87,6 +100,28 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 
 		res += "\n******************************************************\n";
 
-		return res;
+		List<File> files = FileUtils.getJavaFiles(localRepo);
+		for (File f : files) {
+			System.out
+					.println("---------------------------------------------------------------------\n");
+			System.out.println("le file " + f
+					+ " est un fichier java. on le parse.");
+			FileFormater ff = formaterProvider.get();
+			ff.setFile(f);
+
+			String formated = ff.format();
+			FileParser fp = new FileParser(project, formated);
+
+			fp.retrieveClassInfos();
+		}
+
+		storage.store(project);
+		return project.getId() + ":" + res;
+	}
+
+	@Override
+	public JavaProject getProject(String projectId) {
+		System.out.println("[SERVER] getProject(" + projectId + ");");
+		return storage.get(JavaProject.class, projectId);
 	}
 }

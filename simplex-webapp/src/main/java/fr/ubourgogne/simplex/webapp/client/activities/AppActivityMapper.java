@@ -8,9 +8,11 @@ import com.google.inject.Inject;
 import fr.ubourgogne.simplex.webapp.client.activities.java.ObjectExplorateurActivity;
 import fr.ubourgogne.simplex.webapp.client.activities.loading.LoadingProjectActivity;
 import fr.ubourgogne.simplex.webapp.client.activities.main.MainActivity;
+import fr.ubourgogne.simplex.webapp.client.activities.project.ProjectHomeActivity;
 import fr.ubourgogne.simplex.webapp.client.places.LoadProjectPlace;
 import fr.ubourgogne.simplex.webapp.client.places.MainPlace;
 import fr.ubourgogne.simplex.webapp.client.places.ObjectPlace;
+import fr.ubourgogne.simplex.webapp.client.places.ProjectHomePlace;
 import fr.ubourgogne.simplex.webapp.client.utils.Utils.Favori;
 
 /**
@@ -54,6 +56,8 @@ public class AppActivityMapper implements ActivityMapper {
 		ObjectExplorateurActivity getObjectExplorateurActivity(ObjectPlace place);
 
 		LoadingProjectActivity getLoadingProjectActivity(Favori favori);
+
+		ProjectHomeActivity getProjectHomeActivity(ProjectHomePlace place);
 	}
 
 	@Inject
@@ -72,6 +76,10 @@ public class AppActivityMapper implements ActivityMapper {
 			return assistedActivitiesFactory
 					.getLoadingProjectActivity(((LoadProjectPlace) place)
 							.getFavori());
+		}
+		if (place instanceof ProjectHomePlace) {
+			return assistedActivitiesFactory
+					.getProjectHomeActivity((ProjectHomePlace) place);
 		}
 
 		return null;

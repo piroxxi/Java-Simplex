@@ -39,6 +39,7 @@ public class LoadingProjectViewImpl extends Composite implements
 				afficherArbo(event);
 			}
 		});
+		panel.add(arbo);
 
 		Label l = new Label();
 		l.getElement().setInnerHTML(
