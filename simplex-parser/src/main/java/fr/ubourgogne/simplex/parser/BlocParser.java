@@ -362,16 +362,31 @@ public abstract class BlocParser {
 
 		// maintenant on a le type de retour
 		returnTypeName = entete.substring(0, entete.indexOf(" "));
+		JavaParam returnTypeParam = null;
 		entete = entete.substring(entete.indexOf(" ") + 1);
 		if (entete.startsWith("<")) {
-			JavaParam jp = InlineParser.decodeParam(project,
-					entete.substring(2, entete.lastIndexOf(" >")));
-			jm.getParams().add(jp);
-		}
+			int compteurInf = 1;
+			int i = 2;
+			String token = "";
+			while (compteurInf > 0) {
+				char actuel = entete.charAt(i);
+				if (actuel == '<') {
+					compteurInf++;
+				}
+				if (actuel == '>') {
+					compteurInf--;
+				}
 
-		JavaReferenceObject returnType = new JavaReferenceObject(
-				entityFactory.getJavaClass(project, returnTypeName));
-		jm.setReturnType(returnType);
+				if (compteurInf > 0)
+					token += actuel;
+				else
+					i++;
+				i++;
+			}
+
+			entete = entete.substring(i);
+			returnTypeParam = InlineParser.decodeParam(project, token);
+		}
 
 		// donc maintenant, on a le nom de la methode
 		name = entete.substring(0, entete.indexOf(" "));
@@ -380,13 +395,70 @@ public abstract class BlocParser {
 			name = returnTypeName;
 		} else {
 			entete = entete.substring(entete.indexOf(" ") + 1);
+			JavaReferenceObject returnType = new JavaReferenceObject(
+					entityFactory.getJavaClass(project, returnTypeName));
+			if (returnTypeParam != null)
+				returnType.getParams().add(returnTypeParam);
+			jm.setReturnType(returnType);
 		}
 		jm.setName(name);
 
-		// TODO
 		// et enfin, on a les parametres
-		entete = entete.substring(entete.indexOf("(") + 2,
-				entete.lastIndexOf(")"));
+		if (!entete.equals("( ) ")) {
+			System.out.println("[entete]" + entete);
+
+			entete = entete.substring(entete.indexOf("(") + 2,
+					entete.lastIndexOf(" )"));
+
+			while (entete.indexOf(",") != -1) {
+				String paramDef = entete.substring(0, entete.indexOf(" ,"));
+				entete = entete.substring(entete.indexOf(",") + 2);
+
+				String paramTypeName = paramDef.substring(0,
+						paramDef.indexOf(" "));
+				paramDef = paramDef.substring(paramDef.indexOf(" ") + 1);
+
+				JavaParam paramParam = null;
+				if (paramDef.startsWith("<")) {
+					paramParam = InlineParser.decodeParam(project,
+							paramDef.substring(2, paramDef.lastIndexOf(" >")));
+					paramDef = paramDef
+							.substring(paramDef.lastIndexOf(">") + 2);
+				}
+
+				String paramName = paramDef.substring(0);
+
+				JavaReferenceObject paramType = new JavaReferenceObject(
+						entityFactory.getJavaClass(project, paramTypeName));
+
+				if (paramParam != null)
+					paramType.getParams().add(paramParam);
+
+				jm.getVarParams().add(new JavaVariable(paramName, paramType));
+			}
+
+			String paramDef = entete.substring(0);
+
+			String paramTypeName = paramDef.substring(0, paramDef.indexOf(" "));
+			paramDef = paramDef.substring(paramDef.indexOf(" ") + 1);
+
+			JavaParam paramParam = null;
+			if (paramDef.startsWith("<")) {
+				paramParam = InlineParser.decodeParam(project,
+						paramDef.substring(2, paramDef.lastIndexOf(" >")));
+				paramDef = paramDef.substring(paramDef.lastIndexOf(">") + 2);
+			}
+
+			String paramName = paramDef.substring(0);
+
+			JavaReferenceObject paramType = new JavaReferenceObject(
+					entityFactory.getJavaClass(project, paramTypeName));
+
+			if (paramParam != null)
+				paramType.getParams().add(paramParam);
+
+			jm.getVarParams().add(new JavaVariable(paramName, paramType));
+		}
 
 		// TODO aussi, mais plus complique...
 		// faudrait au moins appeler jm.getLines.add(),

@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public class FileFormater {
 	public static final String directoryName = "formated";
-	public static final String firstPasseFileName = "commentsErased.code";
-	public static final String secondPasseFileName = "formated.code";
+	public static final String firstPasseFileName = ".commentsErased.java";
+	public static final String secondPasseFileName = ".formated.java";
 
 	private File baseFile;
 	private HashMap<String, String> javadoc;
@@ -57,9 +57,10 @@ public class FileFormater {
 		String javadocContent = "";
 		String javadocBlocDef = "";
 		try {
-			f = new File(directoryName, firstPasseFileName);
+			f = new File(directoryName, baseFile.getName().substring(0,
+					baseFile.getName().lastIndexOf("."))
+					+ firstPasseFileName);
 			f.createNewFile();
-
 
 			FileReader reader = new FileReader(fichier);
 			FileWriter writer = new FileWriter(f);
@@ -166,7 +167,7 @@ public class FileFormater {
 						else
 							lastCharWasAntiSlash = true;
 						writer.write(c);
-					} else if (c == '\'') {
+					} else if (c == '\'' && !inString) {
 						writer.write(c);
 						char c2 = (char) reader.read();
 						writer.write(c2);
@@ -225,7 +226,9 @@ public class FileFormater {
 		boolean lastCharWasAntiSlash = false;
 
 		try {
-			f = new File(directoryName, secondPasseFileName);
+			f = new File(directoryName, baseFile.getName().substring(0,
+					baseFile.getName().lastIndexOf("."))
+					+ secondPasseFileName);
 			f.createNewFile();
 
 			FileReader reader = new FileReader(fichier);

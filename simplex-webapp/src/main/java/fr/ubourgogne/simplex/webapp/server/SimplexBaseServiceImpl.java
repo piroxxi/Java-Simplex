@@ -78,9 +78,9 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 		// "C:\\Users\\PiroXXI\\AppData\\Local\\Temp\\simplex_temp\\4edf0ed6-6ff4-41ff-a9be-c167e5ab5616";
 		if (localURL == null || localURL.isEmpty()) {
 			throw new ImpossibleToGetGitRepository(
-					"Echec lors de l'import du dépot distant '"
+					"Echec lors de l'import du dépot distant \""
 							+ adresse
-							+ "'. Veuillez verifier que ce dépôt existe et qu'il est valide.");
+							+ "\". Veuillez verifier que ce dépôt existe et qu'il est valide.");
 		}
 
 		String res = "";

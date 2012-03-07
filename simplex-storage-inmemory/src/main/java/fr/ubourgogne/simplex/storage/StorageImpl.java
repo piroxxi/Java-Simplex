@@ -70,7 +70,7 @@ public class StorageImpl implements Storage {
 
 	@Override
 	public <E extends BasicEntity> E getByName(Class<E> clazz, String name) {
-		System.out.println("[STORAGE] Recupération de l'entité par le nom"
+		System.out.println("[STORAGE] Recupération de l'entité par le nom "
 				+ name + "(" + clazz.getSimpleName() + ")");
 		if (name == null) {
 			return null;
