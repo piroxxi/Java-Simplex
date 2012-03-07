@@ -65,6 +65,7 @@ public class FileParser {
 				0);
 		representedObject.setPackage(ppackage);
 		representedObject.setImports(imports);
+		project.addJavaObject(representedObject);
 
 		// et voila, on a fini la definition de la classe
 	}

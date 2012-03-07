@@ -3,13 +3,13 @@ package fr.ubourgogne.simplex.model.java;
 import java.util.ArrayList;
 
 import fr.ubourgogne.simplex.model.BasicEntity;
-import fr.ubourgogne.simplex.model.java.object.JavaClass;
 
 public class JavaProject extends BasicEntity {
 	private static final long serialVersionUID = 624109605727189878L;
 
 	private String name;
 	private ArrayList<JavaPackage> packages;
+	private JavaPackage defaultPackage;
 
 	/**
 	 * 
@@ -17,15 +17,16 @@ public class JavaProject extends BasicEntity {
 	public JavaProject() {
 		super();
 		packages = new ArrayList<JavaPackage>();
+		defaultPackage = new JavaPackage("default");
+		packages.add(defaultPackage);
 	}
 
 	/**
 	 * @param name
 	 */
 	public JavaProject(String name) {
-		super();
+		this();
 		this.setName(name);
-		packages = new ArrayList<JavaPackage>();
 	}
 
 	/**
@@ -33,8 +34,9 @@ public class JavaProject extends BasicEntity {
 	 * @param version
 	 */
 	public JavaProject(String id, long version) {
-		super(id, version);
-		packages = new ArrayList<JavaPackage>();
+		this();
+		setId(id);
+		setVersion(version);
 	}
 
 	/**
@@ -43,9 +45,8 @@ public class JavaProject extends BasicEntity {
 	 * @param name
 	 */
 	public JavaProject(String id, long version, String name) {
-		super(id, version);
+		this(id, version);
 		this.setName(name);
-		packages = new ArrayList<JavaPackage>();
 	}
 
 	/**
@@ -74,11 +75,11 @@ public class JavaProject extends BasicEntity {
 	public JavaPackage getPackageByFullName(String name) {
 		if (name == null)
 			return null;
-		
-		//a voir un default package...
+
+		// a voir un default package...
 		if (name.equals(""))
 			return null;
-		
+
 		String directChild = name;
 		String otherChildren = "";
 		if (name.indexOf(".") != -1) {
@@ -97,7 +98,31 @@ public class JavaProject extends BasicEntity {
 		// return storage.getByName(JavaPackage.class,name);
 	}
 
-	public void addJavaClass(JavaClass clazz) {
-		//TODO
+	public void addJavaObject(JavaObject object) {
+		if (object.getPackage() == null || object.getPackage().isEmpty()) {
+			// Defaultpackage...
+			defaultPackage.getObjects().add(object);
+		} else {
+			System.out.println("pas dans le package default");
+			boolean found = false;
+			for (JavaPackage pack : packages) {
+				if (object.getPackage().startsWith(pack.getName())) {
+					found = true;
+					pack.addObject(object);
+				}
+			}
+			if (!found) {
+				JavaPackage pack;
+				if (object.getPackage().indexOf(".") != -1) {
+
+					pack = new JavaPackage(object.getPackage().substring(0,
+							object.getPackage().indexOf(".")));
+				} else {
+					pack = new JavaPackage(object.getPackage());
+				}
+				packages.add(pack);
+				pack.addObject(object);
+			}
+		}
 	}
 }

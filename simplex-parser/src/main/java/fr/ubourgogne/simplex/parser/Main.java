@@ -1,6 +1,7 @@
 package fr.ubourgogne.simplex.parser;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,8 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import fr.ubourgogne.simplex.loader.FileUtils;
+import fr.ubourgogne.simplex.model.java.JavaObject;
+import fr.ubourgogne.simplex.model.java.JavaPackage;
 import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.storage.EntityFactory;
 import fr.ubourgogne.simplex.storage.EntityFactoryImpl;
@@ -110,8 +113,25 @@ public class Main {
 
 			// TODO
 			// projet.add(fp.getRepresentedObject());
-
 		}
+
 		// FileUtils.deleteRecursively(localRepo);
+
+		System.out.println("\n\n\n\n\n-- affichage des packages --");
+		printPackages(project.getPackages(), "");
+	}
+
+	private void printPackages(ArrayList<JavaPackage> packages, String entete) {
+		for (JavaPackage p : packages) {
+			System.out.println(entete
+					+ ((p.getName().indexOf(".") != -1) ? p.getName()
+							.substring(p.getName().lastIndexOf(".") + 1) : p
+							.getName()));
+			for (JavaObject o : p.getObjects()) {
+				System.out.println(entete + " | " + o.getName() + " ("
+						+ o.getId() + ")");
+			}
+			printPackages(p.getPackages(), entete + " ");
+		}
 	}
 }
