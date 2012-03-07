@@ -7,6 +7,7 @@ public class JavaInterface extends JavaObject {
 
 	public JavaInterface() {
 		super();
+		setType(INTERFACE);
 	}
 
 	@Override

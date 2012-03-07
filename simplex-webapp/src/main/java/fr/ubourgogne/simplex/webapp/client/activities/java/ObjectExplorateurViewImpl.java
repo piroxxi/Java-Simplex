@@ -15,7 +15,8 @@ import fr.ubourgogne.simplex.webapp.client.utils.java.JavaClassPanel;
 
 public class ObjectExplorateurViewImpl extends Composite implements
 		ObjectExplorateurView {
-	public interface MyUiBinder extends UiBinder<Widget, ObjectExplorateurViewImpl> {
+	public interface MyUiBinder extends
+			UiBinder<Widget, ObjectExplorateurViewImpl> {
 	}
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
@@ -39,11 +40,11 @@ public class ObjectExplorateurViewImpl extends Composite implements
 
 	@Override
 	public void printObject(JavaObject result) {
-		if (result instanceof JavaClass) {
-			panel.setWidget(new JavaClassPanel((JavaClass) result,gestionnary));
+		if (result.getType() == JavaObject.CLASS) {
+			panel.setWidget(new JavaClassPanel((JavaClass) result, gestionnary));
 		} else {
 			GWT.log("ObjectExplorateurViewImpl.printObject => Type non gérér",
-					new Throwable("["+result.getClass()+"]"));
+					new Throwable("[" + result.getClass() + "]"));
 		}
 	}
 

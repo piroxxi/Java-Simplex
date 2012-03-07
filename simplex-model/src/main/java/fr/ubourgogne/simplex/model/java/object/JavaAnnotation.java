@@ -7,6 +7,7 @@ public class JavaAnnotation extends JavaObject {
 
 	public JavaAnnotation() {
 		super();
+		setType(ANNOTATION);
 	}
 
 	@Override

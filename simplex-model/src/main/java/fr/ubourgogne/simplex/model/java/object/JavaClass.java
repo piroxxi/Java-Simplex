@@ -20,6 +20,7 @@ public class JavaClass extends JavaObject {
 
 	public JavaClass() {
 		super();
+		setType(CLASS);
 	}
 
 	public List<JavaReferenceInterface> getImplementedInterfaces() {

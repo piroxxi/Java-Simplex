@@ -7,6 +7,7 @@ public class JavaEnum extends JavaObject {
 
 	public JavaEnum() {
 		super();
+		setType(ENUM);
 	}
 
 	@Override

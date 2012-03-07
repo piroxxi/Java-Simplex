@@ -6,10 +6,18 @@ import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfos;
 import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfosProvider;
 
 public abstract class JavaObject extends JavaEntity {
+	public static final int OBJECT = -1;
+	public static final int CLASS = 0;
+	public static final int INTERFACE = 1;
+	public static final int ENUM = 2;
+	public static final int ANNOTATION = 3;
+
 	private static final long serialVersionUID = 2236523118747299153L;
 	private String _package;
 	private ArrayList<String> imports = new ArrayList<String>();
 	private JavaObjectCommonInfos commonInfos = new JavaObjectCommonInfos();
+
+	private int type = OBJECT;
 
 	public JavaObject() {
 		super();
@@ -20,8 +28,7 @@ public abstract class JavaObject extends JavaEntity {
 		setId(id);
 		setVersion(version);
 		setName(name);
-		commonInfos = JavaObjectCommonInfosProvider
-				.getInfosForObject(id);
+		commonInfos = JavaObjectCommonInfosProvider.getInfosForObject(id);
 	}
 
 	public String getPackage() {
@@ -66,5 +73,20 @@ public abstract class JavaObject extends JavaEntity {
 			throw new NullPointerException();
 		}
 		commonInfos.setDependances(dependancies);
+	}
+
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
 	}
 }
