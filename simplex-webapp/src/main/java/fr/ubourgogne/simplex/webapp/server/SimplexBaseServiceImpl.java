@@ -10,6 +10,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import fr.ubourgogne.simplex.loader.FileUtils;
+import fr.ubourgogne.simplex.loader.git.GitLoader;
 import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.parser.FileFormater;
@@ -73,9 +74,9 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 		JavaProject project = new JavaProject(id);
 		project.setId(id);
 
+		String localURL = GitLoader.loadExternalCode(adresse, project.getId());
 		// String localURL =
-		// GitLoader.loadExternalCode(adresse,project.getId());
-		String localURL = "C:\\Users\\PiroXXI\\AppData\\Local\\Temp\\simplex_temp\\4edf0ed6-6ff4-41ff-a9be-c167e5ab5616";
+		// "C:\\Users\\PiroXXI\\AppData\\Local\\Temp\\simplex_temp\\4edf0ed6-6ff4-41ff-a9be-c167e5ab5616";
 		if (localURL == null || localURL.isEmpty()) {
 			throw new ImpossibleToGetGitRepository(
 					"Echec lors de l'import du dépot distant '"
