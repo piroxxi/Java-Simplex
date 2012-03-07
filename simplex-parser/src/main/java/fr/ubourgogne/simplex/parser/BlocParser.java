@@ -462,43 +462,46 @@ public abstract class BlocParser {
 
 		// TODO aussi, mais plus complique...
 		// faudrait au moins appeler jm.getLines.add(),
-		// while (contenu.indexOf("{") != -1 && contenu.indexOf(";") != -1) {
-		// // faut prevoir tous les cas... pas de la tarte
-		//
-		// if (contenu.indexOf(";") < contenu.indexOf("{")) {
-		// String defField = contenu.substring(0, contenu.indexOf(";"));
-		// InlineParser.decodeLocalVar(defField, prefixe + 1);
-		// jm.getLines().add(defField);
-		// contenu = contenu.substring(contenu.indexOf(";") + 2);
-		//
-		// } else {
-		// String defBloc = contenu.substring(0, contenu.indexOf("{"));
-		// contenu = contenu.substring(contenu.indexOf("{") + 2);
-		//
-		// int compteurAccolade = 1;
-		// int i = 0;
-		// String contenuBloc = "";
-		// while (compteurAccolade > 0) {
-		// char actuel = contenu.charAt(i);
-		// if (actuel == '{') {
-		// compteurAccolade++;
-		// }
-		// if (actuel == '}') {
-		// compteurAccolade--;
-		// }
-		//
-		// if (compteurAccolade > 0)
-		// contenuBloc += actuel;
-		// else
-		// i++;
-		//
-		// i++;
-		// }
-		//
-		// contenu = contenu.substring(i);
-		//
-		// }
-		// }
+		while (contenu.indexOf(";") != -1) {
+
+			jm.getLines().add(contenu.substring(0, contenu.indexOf(";")));
+			contenu = contenu.substring(contenu.indexOf(";") + 1);
+			// // faut prevoir tous les cas... pas de la tarte
+			//
+			// if (contenu.indexOf(";") < contenu.indexOf("{")) {
+			// String defField = contenu.substring(0, contenu.indexOf(";"));
+			// InlineParser.decodeLocalVar(defField, prefixe + 1);
+			// jm.getLines().add(defField);
+			// contenu = contenu.substring(contenu.indexOf(";") + 2);
+			//
+			// } else {
+			// String defBloc = contenu.substring(0, contenu.indexOf("{"));
+			// contenu = contenu.substring(contenu.indexOf("{") + 2);
+			//
+			// int compteurAccolade = 1;
+			// int i = 0;
+			// String contenuBloc = "";
+			// while (compteurAccolade > 0) {
+			// char actuel = contenu.charAt(i);
+			// if (actuel == '{') {
+			// compteurAccolade++;
+			// }
+			// if (actuel == '}') {
+			// compteurAccolade--;
+			// }
+			//
+			// if (compteurAccolade > 0)
+			// contenuBloc += actuel;
+			// else
+			// i++;
+			//
+			// i++;
+			// }
+			//
+			// contenu = contenu.substring(i);
+			//
+			// }
+		}
 
 		return jm;
 	}
