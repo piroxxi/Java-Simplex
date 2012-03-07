@@ -50,7 +50,7 @@ public class ProjectHomeActivity extends AbstractActivity implements
 	}
 
 	@Override
-	public void goToObject(String objectId) {
-		placeController.goTo(new ObjectPlace(projectId, objectId));
+	public void goToObject(int objectType, String objectId) {
+		placeController.goTo(new ObjectPlace(projectId, objectType, objectId));
 	}
 }

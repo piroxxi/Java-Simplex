@@ -8,7 +8,7 @@ import fr.ubourgogne.simplex.model.java.object.JavaClass;
 public interface SimplexBaseServiceAsync {
 	void welcome(String accountId, AsyncCallback<Void> callback);
 
-	void getClassByName(String className, AsyncCallback<JavaClass> callback);
+	void getJavaClass(String classId, AsyncCallback<JavaClass> operationCallback);
 
 	void loadGitProject(String type, AsyncCallback<String> callback);
 

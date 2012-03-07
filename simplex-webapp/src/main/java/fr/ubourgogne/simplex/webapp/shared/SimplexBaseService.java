@@ -11,13 +11,13 @@ import fr.ubourgogne.simplex.webapp.shared.security.SimplexSecurityException;
 public interface SimplexBaseService extends RemoteService {
 	void welcome(String accountId) throws SimplexSecurityException;
 
-	JavaClass getClassByName(String className) throws SimplexSecurityException;
-
 	/**
 	 * This methode returne the following code : "projectId:logs"
 	 * 
 	 */
 	String loadGitProject(String type) throws SimplexSecurityException;
 
-	JavaProject getProject(String projectId);
+	JavaProject getProject(String projectId) throws SimplexSecurityException;
+
+	JavaClass getJavaClass(String classId) throws SimplexSecurityException;
 }

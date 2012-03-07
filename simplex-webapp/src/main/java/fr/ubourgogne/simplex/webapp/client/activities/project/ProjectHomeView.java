@@ -11,8 +11,8 @@ public interface ProjectHomeView extends View<ProjectHomeView.Delegate> {
 	void setProject(JavaProject project);
 
 	public interface Delegate extends View.Delegate {
-		
-		public void goToObject(String objectId);
-		
+
+		public void goToObject(int objectType, String objectId);
+
 	}
 }

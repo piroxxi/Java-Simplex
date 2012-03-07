@@ -41,7 +41,7 @@ public class ProjectHomeViewImpl extends Composite implements ProjectHomeView {
 					@Override
 					public void onClick(ClickEvent event) {
 						if (delegate != null) {
-							delegate.goToObject(o.getId());
+							delegate.goToObject(o.getType(), o.getId());
 						}
 					}
 				});

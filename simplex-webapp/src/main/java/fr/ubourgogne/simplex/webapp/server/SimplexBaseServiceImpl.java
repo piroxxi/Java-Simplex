@@ -59,10 +59,9 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public JavaClass getClassByName(String className)
-			throws SimplexSecurityException {
-		System.out.println("[SERVER] getClassByName(" + className + ");");
-		return storage.getByName(JavaClass.class, className);
+	public JavaClass getJavaClass(String id) throws SimplexSecurityException {
+		System.out.println("[SERVER] getJavaClass(" + id + ");");
+		return storage.get(JavaClass.class, id);
 	}
 
 	@Override
