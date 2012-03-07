@@ -29,7 +29,7 @@ public class ArrowGestionnary {
 	private HashMap<String, UMLItem> umlObjects = new HashMap<String, UMLItem>();
 
 	private int nbUMLItem = 0;
-	private int nbArrowsCrossing;
+	private int nbArrowsCrossing = 0;
 
 	public ArrowGestionnary(HTMLPanel panel) {
 		this.panel = panel;
@@ -55,7 +55,7 @@ public class ArrowGestionnary {
 		if (item == null) {
 			item = new UMLItem();
 			// TODO(change those black magic numbers)
-			item.point = new Point(850, 20 + nbUMLItem * 40);
+			item.point = new Point(950, 20 + nbUMLItem * 40);
 
 			item.object = object.getObjectInfos();
 			item.color = colors[nbUMLItem % colors.length];
@@ -80,8 +80,6 @@ public class ArrowGestionnary {
 	private HTMLPanel drawArrow(
 			JavaMethodArrowsStartingLine methodArrowsStartingLine,
 			JavaReferenceObjectPanel widget, UMLItem umlItem) {
-		System.out.println("topOffset : " + panel.getAbsoluteTop());
-
 		int offset = panel.getAbsoluteTop();
 
 		HTMLPanel p = new HTMLPanel("");
@@ -180,5 +178,22 @@ public class ArrowGestionnary {
 			return x;
 		else
 			return -x;
+	}
+
+	public void refreshArrows() {
+		nbArrowsCrossing = 0;
+		for (JavaMethodArrowsStartingLine start : starts) {
+			for (HTMLPanel p : start.getArrows()) {
+				p.setVisible(false);
+				panel.remove(p);
+			}
+
+			for (JavaReferenceObjectPanel widget : start.getWidgets()) {
+				UMLItem umlItem = getOrCreateUMLItem(widget.getObject());
+				HTMLPanel arrow = drawArrow(start, widget, umlItem);
+				start.getArrows().add(arrow);
+				panel.add(arrow);
+			}
+		}
 	}
 }

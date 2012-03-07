@@ -17,7 +17,6 @@ import fr.ubourgogne.simplex.webapp.client.utils.Resources;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.ArrowGestionnary;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.JavaMethodArrowsStartingLine;
 
-
 public class JavaMethodPanel extends Composite implements ClickHandler {
 	public interface MyUiBinder extends UiBinder<Widget, JavaMethodPanel> {
 	}
@@ -36,14 +35,17 @@ public class JavaMethodPanel extends Composite implements ClickHandler {
 	@UiField
 	Image img;
 
-	boolean isExpanded = false;
+	boolean isExpanded = true;
 	private JavaMethodArrowsStartingLine methodArrowsStartingLine;
-	
+
 	Resources res = GWT.create(Resources.class);
 	JavaMethod method;
 
+	private final ArrowGestionnary gestionnary;
+
 	public JavaMethodPanel(final JavaMethod method,
 			final ArrowGestionnary gestionnary, ObjectLinkDelegate delegate) {
+		this.gestionnary = gestionnary;
 		this.methodArrowsStartingLine = new JavaMethodArrowsStartingLine();
 		this.method = method;
 
@@ -62,7 +64,7 @@ public class JavaMethodPanel extends Composite implements ClickHandler {
 		} else {
 			img.setVisible(false);
 		}
-		
+
 		Timer t = new Timer() {
 			@Override
 			public void run() {
@@ -70,7 +72,9 @@ public class JavaMethodPanel extends Composite implements ClickHandler {
 			}
 		};
 		t.schedule(150);
+		onClick(null);
 	}
+
 	/*
 	 * L'affichage doit se faire pour chaque JavaReferenceObject. et non pas au
 	 * niveau de la méthode. Sauf si celle ci est dépliée.
@@ -78,19 +82,19 @@ public class JavaMethodPanel extends Composite implements ClickHandler {
 
 	@Override
 	public void onClick(ClickEvent event) {
-		if (isExpanded) {
-			isExpanded = false;
+		isExpanded = !isExpanded;
+		if (!isExpanded) {
 			img.setUrl(res.plusImg().getSafeUri());
-			content.clear();
+			content.setVisible(false);
 			accoladeFermante.setText("");
 			methodDesc.setExpanded(isExpanded);
 		} else {
-			isExpanded = true;
 			img.setUrl(res.moinsImg().getSafeUri());
-			for (String line : method.getLines())
-				content.add(new Label(line));
+			content.setVisible(true);
 			accoladeFermante.setText("}");
 			methodDesc.setExpanded(isExpanded);
 		}
+		this.methodArrowsStartingLine.setMethodCollapsed(!isExpanded);
+		this.gestionnary.refreshArrows();
 	}
 }
