@@ -8,6 +8,7 @@ import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
+import fr.ubourgogne.simplex.model.java.entity.JavaSimpleType;
 import fr.ubourgogne.simplex.model.java.entity.JavaVariable;
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceClass;
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
@@ -395,8 +396,12 @@ public abstract class BlocParser {
 			name = returnTypeName;
 		} else {
 			entete = entete.substring(entete.indexOf(" ") + 1);
-			JavaReferenceObject returnType = new JavaReferenceObject(
-					entityFactory.getJavaClass(project, returnTypeName));
+
+			JavaReferenceObject returnType = JavaSimpleType.getByName(returnTypeName);
+			if (returnType == null)
+				returnType = new JavaReferenceObject(
+						entityFactory.getJavaClass(project, returnTypeName));
+			
 			if (returnTypeParam != null)
 				returnType.getParams().add(returnTypeParam);
 			jm.setReturnType(returnType);

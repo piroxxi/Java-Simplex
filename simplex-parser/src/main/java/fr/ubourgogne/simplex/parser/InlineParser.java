@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 
 import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.entity.JavaParam;
+import fr.ubourgogne.simplex.model.java.entity.JavaSimpleType;
 import fr.ubourgogne.simplex.model.java.entity.JavaVariable;
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 import fr.ubourgogne.simplex.storage.EntityFactory;
@@ -13,7 +14,8 @@ public abstract class InlineParser {
 	@Inject
 	private static EntityFactory entityFactory;
 
-	public static JavaVariable decodeField(JavaProject project, String def, int prefixe) {
+	public static JavaVariable decodeField(JavaProject project, String def,
+			int prefixe) {
 		for (int i = 0; i < prefixe; i++)
 			System.out.print("\t");
 		System.out.println("field[" + def + "]");
@@ -49,8 +51,11 @@ public abstract class InlineParser {
 			} else {
 				if (!typeFound) {
 					// System.out.println("le field est de type " + token);
-					JavaReferenceObject type = new JavaReferenceObject(
-							entityFactory.getJavaClass(project, token));
+					JavaReferenceObject type = JavaSimpleType.getByName(token);
+
+					if (type == null)
+						type = new JavaReferenceObject(
+								entityFactory.getJavaClass(project, token));
 					jv.setType(type);
 					typeFound = true;
 				} else if (!nameFound) {
@@ -68,7 +73,8 @@ public abstract class InlineParser {
 		return jv;
 	}
 
-	public static JavaVariable decodeLocalVar(JavaProject project, String def, int prefixe) {
+	public static JavaVariable decodeLocalVar(JavaProject project, String def,
+			int prefixe) {
 		for (int i = 0; i < prefixe; i++)
 			System.out.print("\t");
 		System.out.println("local var[" + def + "]");
@@ -108,7 +114,6 @@ public abstract class InlineParser {
 		return jv;
 	}
 
-	
 	public static JavaParam decodeParam(JavaProject project, String param) {
 		JavaParam jp = new JavaParam();
 		String parametre, paramType;
@@ -125,12 +130,12 @@ public abstract class InlineParser {
 		}
 
 		jp.setName(parametre);
-		
+
 		JavaParam jpp = null;
 		if (paramType != null) {
 			if (paramType.contains("<")) {
-				jpp = InlineParser.decodeParam(project, paramType.substring(2,
-						paramType.lastIndexOf(" >")));
+				jpp = InlineParser.decodeParam(project,
+						paramType.substring(2, paramType.lastIndexOf(" >")));
 			}
 			JavaReferenceObject extent = new JavaReferenceObject(
 					entityFactory.getJavaClass(project, paramType));
