@@ -11,9 +11,38 @@
 		.panel {
 			width: 700px;
 		}
+		
+		.menu {
+			margin-left: 45px;
+			padding-left: 25px;
+			padding-right: 25px;
+			padding-top: 1px;
+			padding-bottom: 3px;
+			background: #D8CDBA;
+			height: 25px;
+			border-radius: 0px 0px 5px 5px;
+		}
+		
+		.menuItem {
+			background: none;
+			border: 1px solid #BF9764;
+			border-radius: 7px;
+			margin: 2px;
+			padding: 0px;
+			padding-left: 2px;
+			padding-right: 2px;
+		}
+		
+		.menuItem:hover {
+			background: #BF9764;
+		}
 	</ui:style>
 
 	<g:HTMLPanel>
+		<g:HorizontalPanel styleName="{style.menu}">
+			<g:Button ui:field="color" styleName="{style.menuItem}">C</g:Button>
+			<g:Button ui:field="packages" styleName="{style.menuItem}">P</g:Button>
+		</g:HorizontalPanel>
 		<g:HTMLPanel ui:field="arrowPanel" styleName="{style.arrows}"></g:HTMLPanel>
 		<g:SimplePanel ui:field="panel" styleName="{style.panel}"></g:SimplePanel>
 	</g:HTMLPanel>

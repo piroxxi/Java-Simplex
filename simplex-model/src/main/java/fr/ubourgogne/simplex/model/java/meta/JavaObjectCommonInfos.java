@@ -11,6 +11,7 @@ public class JavaObjectCommonInfos implements Serializable {
 	private String objectId;
 	private int objectType;
 	private String objectName;
+	private String objectPackage;
 
 	// because those two must be stored/sent only once
 	private String objectJavaDoc;
@@ -25,6 +26,7 @@ public class JavaObjectCommonInfos implements Serializable {
 		this.objectName = object.getName();
 		this.objectJavaDoc = object.getJavaDoc();
 		this.objectType = object.getType();
+		this.objectPackage = object.getPackage();
 	}
 
 	public String getObjectId() {
@@ -65,5 +67,13 @@ public class JavaObjectCommonInfos implements Serializable {
 
 	public void setObjectType(int objectType) {
 		this.objectType = objectType;
+	}
+
+	public String getObjectPackage() {
+		return objectPackage;
+	}
+
+	public void setObjectPackage(String objectPackage) {
+		this.objectPackage = objectPackage;
 	}
 }
