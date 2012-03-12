@@ -1,5 +1,8 @@
 package fr.ubourgogne.simplex.parser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 import fr.ubourgogne.simplex.model.java.JavaProject;
@@ -14,11 +17,15 @@ public abstract class InlineParser {
 	@Inject
 	private static EntityFactory entityFactory;
 
+	private static Logger logger = LoggerFactory.getLogger(InlineParser.class);
+
 	public static JavaVariable decodeField(JavaProject project, String def,
 			int prefixe) {
+		String prefix = "";
 		for (int i = 0; i < prefixe; i++)
-			System.out.print("\t");
-		System.out.println("field[" + def + "]");
+			prefix += "\t";
+
+		logger.info(prefix + "field[" + def + "]");
 		JavaVariable jv = new JavaVariable();
 
 		// only public, protected, private, static, final, transient & volatile
@@ -50,7 +57,6 @@ public abstract class InlineParser {
 						Math.max(modif.length() - 1, 0)));
 			} else {
 				if (!typeFound) {
-					// System.out.println("le field est de type " + token);
 					JavaReferenceObject type = JavaSimpleType.getByName(token);
 
 					if (type == null)
@@ -59,12 +65,9 @@ public abstract class InlineParser {
 					jv.setType(type);
 					typeFound = true;
 				} else if (!nameFound) {
-					// System.out.println("le field est nomme " + token);
 					jv.setName(token);
 					nameFound = true;
 				} else {
-					// System.out.println("le field a pour valeur par defaut "
-					// + token);
 					jv.setDefaultValue(token);
 				}
 			}
@@ -75,9 +78,11 @@ public abstract class InlineParser {
 
 	public static JavaVariable decodeLocalVar(JavaProject project, String def,
 			int prefixe) {
+		String prefix = "";
 		for (int i = 0; i < prefixe; i++)
-			System.out.print("\t");
-		System.out.println("local var[" + def + "]");
+			prefix += "\t";
+
+		logger.info(prefix + "local var[" + def + "]");
 		JavaVariable jv = new JavaVariable();
 
 		// only final is permitted
@@ -93,19 +98,15 @@ public abstract class InlineParser {
 			} else if (token.equals("=")) {
 				jv.setModifiers(modif);
 			} else {
-				if (!typeFound) {
-					// System.out.println("la variable est de type " + token);
+				if (!typeFound) {;
 					JavaReferenceObject type = new JavaReferenceObject(
 							entityFactory.getJavaClass(project, token));
 					jv.setType(type);
 					typeFound = true;
 				} else if (!nameFound) {
-					// System.out.println("la variable est nomme " + token);
 					jv.setName(token);
 					nameFound = true;
 				} else {
-					// System.out.println("la variable a pour valeur par defaut "
-					// + token);
 					jv.setDefaultValue(token);
 				}
 			}
@@ -121,12 +122,9 @@ public abstract class InlineParser {
 		if (param.contains("extends")) {
 			parametre = param.substring(0, param.indexOf(" extends"));
 			paramType = param.substring(param.indexOf("extends") + 8);
-			// System.out.println("le parametre est : \"" + parametre
-			// + "\" de type \"" + paramType + "\"");
 		} else {
 			parametre = param;
 			paramType = null;
-			// System.out.println("le parametre est : \"" + param + "\"");
 		}
 
 		jp.setName(parametre);

@@ -103,7 +103,6 @@ public class JavaProject extends BasicEntity {
 			// Defaultpackage...
 			defaultPackage.getObjects().add(object.getCommonInfos());
 		} else {
-			System.out.println("pas dans le package default");
 			boolean found = false;
 			for (JavaPackage pack : packages) {
 				if (object.getPackage().startsWith(pack.getName())) {

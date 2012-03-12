@@ -2,6 +2,9 @@ package fr.ubourgogne.simplex.parser;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.JavaProject;
 
@@ -9,6 +12,8 @@ public class FileParser {
 	private String formatedBaseText;
 	private JavaObject representedObject;
 	private JavaProject project;
+	
+	private static Logger logger = LoggerFactory.getLogger(FileParser.class);
 
 	public FileParser(JavaProject project, String s) {
 		this.project = project;
@@ -25,18 +30,17 @@ public class FileParser {
 	 * @param fichier
 	 *            le fichier a parser
 	 * 
-	 * @return un JavaObject représentant la classe et remplie avec les infos de
+	 * @return un JavaObject représentant la classe et rempli avec les infos de
 	 *         base
 	 */
 	public void retrieveClassInfos() {
-		if(formatedBaseText == null || formatedBaseText.isEmpty()){
-			//FIXME(raphael) => wat?
-			return;
-		}
+		logger.info("lecture de l\'entete de la classe...");
 		
+		if (formatedBaseText == null || formatedBaseText.isEmpty())
+			return;
 		
 		String code = formatedBaseText.substring(0);
-
+		
 		// on va récupérer les elements suivants
 		String ppackage = null;
 		ArrayList<String> imports = null;
@@ -48,7 +52,7 @@ public class FileParser {
 			ppackage = code
 					.substring(code.indexOf(" ") + 1, code.indexOf(" ;"));
 			code = code.substring(code.indexOf(";") + 2);
-			// System.out.println("le package est : \"" + ppackage + "\"");
+			logger.debug("le package est : \"" + ppackage + "\"");
 
 		}
 
@@ -57,7 +61,7 @@ public class FileParser {
 			String imp = code.substring(code.indexOf(" ") + 1,
 					code.indexOf(" ;"));
 			code = code.substring(code.indexOf(";") + 2);
-			// System.out.println("import : \"" + imp + "\"");
+			logger.debug("import : \"" + imp + "\"");
 			imports.add(imp);
 		}
 
@@ -67,12 +71,13 @@ public class FileParser {
 		String defClasse = code.substring(0, code.indexOf("{"));
 		code = code.substring(code.indexOf("{") + 2, code.lastIndexOf("}"));
 
+		//on passe la main au blocParser
 		representedObject = (JavaObject) BlocParser.decodeBloc(project, defClasse, code,
 				0);
 		representedObject.setPackage(ppackage);
 		representedObject.setImports(imports);
 		project.addJavaObject(representedObject);
 
-		// et voila, on a fini la definition de la classe
+		//fini pour ce fichier
 	}
 }

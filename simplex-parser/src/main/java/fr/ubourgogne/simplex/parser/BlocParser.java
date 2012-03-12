@@ -2,6 +2,9 @@ package fr.ubourgogne.simplex.parser;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 import fr.ubourgogne.simplex.model.java.JavaEntity;
@@ -23,31 +26,33 @@ public abstract class BlocParser {
 	@Inject
 	private static EntityFactory entityFactory;
 
+	private static Logger logger = LoggerFactory.getLogger(BlocParser.class);
+
 	public static JavaEntity decodeBloc(JavaProject project, String entete,
 			String contenu, int prefixe) {
+		String prefix = "";
 		for (int i = 0; i < prefixe; i++)
-			System.out.print("\t");
-		System.out.print("bloc[" + entete + "] --> ");
+			prefix += "\t";
 
 		// on a soit une classe, soit un enum, soit une interface, soit une
 		// methode
 		if (entete.contains(" class ") || entete.startsWith("class")) {
-			System.out.println("classe");
+			logger.info(prefix + "classe[" + entete + "]");
 			return BlocParser.decodeClasse(project, entete, contenu, prefixe);
 		} else if (entete.contains(" @interface ")
 				|| entete.startsWith("@interface")) {
-			System.out.println("annotation");
+			logger.info(prefix + "annotation[" + entete + "]");
 			return BlocParser.decodeAnnotation(entete, contenu, prefixe);
 		} else if (entete.contains(" enum ") || entete.startsWith("enum")) {
-			System.out.println("enum");
+			logger.info(prefix + "enum[" + entete + "]");
 			return BlocParser.decodeEnum(project, entete, contenu, prefixe);
 		} else if (entete.contains(" interface ")
 				|| entete.startsWith("interface")) {
-			System.out.println("interface");
+			logger.info(prefix + "interface[" + entete + "]");
 			return BlocParser
 					.decodeInterface(project, entete, contenu, prefixe);
 		} else {
-			System.out.println("methode");
+			logger.info(prefix + "methode[" + entete + "]");
 			return BlocParser.decodeMethode(project, entete, contenu, prefixe);
 		}
 	}
@@ -199,7 +204,6 @@ public abstract class BlocParser {
 				String contenuBloc = "";
 				boolean inString = false;
 				boolean lastCharWasAntiSlash = false;
-				// System.out.println(compteurAccolade);
 				while (compteurAccolade > 0) {
 					char actuel = contenu.charAt(i);
 
@@ -397,11 +401,12 @@ public abstract class BlocParser {
 		} else {
 			entete = entete.substring(entete.indexOf(" ") + 1);
 
-			JavaReferenceObject returnType = JavaSimpleType.getByName(returnTypeName);
+			JavaReferenceObject returnType = JavaSimpleType
+					.getByName(returnTypeName);
 			if (returnType == null)
 				returnType = new JavaReferenceObject(
 						entityFactory.getJavaClass(project, returnTypeName));
-			
+
 			if (returnTypeParam != null)
 				returnType.getParams().add(returnTypeParam);
 			jm.setReturnType(returnType);
@@ -410,8 +415,6 @@ public abstract class BlocParser {
 
 		// et enfin, on a les parametres
 		if (!entete.equals("( ) ")) {
-			System.out.println("[entete]" + entete);
-
 			entete = entete.substring(entete.indexOf("(") + 2,
 					entete.lastIndexOf(" )"));
 
@@ -465,8 +468,6 @@ public abstract class BlocParser {
 			jm.getVarParams().add(new JavaVariable(paramName, paramType));
 		}
 
-		// TODO aussi, mais plus complique...
-		// faudrait au moins appeler jm.getLines.add(),
 		while (contenu.indexOf(";") != -1) {
 
 			jm.getLines().add(contenu.substring(0, contenu.indexOf(";")));

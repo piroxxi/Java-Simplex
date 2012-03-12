@@ -8,10 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileFormater {
 	public static final String directoryName = "formated";
 	public static final String firstPasseFileName = ".commentsErased.java";
 	public static final String secondPasseFileName = ".formated.java";
+
+	private static Logger logger = LoggerFactory.getLogger(FileFormater.class);
 
 	private File baseFile;
 	private HashMap<String, String> javadoc;
@@ -20,6 +25,8 @@ public class FileFormater {
 		javadoc = new HashMap<String, String>();
 		File parsed = new File(directoryName);
 		parsed.mkdirs();
+		logger.debug("dossier \"formated\" cree avec succes : "
+				+ parsed.getAbsolutePath());
 	}
 
 	public void setFile(File f) {
@@ -27,6 +34,7 @@ public class FileFormater {
 	}
 
 	public String format() {
+		logger.info("fichier : " + baseFile.getAbsolutePath());
 		File formated = formatSpaces(removeComments(baseFile));
 		BufferedReader read;
 		String ret = null;
@@ -50,6 +58,7 @@ public class FileFormater {
 	 * 
 	 */
 	private File removeComments(File fichier) {
+		logger.info("premiere passe en cours, suppression des commentaires");
 		File f = null;
 		boolean inString = false;
 		boolean javadocFound = false;
@@ -72,32 +81,34 @@ public class FileFormater {
 				if (c == '/' && !inString) {
 					char c2 = (char) reader.read();
 					if (c2 == '/') {
-						System.out.print("commentaire \"//\" trouvé : ");
+						String com = "";
 						char c3;
 						while ((c3 = (char) reader.read()) != '\n') {
-							System.out.print(c3);
+							com += c3;
 						}
-						System.out.println("\n");
+
+						logger.debug("commentaire \"//\" trouvé : " + com.substring(0,com.length()-1));
 					} else if (c2 == '*') {
 						char c3 = (char) reader.read();
+						String com="";
 						if (c3 == '*') {
-							System.out.print("javadoc trouvée : ");
+							com = "javadoc trouvée : ";
 							javadocFound = true;
 							javadocContent = "";
 							javadocBlocDef = "";
 						} else {
-							System.out.print("commentaire \"/*\" trouvé : ");
+							com = "commentaire \"/*\" trouvé : ";
 						}
 						char c4 = 'a';
 						while (c4 != '/') {
 							while ((c3 = (char) reader.read()) != '*') {
-								System.out.print(c3);
+								com += c3;
 								if (javadocFound && c3 != '\t')
 									javadocContent += c3;
 							}
 							c4 = (char) reader.read();
 						}
-						System.out.println("\n");
+						logger.debug(com.substring(0,com.indexOf("\n")-1));
 					} else {
 						writer.write(c);
 						writer.write(c2);
@@ -106,24 +117,21 @@ public class FileFormater {
 					char c2;
 					// boolean espace = false;
 
-					System.out.print("annotation trouvée : ");
 					// tant qu'on rencontre pas d'espace ou de parenthese, on
 					// vire
 					// sauf si c'est une ***** de ***** de @interface
 					while (isSpace(c2 = (char) reader.read())) {
 					}
-					System.out.print(c2);
 
 					String nomAnno = "@" + c2;
 					while (!isSpace(c2 = (char) reader.read()) && c2 != '(') {
-						System.out.print(c2);
 						nomAnno += c2;
 					}
-					System.out.println("\n");
 
 					if (nomAnno.contains("@interface")) {
 						writer.write("@interface ");
 					} else {
+						logger.debug("annotation trouvée : " + nomAnno);
 						// si on a recontré un espace, on continue de virer tant
 						// qu'on a pas rencontré autre chose
 						if (isSpace(c2))
@@ -191,8 +199,8 @@ public class FileFormater {
 								}
 							} else {
 								javadocFound = false;
-								getJavadoc()
-										.put(javadocBlocDef, javadocContent);
+								getJavadoc().put(javadocBlocDef.substring(0),
+										javadocContent.substring(0));
 							}
 						}
 
@@ -220,6 +228,7 @@ public class FileFormater {
 	 *            le fichier a parser
 	 */
 	private File formatSpaces(File fichier) {
+		logger.info("deuxieme passe en cours, formatage des espaces");
 		File f = null;
 		boolean inString = false;
 		boolean lastCharWasSpace = false;

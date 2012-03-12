@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.ubourgogne.simplex.model.BasicEntity;
 import fr.ubourgogne.simplex.model.java.JavaEntity;
 import fr.ubourgogne.simplex.storage.exceptions.VersionObsoletException;
@@ -13,15 +16,17 @@ import fr.ubourgogne.simplex.storage.exceptions.VersionObsoletException;
 public class StorageImpl implements Storage {
 
 	private final Map<Class<? extends BasicEntity>, Map<String, BasicEntity>> storage;
+	
+	private static final Logger logger = LoggerFactory.getLogger(StorageImpl.class);
 
 	public StorageImpl() {
-		System.out.println("[STORAGE] Creation du storage");
+		logger.info("Creation du storage");
 		storage = new HashMap<Class<? extends BasicEntity>, Map<String, BasicEntity>>();
 	}
 
 	@Override
 	public <E extends BasicEntity> void store(E entity) {
-		System.out.println("[STORAGE] Sauvegarde de l'entité " + entity.getId()
+		logger.debug("Sauvegarde de l'entité " + entity.getId()
 				+ "(" + entity.getClass().getSimpleName() + ": v"
 				+ entity.getVersion() + ")");
 		@SuppressWarnings("unchecked")
@@ -58,7 +63,7 @@ public class StorageImpl implements Storage {
 
 	@Override
 	public <E extends BasicEntity> E get(Class<E> clazz, String id) {
-		System.out.println("[STORAGE] Recupération de l'entité " + id + "("
+		logger.debug("Recupération de l'entité " + id + "("
 				+ clazz.getSimpleName() + ")");
 		@SuppressWarnings("unchecked")
 		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
@@ -70,7 +75,7 @@ public class StorageImpl implements Storage {
 
 	@Override
 	public <E extends BasicEntity> E getByName(Class<E> clazz, String name) {
-		System.out.println("[STORAGE] Recupération de l'entité par le nom "
+		logger.debug("Recupération de l'entité par le nom "
 				+ name + "(" + clazz.getSimpleName() + ")");
 		if (name == null) {
 			return null;
@@ -95,7 +100,7 @@ public class StorageImpl implements Storage {
 
 	@Override
 	public <E extends BasicEntity> void remove(Class<E> clazz, String id) {
-		System.out.println("[STORAGE] Suppression de l'entité " + id + "("
+		logger.debug("Suppression de l'entité " + id + "("
 				+ clazz.getSimpleName() + ")");
 		@SuppressWarnings("unchecked")
 		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
@@ -106,7 +111,7 @@ public class StorageImpl implements Storage {
 
 	@Override
 	public <E extends BasicEntity> List<E> getEntities(Class<E> clazz) {
-		System.out.println("[STORAGE] Get all " + clazz.getSimpleName()
+		logger.debug("Get all " + clazz.getSimpleName()
 				+ " entities.");
 		@SuppressWarnings("unchecked")
 		Map<String, E> collection = (Map<String, E>) storage.get(clazz);
