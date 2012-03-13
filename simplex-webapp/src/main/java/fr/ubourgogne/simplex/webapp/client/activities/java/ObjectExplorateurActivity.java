@@ -9,13 +9,10 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
-import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.webapp.client.places.ObjectPlace;
 import fr.ubourgogne.simplex.webapp.client.rpc.OperationCallback;
 import fr.ubourgogne.simplex.webapp.client.rpc.ServiceProvider;
-import fr.ubourgogne.simplex.webapp.client.utils.LocalProjectCache;
-import fr.ubourgogne.simplex.webapp.client.utils.LocalProjectCache.CacheCallback;
 
 public class ObjectExplorateurActivity extends AbstractActivity implements
 		ObjectExplorateurView.Delegate {
@@ -27,9 +24,8 @@ public class ObjectExplorateurActivity extends AbstractActivity implements
 	@Inject
 	public ObjectExplorateurActivity(ObjectExplorateurView view,
 			@Assisted ObjectPlace place, ServiceProvider serviceProvider,
-			PlaceController placeController, LocalProjectCache projectCache) {
+			PlaceController placeController) {
 		this.view = view;
-		this.view.setDelegate(this);
 		this.place = place;
 		this.placeController = placeController;
 
@@ -46,21 +42,6 @@ public class ObjectExplorateurActivity extends AbstractActivity implements
 		}
 
 		// TODO les autres IF...
-
-		projectCache.getProjectFromCache(place.getProjectId(),
-				new CacheCallback() {
-					@Override
-					public void onProjectFound(JavaProject project) {
-						if (project == null) {
-							Window.alert("Erreur! Le project "
-									+ ObjectExplorateurActivity.this.place
-											.getProjectId()
-									+ " n'existe pas coté serveur");
-							return;
-						}
-						ObjectExplorateurActivity.this.view.setProject(project);
-					}
-				});
 	}
 
 	private void printObject(JavaObject object) {

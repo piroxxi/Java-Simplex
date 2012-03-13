@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 
-import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfos;
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
 import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
@@ -29,23 +28,11 @@ public class ArrowGestionnary {
 			"rgba(150 , 60 , 150 , 0.8)" };
 
 	private final HTMLPanel panel;
-	private JavaProject project;
 	private ArrayList<JavaMethodArrowsStartingLine> starts = new ArrayList<JavaMethodArrowsStartingLine>();
 	private HashMap<String, UMLItem> umlObjects = new HashMap<String, UMLItem>();
 
-	private int nbMethodsItem = 0;
 	private int nbUMLItem = 0;
 	private int nbArrowsCrossing = 0;
-	/*
-	 * indique si l'on doit colorier les fleches pour chaque méthode, ou pour
-	 * chaque élement de l'UML.
-	 */
-	private boolean colorOfUML = true;
-	/*
-	 * indique si lon affiche toutes les classes, ou uniquement les classes du
-	 * projet.
-	 */
-	private boolean onlyProjectClasses = false;
 
 	private final ObjectLinkDelegate delegate;
 
@@ -57,9 +44,6 @@ public class ArrowGestionnary {
 	public void PrintArrows(
 			JavaMethodArrowsStartingLine methodArrowsStartingLine) {
 		starts.add(methodArrowsStartingLine);
-		methodArrowsStartingLine
-				.setColor(colors[nbMethodsItem % colors.length]);
-		nbMethodsItem++;
 
 		// First, find all entities and see if they are already on the diagram.
 		for (JavaReferenceObjectPanel widget : methodArrowsStartingLine
@@ -147,12 +131,8 @@ public class ArrowGestionnary {
 		int horizontalWidth2 = end.x - (700 + nbArrowsCrossing * 13) + 2;
 		nbArrowsCrossing++;
 
-		String color = "";
-		if (isColorOfUML()) {
-			color = umlItem.color;
-		} else {
-			color = methodArrowsStartingLine.getColor();
-		}
+		// TODO(put a f!!ing button)
+		String color = umlItem.color;
 
 		int decalageStartTop = (methodArrowsStartingLine.getWidgets().size() - 1 - methodArrowsStartingLine
 				.getWidgets().indexOf(widget)) * 5 + 3;
@@ -214,15 +194,7 @@ public class ArrowGestionnary {
 	}
 
 	public void refreshArrows() {
-		nbUMLItem = 0;
 		nbArrowsCrossing = 0;
-
-		for (UMLItem i : umlObjects.values()) {
-			i.graphicalItem.setVisible(false);
-			panel.remove(i.graphicalItem);
-		}
-		umlObjects = new HashMap<String, ArrowGestionnary.UMLItem>();
-
 		for (JavaMethodArrowsStartingLine start : starts) {
 			for (HTMLPanel p : start.getArrows()) {
 				p.setVisible(false);
@@ -230,63 +202,11 @@ public class ArrowGestionnary {
 			}
 
 			for (JavaReferenceObjectPanel widget : start.getWidgets()) {
-				String packageName = widget.getObject().getObjectInfos()
-						.getObjectPackage();
-				if (onlyProjectClasses
-						&& !this.getProject().isPackageInProject(packageName)) {
-					return;
-				}
-
 				UMLItem umlItem = getOrCreateUMLItem(widget.getObject());
 				HTMLPanel arrow = drawArrow(start, widget, umlItem);
 				start.getArrows().add(arrow);
 				panel.add(arrow);
 			}
 		}
-	}
-
-	/**
-	 * @return the project
-	 */
-	public JavaProject getProject() {
-		return project;
-	}
-
-	/**
-	 * @param project
-	 *            the project to set
-	 */
-	public void setProject(JavaProject project) {
-		this.project = project;
-	}
-
-	/**
-	 * @return the onlyProjectClasses
-	 */
-	public boolean isOnlyProjectClasses() {
-		return onlyProjectClasses;
-	}
-
-	/**
-	 * @param onlyProjectClasses
-	 *            the onlyProjectClasses to set
-	 */
-	public void setOnlyProjectClasses(boolean onlyProjectClasses) {
-		this.onlyProjectClasses = onlyProjectClasses;
-	}
-
-	/**
-	 * @return the colorOfUML
-	 */
-	public boolean isColorOfUML() {
-		return colorOfUML;
-	}
-
-	/**
-	 * @param colorOfUML
-	 *            the colorOfUML to set
-	 */
-	public void setColorOfUML(boolean colorOfUML) {
-		this.colorOfUML = colorOfUML;
 	}
 }

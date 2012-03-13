@@ -1,17 +1,14 @@
 package fr.ubourgogne.simplex.webapp.client.activities.java;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
-import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
 import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.ArrowGestionnary;
@@ -50,7 +47,7 @@ public class ObjectExplorateurViewImpl extends Composite implements
 			panel.setWidget(new JavaClassPanel((JavaClass) result, gestionnary,
 					this));
 		} else {
-			GWT.log("ObjectExplorateurViewImpl.printObject => Type non géré",
+			GWT.log("ObjectExplorateurViewImpl.printObject => Type non gérér",
 					new Throwable("[" + result.getClass() + "]"));
 		}
 	}
@@ -58,29 +55,11 @@ public class ObjectExplorateurViewImpl extends Composite implements
 	@Override
 	public void goToObject(int type, String name) {
 		if (this.delegate != null) {
-			this.delegate.goToObject(type, name);
+			this.delegate.goToObject(type,name);
 		} else {
-			GWT.log("ObjectExplorateurViewImpl.delegate == null; peut-etre avez vous oublié d'appeller setDelegate().",
-					new NullPointerException(
-							"ObjectExplorateurViewImpl.delegate == null"));
+			GWT.log("MenuViewImpl.delegate == null; peut-etre avez vous oublié d'appeller setDelegate().",
+					new NullPointerException("MenuViewImpl.delegate == null"));
 		}
 	}
 
-	@Override
-	public void setProject(JavaProject project) {
-		gestionnary.setProject(project);
-	}
-
-	@UiHandler("color")
-	public void colorButton(ClickEvent event) {
-		this.gestionnary.setColorOfUML(!this.gestionnary.isColorOfUML());
-		this.gestionnary.refreshArrows();
-	}
-
-	@UiHandler("packages")
-	public void packagesButton(ClickEvent event) {
-		this.gestionnary.setOnlyProjectClasses(!this.gestionnary
-				.isOnlyProjectClasses());
-		this.gestionnary.refreshArrows();
-	}
 }

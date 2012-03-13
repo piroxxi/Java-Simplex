@@ -176,7 +176,6 @@
 			<groupId>fr.ubourgogne.simplex</groupId>
 			<artifactId>simplex-model</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>fr.ubourgogne.simplex</groupId>

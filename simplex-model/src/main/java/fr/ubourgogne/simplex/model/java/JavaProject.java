@@ -124,16 +124,4 @@ public class JavaProject extends BasicEntity {
 			}
 		}
 	}
-
-	public boolean isPackageInProject(String packageName) {
-		if (packageName == null || packageName.isEmpty()) {
-			return true;
-		}
-		for (JavaPackage _package : packages) {
-			if (packageName.startsWith(_package.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
 }

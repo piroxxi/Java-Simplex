@@ -1,8 +1,5 @@
 package fr.ubourgogne.simplex.webapp.server.guice;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -21,12 +18,12 @@ import fr.ubourgogne.simplex.webapp.server.SimplexBaseServiceImpl;
  * L'id�e est de créer toutes les servlets avec Guice.
  */
 public class GuiceServletConfig extends GuiceServletContextListener {
-	private static final Logger logger = LoggerFactory
-			.getLogger(GuiceServletConfig.class);
+//	private static final Logger logger = LoggerFactory
+//			.getLogger(GuiceServletConfig.class);
 
 	@Override
 	protected Injector getInjector() {
-		logger.info("Recupération de l'injector du serveur.");
+//		logger.info("Recupération de l'injector du serveur.");
 		return Guice.createInjector(new GuiceServerModule(),
 		/**
 		 * This module has a mapping of URIs and its serving classes. It serves
