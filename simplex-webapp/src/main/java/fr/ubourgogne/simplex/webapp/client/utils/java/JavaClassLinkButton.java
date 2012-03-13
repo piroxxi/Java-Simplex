@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 
 public class JavaClassLinkButton extends Composite {
 	public interface MyUiBinder extends UiBinder<Widget, JavaClassLinkButton> {

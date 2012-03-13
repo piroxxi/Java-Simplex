@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.Resources;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.ArrowGestionnary;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.JavaMethodArrowsStartingLine;

@@ -121,7 +121,7 @@ public class MainParser {
 //		printPackages(project.getPackages(), "");
 	}
 
-	private void printPackages(ArrayList<JavaPackage> packages, String entete) {
+	public void printPackages(ArrayList<JavaPackage> packages, String entete) {
 		for (JavaPackage p : packages) {
 			System.out.println(entete
 					+ ((p.getName().indexOf(".") != -1) ? p.getName()

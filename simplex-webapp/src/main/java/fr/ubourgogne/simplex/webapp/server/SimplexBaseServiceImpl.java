@@ -39,7 +39,7 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 	public SimplexBaseServiceImpl(Storage storage, EntityFactory entityFactory,
 			Provider<FileFormater> formaterProvider) {
 		this.formaterProvider = formaterProvider;
-		logger.info("[SERVER] creation du SimplexBaseServiceImpl("
+		logger.info("Creation du SimplexBaseServiceImpl("
 				+ this + ")");
 
 		this.storage = storage;
@@ -56,7 +56,7 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 			public void run() {
 				super.run();
 				while (true) {
-					logger.info("[SERVER] => vidage du répertoire temporaire local.");
+					logger.debug("Vidage du répertoire temporaire local.");
 					FileUtils.clearLocalTemporaryDir(5 * FileUtils.MINUTE + 15
 							* FileUtils.SECONDE);
 					try {
@@ -72,7 +72,7 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void welcome(String accountId) throws SimplexSecurityException {
-		logger.info("[SERVER] you called welcome");
+		logger.info("you called welcome");
 		logger.debug("Du coup, on a bien toutes les classes suivantes dans le storage : ");
 		List<JavaClass> classes = storage.getEntities(JavaClass.class);
 		if (classes != null)
@@ -83,14 +83,14 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public JavaClass getJavaClass(String id) throws SimplexSecurityException {
-		logger.debug("[SERVER] getJavaClass(" + id + ");");
+		logger.debug("getJavaClass(" + id + ");");
 		return storage.get(JavaClass.class, id);
 	}
 
 	@Override
 	public String loadGitProject(String adresse)
 			throws SimplexSecurityException {
-		logger.info("[SERVER] loadGitProject(" + adresse + ") =>");
+		logger.info("loadGitProject(" + adresse + ") =>");
 
 		String id = UUID.randomUUID().toString();
 		JavaProject project = new JavaProject(id);
@@ -143,7 +143,7 @@ public class SimplexBaseServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public JavaProject getProject(String projectId) {
-		logger.debug("[SERVER] getProject(" + projectId + ");");
+		logger.debug("getProject(" + projectId + ");");
 		return storage.get(JavaProject.class, projectId);
 	}
 }

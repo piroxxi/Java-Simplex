@@ -4,7 +4,7 @@ import com.google.inject.ImplementedBy;
 
 import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.JavaProject;
-import fr.ubourgogne.simplex.webapp.client.utils.java.ObjectLinkDelegate;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.view.View;
 
 @ImplementedBy(ObjectExplorateurViewImpl.class)

@@ -11,7 +11,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileUtils {
+	private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+	
 	public static final long SECONDE = 1000;
 	public static final long MINUTE = 60 * SECONDE;
 
@@ -19,8 +24,7 @@ public class FileUtils {
 		File directory = new File(System.getProperty("java.io.tmpdir")
 				+ File.separatorChar + "simplex_temp");
 		if (directory.listFiles() == null) {
-			System.out
-					.println("Le répertoire de stockage temporaire est déja propre.");
+			logger.debug("Le répertoire de stockage temporaire est déja propre.");
 			return;
 		}
 
@@ -47,12 +51,12 @@ public class FileUtils {
 						.before(new Date(new Date().getTime() - dateLimite))) {
 					File toRemove = new File(directory, champs[0]);
 					if (toRemove.exists()) {
-						System.out.println("Le dépot " + champs[0]
+						logger.debug("Le dépot " + champs[0]
 								+ " a été récupéré il y a plus de "
 								+ toDate(dateLimite));
 						deleteRecursively(toRemove);
 					} else {
-						System.out.println("Le dépot " + champs[0]
+						logger.debug("Le dépot " + champs[0]
 								+ " a été récupéré il y a moins de "
 								+ toDate(dateLimite) + " on le conserve donc.");
 					}
@@ -100,7 +104,7 @@ public class FileUtils {
 	}
 
 	private static void print(File localRepo, String string, boolean lastNode) {
-		System.out.println(string + "+ " + localRepo.getName());
+		logger.debug(string + "+ " + localRepo.getName());
 		File[] f = localRepo.listFiles();
 		if (f != null) {
 			for (int i = 0; i < f.length; i++) {

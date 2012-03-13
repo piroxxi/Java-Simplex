@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.Widget;
 import fr.ubourgogne.simplex.model.java.JavaObject;
 import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.object.JavaClass;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.ArrowGestionnary;
 import fr.ubourgogne.simplex.webapp.client.utils.java.JavaClassPanel;
-import fr.ubourgogne.simplex.webapp.client.utils.java.ObjectLinkDelegate;
 
 public class ObjectExplorateurViewImpl extends Composite implements
 		ObjectExplorateurView, ObjectLinkDelegate {
@@ -36,7 +36,7 @@ public class ObjectExplorateurViewImpl extends Composite implements
 
 	public ObjectExplorateurViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-		gestionnary = new ArrowGestionnary(arrowPanel);
+		gestionnary = new ArrowGestionnary(arrowPanel,this);
 	}
 
 	@Override

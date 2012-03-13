@@ -3,12 +3,15 @@ package fr.ubourgogne.simplex.webapp.client.utils.arrow;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import fr.ubourgogne.simplex.model.java.JavaProject;
 import fr.ubourgogne.simplex.model.java.meta.JavaObjectCommonInfos;
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.utils.Point;
 import fr.ubourgogne.simplex.webapp.client.utils.java.JavaReferenceObjectPanel;
 
@@ -44,8 +47,11 @@ public class ArrowGestionnary {
 	 */
 	private boolean onlyProjectClasses = false;
 
-	public ArrowGestionnary(HTMLPanel panel) {
+	private final ObjectLinkDelegate delegate;
+
+	public ArrowGestionnary(HTMLPanel panel, ObjectLinkDelegate delegate) {
 		this.panel = panel;
+		this.delegate = delegate;
 	}
 
 	public void PrintArrows(
@@ -66,7 +72,7 @@ public class ArrowGestionnary {
 		}
 	}
 
-	private UMLItem getOrCreateUMLItem(JavaReferenceObject object) {
+	private UMLItem getOrCreateUMLItem(final JavaReferenceObject object) {
 		UMLItem item = umlObjects.get(object.getObjectId());
 		if (item == null) {
 			item = new UMLItem();
@@ -77,6 +83,13 @@ public class ArrowGestionnary {
 			item.color = colors[nbUMLItem % colors.length];
 
 			item.graphicalItem = new Label(object.getObjectName());
+			item.graphicalItem.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					delegate.goToObject(object.getObjectType(), object.getObjectId());
+				}
+			});
 			item.graphicalItem.getElement().setAttribute(
 					"style",
 					"position: absolute; " + "top: " + (item.point.y - 5)

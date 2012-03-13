@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import fr.ubourgogne.simplex.model.java.entity.JavaMethod;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.JavaMethodArrowsStartingLine;
 
 public class JavaMethodDeclarationPanel extends Composite {

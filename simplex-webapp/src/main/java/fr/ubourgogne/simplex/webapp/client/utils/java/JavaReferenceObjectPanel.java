@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Label;
 
 import fr.ubourgogne.simplex.model.java.entity.JavaSimpleType;
 import fr.ubourgogne.simplex.model.java.meta.JavaReferenceObject;
+import fr.ubourgogne.simplex.webapp.client.utils.ObjectLinkDelegate;
 import fr.ubourgogne.simplex.webapp.client.utils.arrow.JavaMethodArrowsStartingLine;
 
 public class JavaReferenceObjectPanel extends Composite {

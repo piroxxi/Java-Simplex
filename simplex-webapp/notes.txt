@@ -1,0 +1,1 @@
+http://stackoverflow.com/questions/7980231/how-to-change-gwt-xml-with-maven-profile-by-a-gwt-project
